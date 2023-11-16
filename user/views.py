@@ -22,7 +22,6 @@ class ProfileView(APIView):
 
 
 class ProfileEditView(APIView):
-    # permission_classes = [IsAuthenticated]
 
     def put(self, request):
         profile = get_object_or_404(Profile, user=request.user)
