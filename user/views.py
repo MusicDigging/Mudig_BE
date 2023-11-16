@@ -10,6 +10,7 @@ from django.http import Http404
 
 class ProfileView(APIView):
     # permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             user = User.objects.get(id=2)
@@ -22,9 +23,11 @@ class ProfileView(APIView):
 
 
 class ProfileEditView(APIView):
-
+    # permission_classes = [IsAuthenticated]
     def put(self, request):
-        profile = get_object_or_404(Profile, user=request.user)
+        user = get_object_or_404(User, id=2) #test
+        profile = get_object_or_404(Profile, user=user)
+
         serializer = ProfileSerializer(profile, data=request.data)
         if serializer.is_valid():
             serializer.save()
