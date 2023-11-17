@@ -28,6 +28,7 @@ class YouTube:
         }
         data  = requests.get(search_url, params=params).json()
         page  = data['nextPageToken']
+        # page = data.get('nextPageToken', None)
         items = data['items']
         result = [
             {
@@ -45,5 +46,5 @@ class YouTube:
         }
         return datas
     
-    # def __str__(self):
-    #     return str(self.__dict__)
+    def __str__(self):
+        return str(self.__dict__)

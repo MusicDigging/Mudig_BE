@@ -4,7 +4,10 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Music(models.Model):
-    information = models.CharField(max_length=50) # 임시로 넣어놨습니다. 추가 수정이 들어갈 필드입니다.
+    information = models.CharField(max_length=200) # 임시로 넣어놨습니다. 추가 수정이 들어갈 필드입니다.
+    singer = models.CharField(max_length=200)
+    song = models.CharField(max_length=200)
+    thumbnail = models.URLField(null = True, blank= True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

@@ -9,7 +9,7 @@ class S3ImgUploader:
     def __init__(self, file):
         self.file = file
 
-    def upload(self):
+    def upload(self, folder):
         s3_client = boto3.client(
             's3',
             aws_access_key_id     = os.environ.get("AWS_ACCESS_KEY_ID"),
