@@ -6,6 +6,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
+from .utils import generate_otp, send_otp_via_email
 
 class Join(APIView):
     def post(self, request):
@@ -21,6 +22,18 @@ class Join(APIView):
             )
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GenerateOtp(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if email:
+            otp = generate_otp()
+            send_otp_via_email(email, otp=otp)
+            response = {'message': '인증 번호 생성', 'otp': otp}
+            return Response(data=response, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': '이메일 주소를 입력하세요.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Login(APIView):
