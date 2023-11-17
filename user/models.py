@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
+from django.contrib.auth.models import UserManager, PermissionsMixin
 
 
 class UserManager(BaseUserManager):
@@ -29,7 +30,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractUser):
+class User(AbstractUser, PermissionsMixin):
     username = None
     email = models.EmailField(unique=True, max_length=255)
     is_verified = models.BooleanField(default=False)
@@ -55,7 +56,7 @@ class Profile(models.Model):
     name = models.CharField(default='닉네임', max_length=50, null=True, blank=True)
     image = models.FileField(null=True, blank=True)
     about = models.TextField(default='자신을 소개해주세요 :)', null=True, blank=True)
-    gnere = models.CharField(max_length=50, null=True, blank=True)
+    genre = models.CharField(max_length=50, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
