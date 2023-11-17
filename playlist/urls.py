@@ -1,11 +1,11 @@
 from django.urls import path
-# from .views import 
+from .views import PlaylistView
 
 app_name = 'playlist'
 
 urlpatterns = [
     # home
-    # path('', Index.as_view() , name='list'),
+    path('', PlaylistView.as_view() , name='list'),
     # playlist CRUD
     # path('<int:post_id>/', Detail.as_view() , name='detail'),
     # path('create/', Create.as_view() , name='write'),
