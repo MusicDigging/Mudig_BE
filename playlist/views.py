@@ -2,8 +2,8 @@ from drf_spectacular.utils import OpenApiExample, extend_schema, OpenApiParamete
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import PlaylistSerializer
-from .models import Playlist
+from .serializers import MusicSerializer
+from .models import Music
 
 ###################
 # schema-option 정리
@@ -39,36 +39,31 @@ from .models import Playlist
 
 # Create your views here.
 
-class PlaylistView(APIView):
+class RandomMovieView(APIView):
     @extend_schema(
-        summary="플레이리스트 목록 조회",  # summary : 해당 method 요약
-        description="플레이리스트 목록 조회",  # description: 해당 method 설명
-        tags=["Playlist"],  # tags : 문서상 보여줄 묶음의 단위
-        responses=PlaylistSerializer,
+        summary="랜덤 뮤비",  # summary : 해당 method 요약
+        description="랜덤 뮤비를 불러오는 API 입니다.",  # description: 해당 method 설명
+        tags=["RandomMovie"],  # tags : 문서상 보여줄 묶음의 단위
+        responses=MusicSerializer,
         examples=[
             OpenApiExample(
                 response_only=True,
                 summary="summary example",
                 name="success_example",
-                value={
+                value=[{
                     "id": 1,
                     "created_at": "2023-08-24T10:01:38",
-                    "updated_at": "2023-08-28T10:01:28",
-                    "writer": "user001",
-                    "title": "Title Example",
-                    "is_active": "True",
-                    "thumbnail": "S3 URL",
-                    "Music": [
-                        "Title - Artist"
-                    ]
-                },
+                    "artist": "Red Hot Chili Peppers",
+                    "title": "Snow",
+                    "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
+                }],
             ),
         ],
     )
     def get(self, request):
         try:
-            queryset = Playlist.objects.all()
-            serializer = PlaylistSerializer(queryset, many=True)
+            queryset = Music.objects.all()
+            serializer = MusicSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
