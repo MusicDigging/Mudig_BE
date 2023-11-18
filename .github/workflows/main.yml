@@ -29,5 +29,5 @@ jobs:
           script: |
             whoami
             ls -al
-            cd publish/
-            ./pull_repository.sh
+            cd Mudig_BE/
+            /home/ubuntu/publish/pull_repository.sh
