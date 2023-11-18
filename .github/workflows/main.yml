@@ -12,7 +12,7 @@ jobs:
   CI:
     runs-on: ubuntu-latest
     env:
-        DJAGNO_SECRET: ${{ secrets.DJAGNO_SECRET }}
+      DJAGNO_SECRET: ${{ secrets.DJAGNO_SECRET }}
     strategy:
       max-parallel: 4
       matrix:
