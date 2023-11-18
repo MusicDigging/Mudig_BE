@@ -33,7 +33,7 @@ SECRET_KEY = os.environ['DJAGNO_SECRET']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['13.209.15.150']
+ALLOWED_HOSTS = ['13.209.15.150','127.0.0.1','api.mudig.co.kr']
 
 SITE_ID = 1
 
