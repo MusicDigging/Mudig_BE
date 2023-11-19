@@ -25,22 +25,6 @@ class Join(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class GenerateOtp(APIView):
-#     def post(self, request):
-#         email = request.data.get('email')
-#         if not email:
-#             return Response({'message': '이메일 주소를 입력하세요.'}, status=status.HTTP_400_BAD_REQUEST)
-#         try:
-#             user = User.objects.get(email=email)
-#         except:
-#             otp = generate_otp()
-#             send_otp_via_email(email, otp=otp)
-        
-#             response = {'message': '인증 번호 생성', 'otp': otp}
-#             return Response(data=response, status=status.HTTP_200_OK)
-#         else:
-#             return Response({'message': '이미 가입된 사용자입니다.'}, status=status.HTTP_400_BAD_REQUEST)
-        
 class GenerateOtp(APIView):
     def post(self, request):
         email = request.data.get('email')
@@ -55,7 +39,6 @@ class GenerateOtp(APIView):
             return Response(data=response, status=status.HTTP_200_OK)
         else:
             return Response({'message': '이미 가입된 사용자입니다.'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class Login(APIView):
