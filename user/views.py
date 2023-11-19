@@ -46,7 +46,8 @@ class GenerateOtp(APIView):
         email = request.data.get('email')
         if not email:
             return Response({'message': '이메일 주소를 입력하세요'}, status=status.HTTP_400_BAD_REQUEST)
-        users = User.objects.filter(email=email)
+        
+        users = User.objects.filter(email__iexact=email)
         if not users.exists():
             otp = generate_otp()
             send_otp_via_email(email, otp=otp)
