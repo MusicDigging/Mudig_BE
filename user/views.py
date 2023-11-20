@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth import logout
 from django.shortcuts import render
 from .serializers import UserSerializer, ChangePasswordSerializer
 from rest_framework.views import APIView
@@ -72,12 +73,12 @@ class Login(APIView):
 
 
 class Logout(APIView):
+    permission_classes = [IsAuthenticated] 
     def post(self, request):
         user = request.user
-        if not isinstance(user, AnonymousUser):
-            refresh_token = RefreshToken.for_user(user)
-            refresh_token.blacklist()
-            logout(request)
+        refresh_token = RefreshToken.for_user(user)
+        refresh_token.blacklist()
+        logout(request)
         return Response({"message":"로그아웃 성공"},status=status.HTTP_200_OK)
 
 
