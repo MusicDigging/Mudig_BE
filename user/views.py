@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import User
 from .utils import generate_otp, send_otp_via_email
 
+
 class Join(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -73,7 +74,8 @@ class Login(APIView):
 
 
 class Logout(APIView):
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticated]
+    
     def post(self, request):
         user = request.user
         refresh_token = RefreshToken.for_user(user)
@@ -98,5 +100,16 @@ class ChangePassWord(APIView):
             return Response({"message": "비밀번호가 성공적으로 변경되었습니다."}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class Withdrawal(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request):
+        user = request.user
+        refresh_token = RefreshToken.for_user(user)
+        refresh_token.blacklist()
         
+        user.delete()
         
+        return Response({"message": "회원탈퇴 되었습니다."}, status=status.HTTP_200_OK)
