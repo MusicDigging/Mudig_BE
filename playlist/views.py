@@ -71,3 +71,23 @@ class CommentDelete(APIView):
 #             "message": "댓글 삭제 완료되었습니다."
 #         }
 #         return Response(datas, status=status.HTTP_200_OK)
+
+
+class CommentEdit(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+        # playlist = Playlist.comment.get(id=request.data['playlist_id'])
+        try:
+            playlist = Playlist.objects.get(id=request.data['playlist_id'])
+            comment = Comment.objects.get(id=request.data['comment_id'], writer = user)
+        except ObjectDoesNotExist:
+            raise Http404
+        
+        comment.content = request.data.get('content', comment.content)
+        comment.save()
+        data = {
+            "message" : "댓글 수정 완료되었습니다."
+        }
+        return Response(data, status=status.HTTP_200_OK)
