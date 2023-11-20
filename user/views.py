@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import render
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ChangePasswordSerializer
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import User
 from .utils import generate_otp, send_otp_via_email
 
@@ -71,10 +72,30 @@ class Login(APIView):
 
 
 class Logout(APIView):
-    def delete(self, request):
+    def post(self, request):
         user = request.user
         if not isinstance(user, AnonymousUser):
             refresh_token = RefreshToken.for_user(user)
             refresh_token.blacklist()
             logout(request)
         return Response({"message":"로그아웃 성공"},status=status.HTTP_200_OK)
+
+
+class ChangePassWord(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def put(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            if not request.user.check_password(serializer.validated_data['old_password']):
+                return Response({"messsage": "현재 비밀번호가 올바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            request.user.set_password(serializer.validated_data['new_password'])
+            request.user.save()
+            
+            return Response({"message": "비밀번호가 성공적으로 변경되었습니다."}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        

@@ -12,3 +12,12 @@ class UserSerializer(serializers.ModelSerializer):
             password = validated_data['password'],
             )
         return user
+
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password']
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
