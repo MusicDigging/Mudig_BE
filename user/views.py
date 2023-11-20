@@ -6,6 +6,8 @@ from .serializers import ProfileSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from django.http import Http404
+from playlist.uploads import S3ImgUploader
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class ProfileView(APIView):
@@ -17,21 +19,27 @@ class ProfileView(APIView):
             profile = Profile.objects.get(user=user)
         except (User.DoesNotExist, Profile.DoesNotExist):
             raise Http404("User or Profile does not exist")
-        
         serializer = ProfileSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ProfileEditView(APIView):
-    # permission_classes = [IsAuthenticated]
-    def put(self, request):
-        user = get_object_or_404(User, id=2) #test
-        profile = get_object_or_404(Profile, user=user)
+    parser_classes = (MultiPartParser, FormParser)
 
+    def put(self, request, *args, **kwargs):
+        profile = get_object_or_404(Profile, user=request.user)
         serializer = ProfileSerializer(profile, data=request.data)
+
+        if 'image' in request.FILES:
+            image_file = request.FILES['image']
+            uploader = S3ImgUploader(image_file)
+            image_url = uploader.upload()
+            serializer.initial_data['image'] = image_url
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
