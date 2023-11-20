@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.views import Response
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Profile, User
 from .serializers import ProfileSerializer
@@ -26,8 +26,9 @@ class ProfileView(APIView):
 class ProfileEditView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
-    def put(self, request, *args, **kwargs):
-        profile = get_object_or_404(Profile, user=request.user)
+    def put(self, request):
+        user = User.objects.get(id=2)  # test
+        profile = get_object_or_404(Profile, user=user)
         serializer = ProfileSerializer(profile, data=request.data)
 
         if 'image' in request.FILES:
