@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import render
 from .serializers import UserSerializer
 from rest_framework.views import APIView
@@ -44,11 +45,12 @@ class GenerateOtp(APIView):
 class Login(APIView):
     def post(self, request):
         user = authenticate(
-            email=request.data.get('email'),
-            password=request.data.get('password')
+            email = request.data.get('email'),
+            password = request.data.get('password')
         )
         if user is not None:
             serializer = UserSerializer(user)
+            
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
             access_token = str(token.access_token)
@@ -65,4 +67,14 @@ class Login(APIView):
             )
             return res
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "인증 실패"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class Logout(APIView):
+    def delete(self, request):
+        user = request.user
+        if not isinstance(user, AnonymousUser):
+            refresh_token = RefreshToken.for_user(user)
+            refresh_token.blacklist()
+            logout(request)
+        return Response({"message":"로그아웃 성공"},status=status.HTTP_200_OK)
