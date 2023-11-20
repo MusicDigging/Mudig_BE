@@ -4,7 +4,8 @@ import uuid
 import os
 
 load_dotenv()
-
+print(os.environ.get("AWS_ACCESS_KEY_ID"))
+print(os.environ.get("AWS_SECRET_ACCESS_KEY"))
 class S3ImgUploader:
     def __init__(self, file):
         self.file = file
@@ -15,15 +16,17 @@ class S3ImgUploader:
             aws_access_key_id     = os.environ.get("AWS_ACCESS_KEY_ID"),
             aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
         )
-        url = 'img'+'/'+uuid.uuid1().hex
+        url = folder+'/'+uuid.uuid1().hex
         s3_client.upload_fileobj(
             self.file, 
             os.environ.get("AWS_STORAGE_BUCKET_NAME"), 
             url, 
             ExtraArgs={
-                "ContentType": self.file.content_type
+                # "ContentType": self.file.content_type
+                "ContentType": 'image/png' 
             }
         )
+        print(f'Successfully uploaded to S3. URL: {url}')
         return url
     def delete(self):
         s3_client = boto3.client(

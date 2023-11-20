@@ -7,7 +7,7 @@ urlpatterns = [
     # home
     path('', List.as_view() , name='list'),
     # playlist CRUD
-    path('playlist/<int:post_id>/', Detail.as_view() , name='detail'),
+    path('detail/<int:pk>/', Detail.as_view() , name='detail'),
     path('create/', Create.as_view() , name='write'),
     path('delete/', Delete.as_view() , name='delete'),
     # path('you/', YouTube.as_view(), name='youtube')
