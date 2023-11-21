@@ -15,10 +15,11 @@ class ProfileView(APIView):
 
     def get(self, request):
         try:
-            user = User.objects.get(id=2)
-            profile = Profile.objects.get(user=user)
+            user = User.objects.get(id=2)  # Test User ID
+            profile = get_object_or_404(Profile, user=user)
         except (User.DoesNotExist, Profile.DoesNotExist):
             raise Http404("User or Profile does not exist")
+
         serializer = ProfileSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
