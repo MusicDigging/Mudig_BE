@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Profile, User
+from .models import Profile, User, Follower
 from .serializers import ProfileSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -44,4 +44,23 @@ class ProfileEditView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class FollowAPIView(APIView):
+    def post(self, request, user_id):
+        target_user = get_object_or_404(User, pk=user_id)
+        if request.user == target_user:
+            return Response({"error": "자기 자신을 팔로우할 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        _, created = Follower.objects.get_or_create(target=target_user, follower=request.user)
+        if created:
+            return Response({"status": "팔로우 성공"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "이미 팔로우한 사용자입니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+class UnfollowAPIView(APIView):
+    def post(self, request, user_id):
+        target_user = get_object_or_404(User, pk=user_id)
+        follow_relation = get_object_or_404(Follower, target=target_user, follower=request.user)
+        follow_relation.delete()
+        return Response({"status": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
 

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ProfileView, ProfileEditView
+from .views import ProfileView, ProfileEditView, FollowAPIView, UnfollowAPIView
 # from .views import Join, Login, Logout, ProfileUpdate, ChangePassWord
 # 해당 부분은 수정해주시면 됩니다.
 
@@ -13,6 +13,7 @@ urlpatterns = [
     # path("withdrawal/", Withdrawal.as_view(), name='withdrawal'),
     path("profile/", ProfileView.as_view(), name='profile'),
     path("profile/edit/", ProfileEditView.as_view(), name='pf-edit'),
-    # path("follow/", Follow.as_view(), name='follow'),
+    path('user/<int:user_id>/follow/', FollowAPIView.as_view(), name='follow'),
+    path('user/<int:user_id>/unfollow/', UnfollowAPIView.as_view(), name='unfollow'),
 ] 
 
