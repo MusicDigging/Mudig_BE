@@ -102,31 +102,26 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: '          
-          ✅ Status: 😭 **CI failure**
+          ⛔ Status: 😭 **CI failure**
           
           ✍️ Commit message: ${{ github.event.commits[0].message }}
           
-          ⛔ Error message : ${{ CI.outputs }}
-
           [🫡 See changes](https://github.com/MusicDigging/Mudig_BE/actions)'
 
   #배포 실패 메세지 발송
   build-Deploy-failure:
-    needs: build
+    needs: deploy
     runs-on: ubuntu-latest
-    if: ${{ build.outcome }} == 'failure'
+    if: ${{ steps.deploy.outcome }} == 'failure'
     steps:
     - name: Discord notification
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: 'Author: ${{github.actor}}
-          
-          ✅ Status: 😭 **Deploy failure**
+        args: '
+          ⛔ Status: 😭 **Deploy failure**
           
           ✍️ Commit message: ${{ github.event.commits[0].message }}
-
-          ⛔ Error message : ${{ deploy.outputs }}
           
           [🫡 See changes](https://github.com/MusicDigging/Mudig_BE/actions)'
