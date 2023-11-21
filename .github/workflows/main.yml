@@ -60,7 +60,7 @@ jobs:
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     uses: Ilshidur/action-discord@master
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: success()
     with:
       format: markdown
       message: |
@@ -78,7 +78,7 @@ jobs:
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     uses: Ilshidur/action-discord@master
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    if: failure()
     with:
       format: markdown
       message: |
