@@ -59,6 +59,7 @@ jobs:
     name: Send Build Success Message
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    runs-on: ubuntu-latest
     if: success()
     steps:
     - uses: Ilshidur/action-discord@master
@@ -78,6 +79,7 @@ jobs:
     name: Send Build failure Message
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    runs-on: ubuntu-latest
     if: failure()
     steps:
     - uses: Ilshidur/action-discord@master
