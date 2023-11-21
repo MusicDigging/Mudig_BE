@@ -16,6 +16,7 @@ class S3ImgUploader:
             aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
         )
         url = 'img'+'/'+uuid.uuid1().hex
+        print(self.file)
         s3_client.upload_fileobj(
             self.file, 
             os.environ.get("AWS_STORAGE_BUCKET_NAME"), 
