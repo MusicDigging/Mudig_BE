@@ -92,12 +92,12 @@ jobs:
   #         Commit message: ${{ github.event.commits[0].message }}
           
   #         [link](https://github.com/${{ github.repository }}/actions)
-  
-  # 빌드 성공 메세지 발송
-  build-success:
 
+  # CI 성공 메세지 발송
+  build-CI-Success:
+    needs: CI
     runs-on: ubuntu-latest
-
+    if: success()
     steps:
     - name: Discord notification
       env:
@@ -106,7 +106,26 @@ jobs:
       with:
         args: 'Author: ${{github.actor}}
           
-          Status: 😚 **Success**
+          Status: CI 😚 **Success**
+          
+          Commit message: ${{ github.event.commits[0].message }}
+          
+          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
+
+  # 배포 성공 메세지 발송
+  build-Deploy-Success:
+    needs: build
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Author: ${{github.actor}}
+          
+          Status: Deploy 😚 **Success**
           
           Commit message: ${{ github.event.commits[0].message }}
           
