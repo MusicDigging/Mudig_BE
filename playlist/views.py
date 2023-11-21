@@ -5,13 +5,31 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from .models import Playlist, Comment
+from .models import Playlist, Comment, Like as Like_Model
 from .serializers import CommentSerializer
 from rest_framework.views import APIView
 # Create your views here.
 
 User = get_user_model()
+
+class Like(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+
+        try:
+            playlist = Playlist.objects.get(id=request.data['playlist_id'])
+            like, created = Like_Model.objects.get_or_create(playlist=playlist, user=user)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        if created:
+            return Response({"detail":"좋아요 성공했습니다."}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"detail":"이미 좋아요를 눌렀습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentWrite(APIView):
