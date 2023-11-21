@@ -108,9 +108,7 @@ jobs:
           
           Status: CI 😚 **Success**
           
-          Commit message: ${{ github.event.commits[0].message }}
-          
-          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
+          Commit message: ${{ github.event.commits[0].message }}'
 
   # 배포 성공 메세지 발송
   build-Deploy-Success:
@@ -126,6 +124,44 @@ jobs:
         args: 'Author: ${{github.actor}}
           
           Status: Deploy 😚 **Success**
+          
+          Commit message: ${{ github.event.commits[0].message }}
+          
+          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
+
+  # CI 실패 메세지 발송
+  build-CI-failure:
+    needs: CI
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Author: ${{github.actor}}
+          
+          Status: 😭 **CI failure**
+          
+          Commit message: ${{ github.event.commits[0].message }}
+          
+          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
+
+  # 배포 실패 메세지 발송
+  build-Deploy-failure:
+    needs: build
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Author: ${{github.actor}}
+          
+          Status: 😭 **Deploy failure**
           
           Commit message: ${{ github.event.commits[0].message }}
           
