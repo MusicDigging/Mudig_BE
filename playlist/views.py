@@ -7,88 +7,104 @@ from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from .models import Playlist, Comment, Like as Like_Model
+from .models import Playlist, Comment, Like
 from .serializers import CommentSerializer
 from rest_framework.views import APIView
 # Create your views here.
 
 User = get_user_model()
 
-class Like(APIView):
+class LikeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        
+        try:
+            playlist = Playlist.objects.get(id=request.data['playlist_id'])
+            like, created = Like.objects.get_or_create(playlist=playlist, user=user)
+        except ObjectDoesNotExist:
+            return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        if created:
+            return Response({"detail":"좋아요 성공했습니다."}, status=status.HTTP_201_CREATED)
+        else:
+            like.delete()
+            return Response({"detail":"좋아요가 취소되었습니다."}, status=status.HTTP_200_OK)
+
+
+class RecommentWrite(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         user = request.user
 
-        try:
-            playlist = Playlist.objects.get(id=request.data['playlist_id'])
-            like, created = Like_Model.objects.get_or_create(playlist=playlist, user=user)
-        except ObjectDoesNotExist:
-            raise Http404
+        data = {
+            "writer": user.id, 
+            "content": request.data['content'], 
+            "playlist": request.data['playlist_id'], 
+            "parent": request.data['parent_id']
+        }
 
-        if created:
-            return Response({"detail":"좋아요 성공했습니다."}, status=status.HTTP_201_CREATED)
+        serializer = CommentSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            datas = {
+                "detail" : "답글 생성 완료되었습니다.",
+            }
+            return Response(datas,status=status.HTTP_201_CREATED)
         else:
-            return Response({"detail":"이미 좋아요를 눌렀습니다."}, status=status.HTTP_400_BAD_REQUEST)
-
+            errors = serializer.errors
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class CommentWrite(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         user = request.user
-        playlist = Playlist.objects.get(id=request.data['playlist_id'])
-        comment = Comment.objects.create(writer=user, content=request.data['content'], playlist=playlist, parent=None)
-        datas = {
-            "message" : "댓글 생성 완료되었습니다.",
+
+        data = {
+            "writer": user.id, 
+            "content": request.data['content'], 
+            "playlist": request.data['playlist_id'], 
+            "parent": None
         }
-        return Response(datas,status=status.HTTP_201_CREATED)
-    
+
+        serializer = CommentSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            datas = {
+                "detail" : "댓글 생성 완료되었습니다.",
+            }
+            return Response(datas,status=status.HTTP_201_CREATED)
+        else:
+            errors = serializer.errors
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class CommentDelete(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):
         user = request.user
+
         try:
-            playlist = Playlist.objects.get(id=request.data['playlist_id'])
-            comment = Comment.objects.get(id=request.data['comment_id'], writer = user)
+            comment = Comment.objects.get(playlist=request.data['playlist_id'], id=request.data['comment_id'], writer=user)
         except ObjectDoesNotExist:
-            raise Http404
+            return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
+        
         # comment = Comment.objects.get(id=request.data['comment_id'])
-        playlist.is_active = False
-        comment.is_active = False
-        comment.delete()
+        
+        comment.is_active = False # 논리적 삭제
+        comment.save()
 
         datas = {
-            "message" : "댓글 삭제 완료되었습니다."
+            "detail" : "댓글 삭제 완료되었습니다."
         }
-        return Response(datas, status=status.HTTP_200_OK)
-
-
-# class CommentDelete(APIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def delete(self, request):
-#         user = request.user
-#         try:
-#             playlist = Playlist.objects.get(id=request.data['playlist_id'])
-#             comment = Comment.objects.get(id=request.data['comment_id'])
-#         except ObjectDoesNotExist:
-#             raise Http404
-
-#         if comment.writer != user:
-#             # 작성자와 현재 사용자가 다른 경우 권한 거부 예외를 발생시킴
-#             raise PermissionDenied("작성자만 댓글을 삭제할 수 있습니다.")
-
-#         playlist.is_active = False
-#         comment.is_active = False
-#         comment.delete()
-
-#         datas = {
-#             "message": "댓글 삭제 완료되었습니다."
-#         }
-#         return Response(datas, status=status.HTTP_200_OK)
+        return Response(datas, status=status.HTTP_200_OK)   
 
 
 class CommentEdit(APIView):
@@ -96,16 +112,19 @@ class CommentEdit(APIView):
 
     def put(self, request):
         user = request.user
-        # playlist = Playlist.comment.get(id=request.data['playlist_id'])
+
         try:
-            playlist = Playlist.objects.get(id=request.data['playlist_id'])
-            comment = Comment.objects.get(id=request.data['comment_id'], writer = user)
+            comment = Comment.objects.get(playlist=request.data['playlist_id'], id=request.data['comment_id'], writer=user)
         except ObjectDoesNotExist:
-            raise Http404
+            return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         
-        comment.content = request.data.get('content', comment.content)
+        comment.content = request.data['content']
         comment.save()
+        
         data = {
-            "message" : "댓글 수정 완료되었습니다."
+            "detail" : "댓글 수정 완료되었습니다."
         }
+        
         return Response(data, status=status.HTTP_200_OK)
+    
+
