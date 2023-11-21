@@ -37,6 +37,7 @@ class S3ImgUploader:
                 Bucket=os.environ.get("AWS_STORAGE_BUCKET_NAME"),
                 Key=str(self.file)  
             )
+            print(f'Successfully deleted to S3. URL : {self.file}')
             return True  
         except Exception as e:
             print("S3 이미지 삭제 실패:", str(e))

@@ -104,7 +104,8 @@ class Create(APIView):
                 return Response(musicserializer.errors)
         if created:
             playlist_instance.music.add(*music_list)
-        return Response(youtube_api)
+        return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
+
 # test count 27
 
 
@@ -138,4 +139,26 @@ class Delete(APIView):
         }
         return Response(data, status=status.HTTP_200_OK)
 
+
+class Update(APIView):
+    def put(self, request, pk):
+        pass
+
+
+class Add(APIView):
+    def put(self, request):
+        # pass
+        playlist = Playlist.objects.get(id=request.data['pli_id'])
+        # music_list = request.data['music']
+        music_list = list(map(int, request.data['music'].split(',')))
+        # 테스트1
+        # for music in music_list:
+        #     add_music = Music.objects.get(id=music)
+        #     add_music.save()
+        
+        add_music = playlist.music.add(*music_list)
+        
+        music_objects = playlist.music.all()
+        # print(music_objects)
+        return Response({"message":"음악 이동 성공하였습니다"}, status=status.HTTP_200_OK)
 

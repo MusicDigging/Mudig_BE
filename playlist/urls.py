@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import List, Delete, Detail, Create
+from .views import List, Delete, Detail, Create, Update, Add
 
 app_name = 'playlist'
 
@@ -10,9 +10,8 @@ urlpatterns = [
     path('detail/<int:pk>/', Detail.as_view() , name='detail'),
     path('create/', Create.as_view() , name='write'),
     path('delete/', Delete.as_view() , name='delete'),
-    # path('you/', YouTube.as_view(), name='youtube')
-    # path('edit/', Update.as_view() , name='edit'),
-    # path('add/', Add.as_view() , name='add'),
+    path('detail/<int:pk>/edit/', Update.as_view() , name='edit'),
+    path('add/', Add.as_view() , name='add'),
     # path('search/', Search.as_view() , name='search'),
     # path('like/', Like.as_view() , name='like'),
     # comment
