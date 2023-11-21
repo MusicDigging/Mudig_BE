@@ -67,7 +67,7 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: '
+        args: "
             ## CI 진행\n
             > **Commit : ${{ github.sha }}\n
 
@@ -75,7 +75,7 @@ jobs:
             > **Success** ✅\n
 
             ### ✍️ Commit message\n 
-            > ${{ github.event.commits[0].message }}'\n
+            > ${{ github.event.commits[0].message }}\n"
 
   # 배포 성공 메세지 발송
   build-Deploy-Success:
@@ -88,7 +88,7 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: '
+        args: "
           ## Deploy 진행\n
           > **Commit : ${{ github.sha }}\n
 
@@ -99,7 +99,7 @@ jobs:
           > ${{ github.event.commits[0].message }}\n
 
           ### 🫡 See changes\n
-          > https://github.com/${{ github.repository }}/commit/${{github.sha}}'\n
+          > https://github.com/${{ github.repository }}/commit/${{github.sha}}\n"
 
   # CI 실패 메세지 발송
   build-CI-failure:
@@ -112,18 +112,18 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: '
-          ## CI 진행  
-          > **Commit : ${{ github.sha }}**  
+        args: "
+          ## CI 진행\n
+          > **Commit : ${{ github.sha }}**\n
 
-          ### 📌 Status  
-          > **Failure** ⛔  
+          ### 📌 Status\n
+          > **Failure** ⛔\n
           
-          ### ✍️ Commit message  
-          > ${{ github.event.commits[0].message }}  
+          ### ✍️ Commit message\n
+          > ${{ github.event.commits[0].message }}\n
           
-          ### 👀 See Error Message  
-          > https://github.com/MusicDigging/Mudig_BE/actions'  
+          ### 👀 See Error Message\n
+          > https://github.com/MusicDigging/Mudig_BE/actions\n"  
 
   #배포 실패 메세지 발송
   build-Deploy-failure:
@@ -136,15 +136,15 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: '
-          ## Deploy 진행  
-          > **Commit : ${{ github.sha }}**  
+        args: "
+          ## Deploy 진행\n
+          > **Commit : ${{ github.sha }}**\n
 
-          ### 📌 Status  
-          > **Failure** ⛔  
+          ### 📌 Status\n
+          > **Failure** ⛔\n
 
-          ### ✍️ Commit message  
-          > ${{ github.event.commits[0].message }}  
+          ### ✍️ Commit message\n
+          > ${{ github.event.commits[0].message }}\n
 
-          ### 👀 See Error Message  
-          > https://github.com/MusicDigging/Mudig_BE/actions'  
+          ### 👀 See Error Message\n
+          > https://github.com/MusicDigging/Mudig_BE/actions\n"
