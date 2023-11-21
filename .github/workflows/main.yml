@@ -33,6 +33,7 @@ jobs:
     
     - name: CI Success
       if: success()
+      runs-on: ubuntu-latest
       steps:
       - name: Discord notification
         env:
@@ -46,6 +47,7 @@ jobs:
     
     - name: CI failure
       if: failure()
+      runs-on: ubuntu-latest
       steps:
       - name: Discord notification
         env:
