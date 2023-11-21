@@ -4,8 +4,6 @@ import uuid
 import os
 
 load_dotenv()
-print(os.environ.get("AWS_ACCESS_KEY_ID"))
-print(os.environ.get("AWS_SECRET_ACCESS_KEY"))
 class S3ImgUploader:
     def __init__(self, file):
         self.file = file
@@ -22,8 +20,7 @@ class S3ImgUploader:
             os.environ.get("AWS_STORAGE_BUCKET_NAME"), 
             url, 
             ExtraArgs={
-                # "ContentType": self.file.content_type
-                "ContentType": 'image/png' 
+                "ContentType": self.file.content_type
             }
         )
         print(f'Successfully uploaded to S3. URL: {url}')

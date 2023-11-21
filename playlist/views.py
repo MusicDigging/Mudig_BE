@@ -24,16 +24,19 @@ class List(APIView):
         # print(all_serializer.data)
         ## 내가 만든 플리 
         user = 'admin@admin.com'
+        # user = request.user
         user = User.objects.get(email = user).id
         # print(user.id)
         playlist_mine = Playlist.objects.filter(writer=user)
         mine_serializer = PlayListSerializer(playlist_mine, many=True)
         
-        ## 좋아요 많은 순
+        ## 나를 위한 추천
         
-        ## 핫한 플리
+        ## 핫한 플리(좋아요 많은 순)
+        
+        
         mudig_playlist = {
-            'playlist_all' : all_serializer.data,
+            'playlist_all' : all_serializer.data[:5],
             'my_playlist' : mine_serializer.data
         }
         
