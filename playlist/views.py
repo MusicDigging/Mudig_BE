@@ -53,19 +53,13 @@ class Create(APIView):
         user = User.objects.get(email = user)
         
         situatuons = request.data['situatuons']
-        feature = request.data['feature']
+        genre = request.data['genre']
         year = request.data['year']
-        response_data = get_music_recommendation(situatuons, feature, year)
+        response_data = get_music_recommendation(situatuons, genre, year)
         print('data', response_data)
         response_json = json.loads(response_data.replace("'", "\""))
+        response_json = response_json.replace("n\"t", "n\'t")
         print('json', response_json)
-        # try:
-        #     response_json = json.loads(response_data.replace("'", "\""))
-        #     # response_json = json.loads(response_data)
-        #     print('json', response_json)
-        # except json.decoder.JSONDecodeError as e:
-        #     print('Error decoding JSON:', str(e))
-        # print(response_json['playlist'])
         playlists = response_json['playlist']
         title = response_json['title']
         prompt = response_json['prompt']
@@ -80,36 +74,38 @@ class Create(APIView):
         music_list = []
         for playlist in playlists:
             print(playlist)
-            # song, singer = playlist.split(' - ')
             song, singer = map(str.strip, playlist.split(' - '))
-            if not Music.objects.filter(singer=singer, song=song).exists():
-                keyword = playlist
-                page = None
-                limit = 1
-                youtube_instance = YouTube(keyword, page, limit)
-                youtube_data = youtube_instance.youtube()
-                link_url = youtube_data['message'][0]['link_url']
-                thumbnail = youtube_data['message'][0]['image_url']
-                youtube_data = {
-                    'information' : link_url,
-                    'song' : song,
-                    'singer' : singer,
-                    'thumbnail' : thumbnail
-                }
-                musicserializer = MusicSerializer(data = youtube_data)
-                youtube_api.append(youtube_data)
-                if musicserializer.is_valid():
+            keyword = playlist
+            page = None
+            limit = 1
+            youtube_instance = YouTube(keyword, page, limit)
+            youtube_data = youtube_instance.youtube()
+            link_url = youtube_data['message'][0]['link_url']
+            thumbnail = youtube_data['message'][0]['image_url']
+            youtube_data = {
+                'information' : link_url,
+                'song' : song,
+                'singer' : singer,
+                'thumbnail' : thumbnail,
+                'genre': genre,
+            }
+            musicserializer = MusicSerializer(data = youtube_data)
+            youtube_api.append(youtube_data)
+            if musicserializer.is_valid():
+                if not Music.objects.filter(singer=singer, song=song).exists():
                     music_instance = musicserializer.save()
+                    print('if not Music.objects.filter(singer=singer, song=song).exists()',singer, song)
                     music_list.append(music_instance)
                 else:
-                    return Response(musicserializer.errors)
+                    exist_music = Music.objects.filter(singer=singer, song=song).first()
+                    music_list.append(exist_music)
+                    
             else:
-                continue
-        # print(youtube_api)
+                return Response(musicserializer.errors)
         if created:
             playlist_instance.music.add(*music_list)
         return Response(youtube_api)
-# test count 20
+# test count 27
 
 
 class Detail(APIView):
@@ -128,9 +124,12 @@ class Detail(APIView):
 
 
 class Delete(APIView):
-    def delete(self, reqeust, pk):
-        playlist = Playlist.objects.get(id=pk)
-        playlist.delete()
+    def delete(self, request):
+        playlist = Playlist.objects.get(id=request.data['playlist_id'])
+        print(playlist.thumbnail)
+        delete_img = S3ImgUploader(playlist.thumbnail)
+        delete_img.delete()
+        # playlist.delete()
         # playlist.is_active = False
         # playlist.save()
         data = {
@@ -138,3 +137,5 @@ class Delete(APIView):
             "playlist" : playlist.is_active
         }
         return Response(data, status=status.HTTP_200_OK)
+
+
