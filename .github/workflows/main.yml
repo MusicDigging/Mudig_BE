@@ -54,3 +54,38 @@ jobs:
             ls -al
             cd Mudig_BE/
             /home/ubuntu/publish/pull_repository.sh
+  # 빌드 성공 메세지 발송
+  build-success:
+    name: Send Build Success Message
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    uses: Ilshidur/action-discord@master
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    with:
+      format: markdown
+      message: |
+        Author: ${{github.actor}}
+        
+        Status: 😚 **Success**
+        
+        Commit message: ${{ github.event.commits[0].message }}
+        
+        [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) 
+
+  # 빌드 실패 메세지 발송
+  build-failure:
+    name: Send Build failure Message
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    uses: Ilshidur/action-discord@master
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    with:
+      format: markdown
+      message: |
+        Author: ${{github.actor}}
+        
+        Status: 😱 **Failure**
+        
+        Commit message: ${{ github.event.commits[0].message }}
+        
+        [link](https://github.com/${{ github.repository }}/actions)
