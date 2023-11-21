@@ -15,7 +15,7 @@ class Music(models.Model):
 class Playlist(models.Model):
     writer = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, null=True, blank=True)
-    thumbnail = models.FileField(null=True, blank=True)
+    thumbnail = models.CharField(max_length=200, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

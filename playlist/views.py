@@ -9,6 +9,7 @@ from .serializers import MusicSerializer, PlayListSerializer
 from .youtube import YouTube
 from .karlo import t2i
 from .gpt import get_music_recommendation
+from .playlist_util import PlaylistAdder, PlaylistOrderUpdater, PlaylistRemover
 import os
 import requests
 import json
@@ -112,12 +113,15 @@ class Create(APIView):
 class Detail(APIView):
     def get(self, request, pk):
         playlist_choice = Playlist.objects.get(id=pk)
+        thumbnail = playlist_choice.thumbnail
         # profile = User.objects.get(email=playlist_choice.writer)
         music_objects = playlist_choice.music.all()
         music_serializer = MusicSerializer(music_objects, many=True)
         # user_serializer = UserSerializer(User)
         data = {
+            'playlist_img' : thumbnail,
             'music': music_serializer.data,
+            # 'playlist': playlist_choice.
             # 'profile' :profile
         }
         return Response(data, status=status.HTTP_200_OK)
@@ -142,7 +146,27 @@ class Delete(APIView):
 
 class Update(APIView):
     def put(self, request, pk):
-        pass
+        choice_playlist = Playlist.objects.get(id=pk)
+        ## del music
+        del_music_list_str = request.data.get('del_music_list', '')
+        # if del_music_list:
+        ## 언제든지 수정가능
+        del_music_list = [int(item) for item in del_music_list_str.split(',') if item]
+        remove = PlaylistRemover()
+        remove.remove_music(choice_playlist, del_music_list)
+        ## add music
+        add_music_list_str = request.data.get('add_music_list', '')
+        add_music_list = [int(item) for item in add_music_list_str.split(',') if item]
+        add = PlaylistAdder()
+        add.add_music(choice_playlist, add_music_list)
+        ## order music
+        data = {
+            'message' : '수정완료'
+        }
+        print(del_music_list)
+        print('qweqwewq')
+        # print(request.data.get('del_music_list'))
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class Add(APIView):
@@ -162,3 +186,8 @@ class Add(APIView):
         # print(music_objects)
         return Response({"message":"음악 이동 성공하였습니다"}, status=status.HTTP_200_OK)
 
+
+## 내 플리 리스트 클래스
+class MyPlaylist(APIView):
+    def get(self, request):
+        pass
