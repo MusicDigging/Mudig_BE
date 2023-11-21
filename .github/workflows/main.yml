@@ -30,6 +30,36 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+    
+    - name: CI Success
+      if: success()
+      steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: '            
+            ✅ Status: 😚 **CI Success**
+            
+            ✍️ Commit message: ${{ github.event.commits[0].message }}'
+    
+    - name: CI failure
+      if: failure()
+      steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: '          
+            ✅ Status: 😭 **CI failure**
+            
+            ✍️ Commit message: ${{ github.event.commits[0].message }}
+            
+            ⛔ Error message : ${{ job.outcome }}'
+
+
 
   # This workflow contains a single job called "build"
   build:
@@ -56,76 +86,78 @@ jobs:
             cd Mudig_BE/
             /home/ubuntu/publish/pull_repository.sh
 
-  # CI 성공 메세지 발송
-  build-CI-Success:
-    needs: CI
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-    - name: Discord notification
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'Author: ${{github.actor}}
+  # # CI 성공 메세지 발송
+  # build-CI-Success:
+  #   needs: CI
+  #   runs-on: ubuntu-latest
+  #   if: success()
+  #   steps:
+  #   - name: Discord notification
+  #     env:
+  #       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #     uses: Ilshidur/action-discord@master
+  #     with:
+  #       args: 'Author: ${{github.actor}}
           
-          Status: 😚 **CI Success**
+  #         Status: 😚 **CI Success**
           
-          Commit message: ${{ github.event.commits[0].message }}'
+  #         Commit message: ${{ github.event.commits[0].message }}'
 
-  # 배포 성공 메세지 발송
-  build-Deploy-Success:
-    needs: build
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-    - name: Discord notification
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'Author: ${{github.actor}}
+  # # 배포 성공 메세지 발송
+  # build-Deploy-Success:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   if: success()
+  #   steps:
+  #   - name: Discord notification
+  #     env:
+  #       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #     uses: Ilshidur/action-discord@master
+  #     with:
+  #       args: 'Author: ${{github.actor}}
           
-          Status: 😚 **Deploy Success**
+  #         Status: 😚 **Deploy Success**
           
-          Commit message: ${{ github.event.commits[0].message }}
+  #         Commit message: ${{ github.event.commits[0].message }}
           
-          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
+  #         [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
 
-  # CI 실패 메세지 발송
-  build-CI-failure:
-    needs: CI
-    runs-on: ubuntu-latest
-    if: failure()
-    steps:
-    - name: Discord notification
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'Author: ${{github.actor}}
+  # # CI 실패 메세지 발송
+  # build-CI-failure:
+  #   needs: CI
+  #   runs-on: ubuntu-latest
+  #   if: failure()
+  #   steps:
+  #   - name: Discord notification
+  #     env:
+  #       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #     uses: Ilshidur/action-discord@master
+  #     with:
+  #       args: 'Author: ${{github.actor}}
           
-          Status: 😭 **CI failure**
+  #         Status: 😭 **CI failure**
           
-          Commit message: ${{ github.event.commits[0].message }}
+  #         Commit message: ${{ github.event.commits[0].message }}
           
-          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
+  #         outcome : ${{ job.outcome }}
+
+  #         [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
 
   # 배포 실패 메세지 발송
-  build-Deploy-failure:
-    needs: build
-    runs-on: ubuntu-latest
-    if: failure()
-    steps:
-    - name: Discord notification
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'Author: ${{github.actor}}
+  # build-Deploy-failure:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   if: failure()
+  #   steps:
+  #   - name: Discord notification
+  #     env:
+  #       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #     uses: Ilshidur/action-discord@master
+  #     with:
+  #       args: 'Author: ${{github.actor}}
           
-          Status: 😭 **Deploy failure**
+  #         Status: 😭 **Deploy failure**
           
-          Commit message: ${{ github.event.commits[0].message }}
+  #         Commit message: ${{ github.event.commits[0].message }}
           
-          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
+  #         [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
