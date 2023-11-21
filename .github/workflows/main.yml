@@ -55,41 +55,59 @@ jobs:
             cd Mudig_BE/
             /home/ubuntu/publish/pull_repository.sh
   # 빌드 성공 메세지 발송
+  # build-success:
+  #   name: Send Build Success Message
+  #   env:
+  #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #   runs-on: ubuntu-latest
+  #   if: success()
+  #   steps:
+  #   - uses: Ilshidur/action-discord@master
+  #   - with:
+  #       format: markdown
+  #       message: |
+  #         Author: ${{github.actor}}
+          
+  #         Status: 😚 **Success**
+          
+  #         Commit message: ${{ github.event.commits[0].message }}
+          
+  #         [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) 
+
+  # 빌드 실패 메세지 발송
+  # build-failure:
+  #   name: Send Build failure Message
+  #   env:
+  #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  #   runs-on: ubuntu-latest
+  #   if: failure()
+  #   steps:
+  #   - uses: Ilshidur/action-discord@master
+  #   - with:
+  #       args: |
+  #         Author: ${{github.actor}}
+          
+  #         Status: 😱 **Failure**
+          
+  #         Commit message: ${{ github.event.commits[0].message }}
+          
+  #         [link](https://github.com/${{ github.repository }}/actions)
+  
+  # 빌드 성공 메세지 발송
   build-success:
-    name: Send Build Success Message
-    env:
-      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+
     runs-on: ubuntu-latest
-    if: success()
+
     steps:
-    - uses: Ilshidur/action-discord@master
-    - with:
-        format: markdown
-        message: |
-          Author: ${{github.actor}}
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Author: ${{github.actor}}
           
           Status: 😚 **Success**
           
           Commit message: ${{ github.event.commits[0].message }}
           
-          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) 
-
-  # 빌드 실패 메세지 발송
-  build-failure:
-    name: Send Build failure Message
-    env:
-      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-    runs-on: ubuntu-latest
-    if: failure()
-    steps:
-    - uses: Ilshidur/action-discord@master
-    - with:
-        format: markdown
-        message: |
-          Author: ${{github.actor}}
-          
-          Status: 😱 **Failure**
-          
-          Commit message: ${{ github.event.commits[0].message }}
-          
-          [link](https://github.com/${{ github.repository }}/actions)
+          [See changes](https://github.com/${{ github.repository }}/commit/${{github.sha}}) '
