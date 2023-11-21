@@ -68,14 +68,14 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: '
-            ## CI 진행  
-            > **Commit : ${{ github.sha }}  
+            ## CI 진행\n
+            > **Commit : ${{ github.sha }}\n
 
-            ### 📌 Status  
-            > **Success** ✅  
+            ### 📌 Status\n 
+            > **Success** ✅\n
 
-            ### ✍️ Commit message  
-            > ${{ github.event.commits[0].message }}'  
+            ### ✍️ Commit message\n 
+            > ${{ github.event.commits[0].message }}'\n
 
   # 배포 성공 메세지 발송
   build-Deploy-Success:
@@ -89,17 +89,17 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: '
-          ## Deploy 진행  
-          > **Commit : ${{ github.sha }}  
+          ## Deploy 진행\n
+          > **Commit : ${{ github.sha }}\n
 
-          ### 📌 Status  
-          > **Success** ✅  
+          ### 📌 Status\n
+          > **Success** ✅\n
 
-          ### ✍️ Commit message  
-          > ${{ github.event.commits[0].message }}  
+          ### ✍️ Commit message\n
+          > ${{ github.event.commits[0].message }}\n
 
-          ### 🫡 See changes  
-          > https://github.com/${{ github.repository }}/commit/${{github.sha}}'  
+          ### 🫡 See changes\n
+          > https://github.com/${{ github.repository }}/commit/${{github.sha}}'\n
 
   # CI 실패 메세지 발송
   build-CI-failure:
