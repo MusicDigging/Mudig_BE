@@ -68,14 +68,14 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: '
-            ## CI 진행
-            > **Commit : ${{ github.sha }}
+            ## CI 진행  
+            > **Commit : ${{ github.sha }}  
 
-            ### 📌 Status
-            > **Success** ✅
-            
-            ### ✍️ Commit message
-            > ${{ github.event.commits[0].message }}'
+            ### 📌 Status  
+            > **Success** ✅  
+
+            ### ✍️ Commit message  
+            > ${{ github.event.commits[0].message }}'  
 
   # 배포 성공 메세지 발송
   build-Deploy-Success:
@@ -89,17 +89,17 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: '
-          ## Deploy 진행
-          > **Commit : ${{ github.sha }}
+          ## Deploy 진행  
+          > **Commit : ${{ github.sha }}  
 
-          ### 📌 Status
-          > **Success** ✅
-          
-          ### ✍️ Commit message
-          > ${{ github.event.commits[0].message }}
-            
-          ### 🫡 See changes
-          > https://github.com/${{ github.repository }}/commit/${{github.sha}}'
+          ### 📌 Status  
+          > **Success** ✅  
+
+          ### ✍️ Commit message  
+          > ${{ github.event.commits[0].message }}  
+
+          ### 🫡 See changes  
+          > https://github.com/${{ github.repository }}/commit/${{github.sha}}'  
 
   # CI 실패 메세지 발송
   build-CI-failure:
@@ -113,17 +113,17 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: '
-          ## CI 진행
-          > **Commit : ${{ github.sha }}**
+          ## CI 진행  
+          > **Commit : ${{ github.sha }}**  
 
-          ### 📌 Status
-          > **Failure** ⛔
-            
-          ### ✍️ Commit message
-          > ${{ github.event.commits[0].message }}          
+          ### 📌 Status  
+          > **Failure** ⛔  
           
-          ### 👀 See Error Message
-          > https://github.com/MusicDigging/Mudig_BE/actions'
+          ### ✍️ Commit message  
+          > ${{ github.event.commits[0].message }}  
+          
+          ### 👀 See Error Message  
+          > https://github.com/MusicDigging/Mudig_BE/actions'  
 
   #배포 실패 메세지 발송
   build-Deploy-failure:
@@ -137,14 +137,14 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: '
-          ## Deploy 진행
-          > **Commit : ${{ github.sha }}**
+          ## Deploy 진행  
+          > **Commit : ${{ github.sha }}**  
 
-          ### 📌 Status
-          > **Failure** ⛔
-            
-          ### ✍️ Commit message
-          > ${{ github.event.commits[0].message }}          
-          
-          ### 👀 See Error Message
-          > https://github.com/MusicDigging/Mudig_BE/actions'
+          ### 📌 Status  
+          > **Failure** ⛔  
+
+          ### ✍️ Commit message  
+          > ${{ github.event.commits[0].message }}  
+
+          ### 👀 See Error Message  
+          > https://github.com/MusicDigging/Mudig_BE/actions'  
