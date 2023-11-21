@@ -35,7 +35,6 @@ jobs:
   deploy:
     needs: CI
     name: Deploy
-    id: deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     
@@ -113,7 +112,7 @@ jobs:
   build-Deploy-failure:
     needs: deploy
     runs-on: ubuntu-latest
-    if: ${{ steps.deploy.outcome }} == 'failure'
+    if: ${{ needs.deploy.outputs['result'] == 'failure' }}
     steps:
     - name: Discord notification
       env:
