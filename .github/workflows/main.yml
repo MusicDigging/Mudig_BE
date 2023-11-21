@@ -69,6 +69,7 @@ jobs:
       with:
         args: '
             ## CI 진행
+            > **Commit : ${{ github.sha }}
 
             ### 📌 Status
             > **Success** ✅
@@ -89,6 +90,7 @@ jobs:
       with:
         args: '
           ## Deploy 진행
+          > **Commit : ${{ github.sha }}
 
           ### 📌 Status
           > **Success** ✅
@@ -110,12 +112,18 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: '          
-          ⛔ Status: 😭 **CI failure**
+        args: '
+          ## CI 진행
+          > **Commit : ${{ github.sha }}**
+
+          ### 📌 Status
+          > **Failure** ⛔
+            
+          ### ✍️ Commit message
+          > ${{ github.event.commits[0].message }}          
           
-          ✍️ Commit message: ${{ github.event.commits[0].message }}
-          
-          [🫡 See Error Message](https://github.com/MusicDigging/Mudig_BE/actions)'
+          ### 👀 See Error Message
+          > https://github.com/MusicDigging/Mudig_BE/actions'
 
   #배포 실패 메세지 발송
   build-Deploy-failure:
@@ -129,8 +137,14 @@ jobs:
       uses: Ilshidur/action-discord@master
       with:
         args: '
-          ⛔ Status: 😭 **Deploy failure**
+          ## Deploy 진행
+          > **Commit : ${{ github.sha }}**
+
+          ### 📌 Status
+          > **Failure** ⛔
+            
+          ### ✍️ Commit message
+          > ${{ github.event.commits[0].message }}          
           
-          ✍️ Commit message: ${{ github.event.commits[0].message }}
-          
-          [🫡 See Error Message](https://github.com/MusicDigging/Mudig_BE/actions)'
+          ### 👀 See Error Message
+          > https://github.com/MusicDigging/Mudig_BE/actions'
