@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Join, SocialJoin, Login, GenerateOtp, Logout, ChangePassWord, Withdrawal, GoogleLogin, GoogleCallback, CheckName
+from .views import Join, SocialJoin, Login, GenerateOtp, Logout, ChangePassWord, Withdrawal, GoogleLogin, GoogleCallback, CheckName, KakaoLogin, KakaoCallback
 from rest_framework_simplejwt.views import TokenRefreshView
 
 app_name = 'user'
@@ -14,6 +14,9 @@ urlpatterns = [
     path("withdrawal/", Withdrawal.as_view(), name='withdrawal'),
     path("login/google/", GoogleLogin.as_view(), name='google-login'),
     path("login/google/callback/", GoogleCallback.as_view(), name='google-callback'),
+    path("checkname/", CheckName.as_view(), name='check-name'),
+    path("login/kakao/", KakaoLogin.as_view(), name='kakao-login'),
+    path("login/kakao/callback/", KakaoCallback.as_view(), name='kakao-callback'),
     path("checkname/", CheckName.as_view(), name='check-name'),
     # path("profile/", Profile.as_view(), name='profile'),
     # path("profile/edit/", ProfileUpdate.as_view(), name='pf-edit'),

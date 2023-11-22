@@ -43,7 +43,7 @@ class Join(APIView):
             user = serializer.save()
 
             profile = Profile.objects.get(user=user)
-                            
+            
             try:
                 image = request.FILES['image']
             except:
@@ -271,3 +271,71 @@ class GoogleCallback(APIView):
                 "email": email,
             }
             return Response(data=response, status=status.HTTP_200_OK)
+
+
+class KakaoLogin(APIView):
+    def post(self, request):
+        data = {
+            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${CALLBACK_URI}"
+        }
+        return Response(data)
+
+
+class KakaoCallback(APIView):
+    def post(self, request):
+        code = request.data['code']
+
+        # body에 해당 값을 포함시켜서 보내는 부분입니다.
+        request_data = {
+            'grant_type': 'authorization_code',
+            'client_id': KAKAO_REST_API_KEY,
+            'redirect_uri': CALLBACK_URI,
+            'code': code,
+        }
+        # header에 content-type을 지정해주는 부분입니다.
+        token_headers = {
+            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        }
+        token_res = requests.post("https://kauth.kakao.com/oauth/token", data=request_data, headers=token_headers)
+        
+        token_json = token_res.json()
+        access_token = token_json.get('access_token')
+        
+        if not access_token:
+            return Response({'err_msg': 'This AccessToken Doses Not Exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # kakao 회원정보 요청하는 부분입니다. 헤더에 추가해주는 부분이 구글과는 달라서 주석 달아드려요
+        auth_headers = {
+            "Authorization": access_token,
+            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        }
+        user_info_res = requests.get("https://kapi.kakao.com/v2/user/me", headers=auth_headers)
+        user_info_json = user_info_res.json()
+
+        kakao_account = user_info_json.get('kakao_account')
+        if not kakao_account:
+            return Response({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        email = kakao_account.get('email')
+        
+        try:
+            user = User.objects.get(email=email)
+            token = create_jwt_pair_for_user(user)
+            serializer = UserSerializer(user)
+            follower = Follower.objects.filter(follower_id=user).values()
+            notify = Notification.objects.filter(receiver=user,is_read=False).values()
+            response = {
+                "message": "로그인 성공",
+                "token": token,
+                "user_info": serializer.data,
+                "follower": follower,
+                "notify": notify,
+            }
+            return Response(data=response, status=status.HTTP_200_OK)
+
+        except User.DoesNotExist:
+            response = {
+                "message": "프로필 생성 진행",
+                "email": email,
+            }
+            return Response(data=response, status=status.HTTP_201_CREATED)
