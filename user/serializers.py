@@ -45,9 +45,9 @@ class UserFollowSerializer(serializers.ModelSerializer):
         fields = ['id', 'profile_image', 'nickname', 'is_following']
 
     def get_is_following(self, obj):
-        # 현재 요청을 보낸 사용자를 확인
-        request_user = self.context['request'].user
-        return Follower.objects.filter(follower_id=request_user, target_id=obj).exists()
+        # Test User id
+        test_user_id = 2
+        return Follower.objects.filter(follower_id=test_user_id, target_id=obj).exists()
 
 
 class PlaylistSerializer(serializers.ModelSerializer):

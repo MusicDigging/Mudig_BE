@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Profile, User, Follower
-from .serializers import ProfileSerializer, UserSerializer
+from .serializers import ProfileSerializer, UserFollowSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from django.http import Http404
@@ -28,7 +28,7 @@ class ProfileEditView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def put(self, request):
-        user = User.objects.get(id=2)  # test
+        user = User.objects.get(id=2)  # Test User ID
         profile = get_object_or_404(Profile, user=user)
         serializer = ProfileSerializer(profile, data=request.data)
 
@@ -48,7 +48,7 @@ class ProfileEditView(APIView):
 class FollowAPIView(APIView):
     def post(self, request, user_id):
         target_user = get_object_or_404(User, pk=user_id)
-        follower_user = User.objects.get(pk=2)  # test
+        follower_user = User.objects.get(pk=3)  # Test User ID
 
         if follower_user == target_user:
             return Response({"error": "자기 자신을 팔로우할 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
@@ -62,7 +62,7 @@ class FollowAPIView(APIView):
 class UnfollowAPIView(APIView):
     def delete(self, request, user_id):
         target_user = get_object_or_404(User, pk=user_id)
-        follower_user = User.objects.get(pk=2)  # test
+        follower_user = User.objects.get(pk=3)  # Test User ID
         follow_relation = get_object_or_404(Follower, target_id=target_user, follower_id=follower_user)
         follow_relation.delete()
         return Response({"status": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
@@ -70,18 +70,17 @@ class UnfollowAPIView(APIView):
 
 class FollowersListView(APIView):
     def get(self, request, user_id):
-        user = get_object_or_404(User, pk=user_id)
-        followers = [follower.follower_id for follower in user.followers.all()]
+        test_user = get_object_or_404(User, pk=3) # Test User ID
+        followers = [follower.follower_id for follower in test_user.followers.all()]
 
-        serializer = UserSerializer(followers, many=True)
+        serializer = UserFollowSerializer(followers, many=True, context={'request': request})
         return Response(serializer.data)
 
 
 class FollowingListView(APIView):
     def get(self, request, user_id):
-        user = get_object_or_404(User, pk=user_id)
-        following = [follow.target_id for follow in user.following.all()]
+        test_user = get_object_or_404(User, pk=3) # Test User ID
+        following = [follow.target_id for follow in test_user.following.all()]
 
-        serializer = UserSerializer(following, many=True)
+        serializer = UserFollowSerializer(following, many=True, context={'request': request})
         return Response(serializer.data)
-
