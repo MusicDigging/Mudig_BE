@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RandomMovieView
+from .views import RandomMovieView, EventPlaylistGenerate
 
 app_name = 'playlist'
 
@@ -18,5 +18,6 @@ urlpatterns = [
     # path('comment/write/', CommentWrite.as_view() , name='cm-write'),
     # path('comment/edit/', CommentEdit.as_view() , name='cm-edit'),
     # path('comment/delete/', CommentDelete.as_view() , name='cm-delete'),
-    path('random-mv/', RandomMovieView.as_view() , name='random-mv')
+    path('random-mv/', RandomMovieView.as_view() , name='random-mv'),
+    path('event/', EventPlaylistGenerate.as_view() , name='event'),
 ]

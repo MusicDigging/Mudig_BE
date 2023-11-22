@@ -35,10 +35,6 @@ urlpatterns = [
     path("api/json/", login_required(SpectacularJSONAPIView.as_view()), name="schema-json"),
     path("api/yaml/", login_required(SpectacularYAMLAPIView.as_view()), name="swagger-yaml"),
     # Open API Document UI로 조회: Swagger, Redoc
-    # admin 계정만 접속 및 확인이 가능하도록 변경 필요
-    # path("api/swagger/", login_required(SpectacularSwaggerView.as_view(url_name="schema-json")), name="swagger-ui",),
-    # path("api/redoc/", login_required(SpectacularRedocView.as_view(url_name="schema-json")), name="redoc-ui",),
-
     path("api/swagger/", login_required(SpectacularSwaggerView.as_view(url_name="schema-json")), name="swagger-ui",),
     path("api/redoc/", login_required(SpectacularRedocView.as_view(url_name="schema-json")), name="redoc-ui",),
 ] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
