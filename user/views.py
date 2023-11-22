@@ -35,7 +35,16 @@ class Join(APIView):
             profile = Profile.objects.get(user=user)
             name = request.data.get('name')
             if Profile.objects.filter(name=name).exists():
+                user.delete()
                 return Response({"error":"이미 사용 중인 닉네임 입니다."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            try:
+                image = request.FILES['image']
+            except:
+                is_image = False
+            else:
+                is_image = True
+    
 
             profile_data = {
                 "user": user.id,
@@ -44,28 +53,20 @@ class Join(APIView):
                 "genre": request.data.get('genre')
             }
             
-            try:
-                image = request.FILES['image']
-            except:
-                is_image = False
-            else:
-                is_image = True
-                
-
             if is_image:
                 img_uploader = S3ImgUploader(image)
                 uploaded_url = img_uploader.upload('profile')
                 profile_data['image'] = uploaded_url
-
-            pf_serializer = ProfileSerializer(data=profile_data)
+            
+            pf_serializer = ProfileSerializer(profile, profile_data)
 
             if pf_serializer.is_valid():
                 pf_serializer.save()
             else:
-                return Response(pf_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+                return Response(pf_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
             message = {
-                "message" : "Register success",
+                "message" : "Register success"
             }
 
             return Response(message, status=status.HTTP_200_OK)
@@ -86,14 +87,9 @@ class SocialJoin(APIView):
             profile = Profile.objects.get(user=user)
             name = request.data.get('name')
             if Profile.objects.filter(name=name).exists():
+                user.delete()
                 return Response({"error":"이미 사용 중인 닉네임 입니다."}, status=status.HTTP_400_BAD_REQUEST)
             
-            profile_data = {
-                "user": user.id,
-                "name": name,
-                "about": request.data.get('about'),
-                "genre": request.data.get('genre')
-            }
             try:
                 image = request.FILES['image']
             except:
@@ -101,13 +97,19 @@ class SocialJoin(APIView):
             else:
                 is_image = True
                 
+            profile_data = {
+                "user": user.id,
+                "name": name,
+                "about": request.data.get('about'),
+                "genre": request.data.get('genre')
+            }
 
             if is_image:
                 img_uploader = S3ImgUploader(image)
                 uploaded_url = img_uploader.upload('profile')
                 profile_data['image'] = uploaded_url
 
-            pf_serializer = ProfileSerializer(data=profile_data)
+            pf_serializer = ProfileSerializer(profile, profile_data)
 
             if pf_serializer.is_valid():
                 pf_serializer.save()
@@ -120,7 +122,6 @@ class SocialJoin(APIView):
             }
 
             return Response(message, status=status.HTTP_200_OK)
-    
 
 
 class GenerateOtp(APIView):
