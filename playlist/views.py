@@ -59,30 +59,30 @@ class Create(APIView):
         genre = request.data['genre']
         year = request.data['year']
         response_data = get_music_recommendation(situatuons, genre, year)
-        print('data', response_data)
+        # print('data', response_data)
         response_json = response_data.replace("'", "\"")
-        print('json', response_json)
+        # print('json', response_json)
         try:
             response_json = json.loads(response_json.replace("n\"t", "n\'t"))
         except json.decoder.JSONDecodeError:
             response_json = json.loads(response_json)
-        print('json', response_json)
+        # print('json', response_json)
         playlists = response_json['playlist']
         title = response_json['title']
         prompt = response_json['prompt']
+        
         karlo = t2i(prompt)
-        playlists = playlists.split(',')
+        # playlists = playlists.split(',')
         # print('playlists', playlists)
         youtube_api = []
         # music_list = Music.objects.all()
         
         playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo)
-        print(playlist_instance, created)
         music_list = []
         for playlist in playlists:
-            print(playlist)
-            song, singer = map(str.strip, playlist.split(' - '))
-            keyword = playlist
+            # song, singer = map(str.strip, playlist.split(' - '))
+            song, singer = playlist['song'], playlist['singer']
+            keyword = f'{song} - {singer}'
             page = None
             limit = 1
             youtube_instance = YouTube(keyword, page, limit)
@@ -101,7 +101,6 @@ class Create(APIView):
             if musicserializer.is_valid():
                 if not Music.objects.filter(singer=singer, song=song).exists():
                     music_instance = musicserializer.save()
-                    print('if not Music.objects.filter(singer=singer, song=song).exists()',singer, song)
                     music_list.append(music_instance)
                 else:
                     exist_music = Music.objects.filter(singer=singer, song=song).first()
@@ -117,6 +116,7 @@ class Create(APIView):
         if created:
             playlist_instance.music.add(*music_list)
             playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
+            # print(youtube_api)
         return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
 
 # test count 27
@@ -167,6 +167,7 @@ class Update(APIView):
         choice_playlist = Playlist.objects.get(id=pk)
         ## del music
         del_music_list_str = request.data.get('del_music_list', '')
+        print(del_music_list_str)
         ## 언제든지 수정가능
         del_music_list = [int(item) for item in del_music_list_str.split(',') if item]
         if del_music_list:
@@ -182,9 +183,9 @@ class Update(APIView):
         
         ## move order
         move_music_list_str = request.data.get('move_music', '')
-        
-        move_music_list = json.loads(move_music_list_str)
-        if move_music_list:
+        print('move_music_list_str', move_music_list_str)
+        if move_music_list_str:
+            move_music_list = json.loads(move_music_list_str)
             move = PlaylistOrderUpdater()
             move.update_order(choice_playlist, move_music_list)
             
