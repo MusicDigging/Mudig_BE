@@ -19,9 +19,19 @@ import requests
 dotenv.load_dotenv()
 
 
+class CheckName(APIView):
+    def post(self, request):
+        name = request.data.get('name')
+        
+        if Profile.objects.filter(name=name).exists():
+            return Response({"error":"이미 사용 중인 닉네임 입니다."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"message":"사용 가능한 닉네임입니다."}, status=status.HTTP_200_OK)
+
+
 class Join(APIView):
     def post(self, request):
-
+        
         user_data = {
             "email": request.data.get('email'),
             "password": request.data.get('password')
@@ -33,11 +43,7 @@ class Join(APIView):
             user = serializer.save()
 
             profile = Profile.objects.get(user=user)
-            name = request.data.get('name')
-            if Profile.objects.filter(name=name).exists():
-                user.delete()
-                return Response({"error":"이미 사용 중인 닉네임 입니다."}, status=status.HTTP_400_BAD_REQUEST)
-            
+                            
             try:
                 image = request.FILES['image']
             except:
@@ -45,13 +51,12 @@ class Join(APIView):
             else:
                 is_image = True
     
-
-            profile_data = {
-                "user": user.id,
-                "name": name,
-                "about": request.data.get('about'),
-                "genre": request.data.get('genre')
-            }
+                profile_data = {
+                    "user": user.id,
+                    "name": request.data.get('name'),
+                    "about": request.data.get('about'),
+                    "genre": request.data.get('genre')
+                }
             
             if is_image:
                 img_uploader = S3ImgUploader(image)
@@ -85,10 +90,6 @@ class SocialJoin(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             profile = Profile.objects.get(user=user)
-            name = request.data.get('name')
-            if Profile.objects.filter(name=name).exists():
-                user.delete()
-                return Response({"error":"이미 사용 중인 닉네임 입니다."}, status=status.HTTP_400_BAD_REQUEST)
             
             try:
                 image = request.FILES['image']
@@ -99,7 +100,7 @@ class SocialJoin(APIView):
                 
             profile_data = {
                 "user": user.id,
-                "name": name,
+                "name": request.data.get('name'),
                 "about": request.data.get('about'),
                 "genre": request.data.get('genre')
             }
@@ -212,16 +213,17 @@ class Withdrawal(APIView):
         return Response({"message": "회원탈퇴 되었습니다."}, status=status.HTTP_200_OK)
 
 
-GOOGLE_CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
+CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
+KAKAO_REST_API_KEY = 'kakao_restapi_key'
 STATE = os.environ['STATE']
 
 
 class GoogleLogin(APIView):
     def post(self, request):
         data = {
-            'url': f"https://accounts.google.com/o/oauth2/v2/auth?client_id={GOOGLE_CLIENT_ID}&response_type=code&redirect_uri={GOOGLE_CALLBACK_URI}&scope=https://www.googleapis.com/auth/userinfo.email"
+            'url': f"https://accounts.google.com/o/oauth2/v2/auth?client_id={GOOGLE_CLIENT_ID}&response_type=code&redirect_uri={CALLBACK_URI}&scope=https://www.googleapis.com/auth/userinfo.email"
         }
         return Response(data)
 
@@ -230,7 +232,7 @@ class GoogleCallback(APIView):
     def post(self, request):
         code = request.data['code']
 
-        token_req = requests.post(f"https://oauth2.googleapis.com/token?client_id={GOOGLE_CLIENT_ID}&client_secret={GOOGLE_SECRET_KEY}&code={code}&grant_type=authorization_code&redirect_uri={GOOGLE_CALLBACK_URI}&state={STATE}")
+        token_req = requests.post(f"https://oauth2.googleapis.com/token?client_id={GOOGLE_CLIENT_ID}&client_secret={GOOGLE_SECRET_KEY}&code={code}&grant_type=authorization_code&redirect_uri={CALLBACK_URI}&state={STATE}")
 
         token_req_json = token_req.json()
         error = token_req_json.get("error")
