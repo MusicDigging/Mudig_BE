@@ -33,7 +33,17 @@ class Join(APIView):
             user = serializer.save()
 
             profile = Profile.objects.get(user=user)
+            name = request.data.get('name')
+            if Profile.objects.filter(name=name).exists():
+                return Response({"error":"이미 사용 중인 닉네임 입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+            profile_data = {
+                "user": user.id,
+                "name": name,
+                "about": request.data.get('about'),
+                "genre": request.data.get('genre')
+            }
+            
             try:
                 image = request.FILES['image']
             except:
@@ -41,19 +51,13 @@ class Join(APIView):
             else:
                 is_image = True
                 
-            profile_data = {
-                "user": user.id,
-                "name": request.data.get('name'),
-                "about": request.data.get('about'),
-                "genre": request.data.get('genre')
-            }
 
             if is_image:
                 img_uploader = S3ImgUploader(image)
                 uploaded_url = img_uploader.upload('profile')
                 profile_data['image'] = uploaded_url
 
-            pf_serializer = ProfileSerializer(profile,profile_data)
+            pf_serializer = ProfileSerializer(data=profile_data)
 
             if pf_serializer.is_valid():
                 pf_serializer.save()
@@ -77,13 +81,19 @@ class SocialJoin(APIView):
             user.set_unusable_password()
             user.save()
         except Exception as e:
-            data = {
-                'error': e
-            }
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             profile = Profile.objects.get(user=user)
-
+            name = request.data.get('name')
+            if Profile.objects.filter(name=name).exists():
+                return Response({"error":"이미 사용 중인 닉네임 입니다."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            profile_data = {
+                "user": user.id,
+                "name": name,
+                "about": request.data.get('about'),
+                "genre": request.data.get('genre')
+            }
             try:
                 image = request.FILES['image']
             except:
@@ -91,19 +101,13 @@ class SocialJoin(APIView):
             else:
                 is_image = True
                 
-            profile_data = {
-                "user": user.id,
-                "name": request.data.get('name'),
-                "about": request.data.get('about'),
-                "genre": request.data.get('genre')
-            }
 
             if is_image:
                 img_uploader = S3ImgUploader(image)
                 uploaded_url = img_uploader.upload('profile')
                 profile_data['image'] = uploaded_url
 
-            pf_serializer = ProfileSerializer(profile,profile_data)
+            pf_serializer = ProfileSerializer(data=profile_data)
 
             if pf_serializer.is_valid():
                 pf_serializer.save()
@@ -112,6 +116,7 @@ class SocialJoin(APIView):
 
             message = {
                 "message" : "Register success",
+                "profile" : pf_serializer.data,
             }
 
             return Response(message, status=status.HTTP_200_OK)
@@ -135,7 +140,7 @@ class GenerateOtp(APIView):
 
 
 class Login(APIView):
-    def post(self, request):
+    def post(self, request):    
         user = authenticate(
             email = request.data.get('email'),
             password = request.data.get('password')
