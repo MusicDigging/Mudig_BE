@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Playlist, Music, Like, Comment
 
-class PlayListSerializer(serializers.ModelSerializer):
+class PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
         fields = '__all__'
