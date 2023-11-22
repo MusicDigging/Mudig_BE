@@ -69,6 +69,55 @@ class Join(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class SocialJoin(APIView):
+    def post(self, request):
+        
+        try:
+            user = User.objects.create(email=request.data.get('email'), login_method='google')
+            user.set_unusable_password()
+            user.save()
+        except Exception as e:
+            data = {
+                'error': e
+            }
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            profile = Profile.objects.get(user=user)
+
+            try:
+                image = request.FILES['image']
+            except:
+                is_image = False
+            else:
+                is_image = True
+                
+            profile_data = {
+                "user": user.id,
+                "name": request.data.get('name'),
+                "about": request.data.get('about'),
+                "genre": request.data.get('genre')
+            }
+
+            if is_image:
+                img_uploader = S3ImgUploader(image)
+                uploaded_url = img_uploader.upload('profile')
+                profile_data['image'] = uploaded_url
+
+            pf_serializer = ProfileSerializer(profile,profile_data)
+
+            if pf_serializer.is_valid():
+                pf_serializer.save()
+            else:
+                return Response(pf_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+            message = {
+                "message" : "Register success",
+            }
+
+            return Response(message, status=status.HTTP_200_OK)
+    
+
+
 class GenerateOtp(APIView):
     def post(self, request):
         email = request.data.get('email')
@@ -141,22 +190,6 @@ class ChangePassWord(APIView):
             
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-    # def put(self, request):
-    #     user = request.user
-    #     old_password = request.data.get('old_password')
-    #     new_password = request.data.get('new_password')
-        
-    #     if not user.check_password(old_password):
-    #         return Response({"messsage": "현재 비밀번호가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
-        
-    #         user.set_password(new_password)
-    #         user.save()
-        
-    #         return Response({"message": "비밀번호가 성공적으로 변경되었습니다."}, status=status.HTTP_200_OK)
-    
-    #     else:
-    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Withdrawal(APIView):
@@ -225,19 +258,8 @@ class GoogleCallback(APIView):
             }
             return Response(data=response, status=status.HTTP_200_OK)
         except User.DoesNotExist:
-            user = User.objects.create(email=email, login_method='google')
-            user.set_unusable_password()
-            user.save()
-
-            refresh = RefreshToken.for_user(user)
-            token={
-                "access": str(refresh.access_token),
-                "refresh": str(refresh)
-            }
-            serializer = UserSerializer(user)
             response = {
-                "message": "로그인 성공",
-                "token": token,
-                "user_info": serializer.data,
+                "message": "프로필 생성 진행",
+                "email": email,
             }
-            return Response(data=response, status=status.HTTP_201_CREATED)
+            return Response(data=response, status=status.HTTP_200_OK)
