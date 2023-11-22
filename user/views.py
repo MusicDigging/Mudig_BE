@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Profile, User, Follower
-from .serializers import ProfileSerializer
+from .serializers import ProfileSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from django.http import Http404
@@ -15,7 +15,7 @@ class ProfileView(APIView):
 
     def get(self, request):
         try:
-            user = User.objects.get(id=3)  # Test User ID
+            user = User.objects.get(id=2)  # Test User ID
             profile = get_object_or_404(Profile, user=user)
         except (User.DoesNotExist, Profile.DoesNotExist):
             raise Http404("User or Profile does not exist")
@@ -40,7 +40,7 @@ class ProfileEditView(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -60,10 +60,11 @@ class FollowAPIView(APIView):
             return Response({"error": "이미 팔로우한 사용자입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
 class UnfollowAPIView(APIView):
-    def post(self, request, user_id):
+    def delete(self, request, user_id):
         target_user = get_object_or_404(User, pk=user_id)
         follower_user = User.objects.get(pk=2)  # test
         follow_relation = get_object_or_404(Follower, target_id=target_user, follower_id=follower_user)
         follow_relation.delete()
         return Response({"status": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
+
 
