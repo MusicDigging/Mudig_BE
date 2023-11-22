@@ -15,7 +15,7 @@ class ProfileView(APIView):
 
     def get(self, request):
         try:
-            user = User.objects.get(id=2)  # Test User ID
+            user = User.objects.get(id=3)  # Test User ID
             profile = get_object_or_404(Profile, user=user)
         except (User.DoesNotExist, Profile.DoesNotExist):
             raise Http404("User or Profile does not exist")
@@ -48,10 +48,12 @@ class ProfileEditView(APIView):
 class FollowAPIView(APIView):
     def post(self, request, user_id):
         target_user = get_object_or_404(User, pk=user_id)
-        if request.user == target_user:
+        follower_user = User.objects.get(pk=2)  # test
+
+        if follower_user == target_user:
             return Response({"error": "자기 자신을 팔로우할 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        _, created = Follower.objects.get_or_create(target=target_user, follower=request.user)
+        _, created = Follower.objects.get_or_create(target_id=target_user, follower_id=follower_user)
         if created:
             return Response({"status": "팔로우 성공"}, status=status.HTTP_201_CREATED)
         else:
@@ -60,7 +62,8 @@ class FollowAPIView(APIView):
 class UnfollowAPIView(APIView):
     def post(self, request, user_id):
         target_user = get_object_or_404(User, pk=user_id)
-        follow_relation = get_object_or_404(Follower, target=target_user, follower=request.user)
+        follower_user = User.objects.get(pk=2)  # test
+        follow_relation = get_object_or_404(Follower, target_id=target_user, follower_id=follower_user)
         follow_relation.delete()
         return Response({"status": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
 

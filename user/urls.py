@@ -13,7 +13,7 @@ urlpatterns = [
     # path("withdrawal/", Withdrawal.as_view(), name='withdrawal'),
     path("profile/", ProfileView.as_view(), name='profile'),
     path("profile/edit/", ProfileEditView.as_view(), name='pf-edit'),
-    path('user/<int:user_id>/follow/', FollowAPIView.as_view(), name='follow'),
-    path('user/<int:user_id>/unfollow/', UnfollowAPIView.as_view(), name='unfollow'),
+    path('users/<int:user_id>/follow/', FollowAPIView.as_view(), name='follow'),
+    path('users/<int:user_id>/unfollow/', UnfollowAPIView.as_view(), name='unfollow'),
 ] 
 
