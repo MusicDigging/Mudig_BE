@@ -35,10 +35,19 @@ class ProfileSerializer(serializers.ModelSerializer):
         return Follower.objects.filter(follower_id=obj.user).count()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserFollowSerializer(serializers.ModelSerializer):
+    profile_image = serializers.CharField(source='profile.image')
+    nickname = serializers.CharField(source='profile.name')
+    is_following = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'email']
+        fields = ['id', 'profile_image', 'nickname', 'is_following']
+
+    def get_is_following(self, obj):
+        # 현재 요청을 보낸 사용자를 확인
+        request_user = self.context['request'].user
+        return Follower.objects.filter(follower_id=request_user, target_id=obj).exists()
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
