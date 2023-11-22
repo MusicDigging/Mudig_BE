@@ -12,6 +12,11 @@ from rest_framework.permissions import IsAuthenticated
 from .models import User, Profile
 from .utils import generate_otp, send_otp_via_email
 from playlist.uploads import S3ImgUploader
+import dotenv
+import os
+import requests
+
+dotenv.load_dotenv()
 
 
 class Join(APIView):
@@ -154,7 +159,6 @@ class ChangePassWord(APIView):
     #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class Withdrawal(APIView):
     permission_classes = [IsAuthenticated]
     
@@ -167,3 +171,73 @@ class Withdrawal(APIView):
         user.save()
         
         return Response({"message": "회원탈퇴 되었습니다."}, status=status.HTTP_200_OK)
+
+
+GOOGLE_CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
+GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
+GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
+STATE = os.environ['STATE']
+
+
+class GoogleLogin(APIView):
+    def post(self, request):
+        data = {
+            'url': f"https://accounts.google.com/o/oauth2/v2/auth?client_id={GOOGLE_CLIENT_ID}&response_type=code&redirect_uri={GOOGLE_CALLBACK_URI}&scope=https://www.googleapis.com/auth/userinfo.email"
+        }
+        return Response(data)
+
+
+class GoogleCallback(APIView):
+    def post(self, request):
+        code = request.data['code']
+
+        token_req = requests.post(f"https://oauth2.googleapis.com/token?client_id={GOOGLE_CLIENT_ID}&client_secret={GOOGLE_SECRET_KEY}&code={code}&grant_type=authorization_code&redirect_uri={GOOGLE_CALLBACK_URI}&state={STATE}")
+
+        token_req_json = token_req.json()
+        error = token_req_json.get("error")
+
+        if error is not None:
+            raise JSONDecodeError(error)
+
+        access_token = token_req_json.get('access_token')
+
+        email_req = requests.get(f"https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={access_token}")
+        email_req_status = email_req.status_code
+
+        if email_req_status != 200:
+            return Response({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
+
+        email_req_json = email_req.json()
+        email = email_req_json.get('email')
+
+        try: # 이미 가입된 유저인지 확인
+            user = User.objects.get(email=email)
+            refresh = RefreshToken.for_user(user)
+            token={
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
+            }
+            serializer = UserSerializer(user) # 변동 가능성 있음
+            response = {
+                "message": "로그인 성공",
+                "token": token,
+                "user_info": serializer.data,
+            }
+            return Response(data=response, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            user = User.objects.create(email=email, login_method='google')
+            user.set_unusable_password()
+            user.save()
+
+            refresh = RefreshToken.for_user(user)
+            token={
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
+            }
+            serializer = UserSerializer(user)
+            response = {
+                "message": "로그인 성공",
+                "token": token,
+                "user_info": serializer.data,
+            }
+            return Response(data=response, status=status.HTTP_201_CREATED)

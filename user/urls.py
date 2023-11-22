@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Join, Login, GenerateOtp, Logout, ChangePassWord, Withdrawal
+from .views import Join, Login, GenerateOtp, Logout, ChangePassWord, Withdrawal, GoogleLogin, GoogleCallback
 from rest_framework_simplejwt.views import TokenRefreshView
 # from .views import Join, Login, Logout, ProfileUpdate, ChangePassWord
 # 해당 부분은 수정해주시면 됩니다.
@@ -13,6 +13,8 @@ urlpatterns = [
     path("logout/", Logout.as_view(), name='logout'),
     path("changepassword/", ChangePassWord.as_view(), name='change-pw'),
     path("withdrawal/", Withdrawal.as_view(), name='withdrawal'),
+    path("login/google/", GoogleLogin.as_view(), name='google-login'),
+    path("login/google/callback/", GoogleCallback.as_view(), name='google-callback'),
     # path("profile/", Profile.as_view(), name='profile'),
     # path("profile/edit/", ProfileUpdate.as_view(), name='pf-edit'),
     # path("follow/", Follow.as_view(), name='follow'),
