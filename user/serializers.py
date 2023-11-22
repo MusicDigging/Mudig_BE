@@ -34,6 +34,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         # 팔로잉 수
         return Follower.objects.filter(follower_id=obj.user).count()
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email']
+
+
 class PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist

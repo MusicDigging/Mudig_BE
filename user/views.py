@@ -68,3 +68,20 @@ class UnfollowAPIView(APIView):
         return Response({"status": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
 
 
+class FollowersListView(APIView):
+    def get(self, request, user_id):
+        user = get_object_or_404(User, pk=user_id)
+        followers = [follower.follower_id for follower in user.followers.all()]
+
+        serializer = UserSerializer(followers, many=True)
+        return Response(serializer.data)
+
+
+class FollowingListView(APIView):
+    def get(self, request, user_id):
+        user = get_object_or_404(User, pk=user_id)
+        following = [follow.target_id for follow in user.following.all()]
+
+        serializer = UserSerializer(following, many=True)
+        return Response(serializer.data)
+
