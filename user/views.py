@@ -82,7 +82,6 @@ class FollowersListView(APIView):
         # test_user = get_object_or_404(User, pk=3) # Test User ID
         user = get_object_or_404(User, pk=user_id)
         followers = [follower.follower_id for follower in user.followers.all()]
-
         serializer = UserFollowSerializer(followers, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
