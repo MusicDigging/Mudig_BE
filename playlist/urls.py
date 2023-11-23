@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import List, Delete, Detail, Create, Update, Add
+from .views import List, Delete, Detail, Create, Update, Add, MyPlaylist, Allmusiclist
 
 app_name = 'playlist'
 
@@ -12,6 +12,8 @@ urlpatterns = [
     path('delete/', Delete.as_view() , name='delete'),
     path('detail/<int:pk>/edit/', Update.as_view() , name='edit'),
     path('add/', Add.as_view() , name='add'),
+    path('myplaylist/', MyPlaylist.as_view() , name='myplaylist'),
+    path('music/', Allmusiclist.as_view() , name='music'),
     # path('search/', Search.as_view() , name='search'),
     # path('like/', Like.as_view() , name='like'),
     # comment
