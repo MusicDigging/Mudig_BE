@@ -11,6 +11,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 
 
+# 프로필 조회
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -20,6 +21,7 @@ class ProfileView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+# 프로필 수정
 class ProfileEditView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
@@ -42,6 +44,7 @@ class ProfileEditView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# 팔로우
 class FollowAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -58,6 +61,8 @@ class FollowAPIView(APIView):
         else:
             return Response({"error": "이미 팔로우한 사용자입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+
+# 언팔로우
 class UnfollowAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -69,6 +74,7 @@ class UnfollowAPIView(APIView):
         return Response({"status": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
 
 
+# 팔로워 목록 조회
 class FollowersListView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -81,6 +87,7 @@ class FollowersListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+# 팔로잉 목록 조회
 class FollowingListView(APIView):
     permission_classes = [IsAuthenticated]
     

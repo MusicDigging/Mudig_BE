@@ -17,7 +17,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return [genre.name for genre in obj.genres.all()]
 
     def get_playlists(self, obj):
-        # User의 Playlist 객체를 가져옴
+        # User의 Playlist 
         playlists = Playlist.objects.filter(writer=obj.user)
         return PlaylistSerializer(playlists, many=True).data
 
