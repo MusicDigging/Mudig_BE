@@ -8,28 +8,25 @@ from rest_framework import status
 from django.http import Http404
 from playlist.uploads import S3ImgUploader
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticated
 
 
 class ProfileView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        try:
-            user = User.objects.get(id=2)  # Test User ID
-            profile = get_object_or_404(Profile, user=user)
-        except (User.DoesNotExist, Profile.DoesNotExist):
-            raise Http404("User or Profile does not exist")
-
+        profile = get_object_or_404(Profile, user=request.user)
         serializer = ProfileSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ProfileEditView(APIView):
+    permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
 
     def put(self, request):
-        user = User.objects.get(id=2)  # Test User ID
-        profile = get_object_or_404(Profile, user=user)
+        # user = User.objects.get(id=2)  # Test User ID
+        profile = get_object_or_404(Profile, user=request.user)
         serializer = ProfileSerializer(profile, data=request.data)
 
         if 'image' in request.FILES:
@@ -46,41 +43,50 @@ class ProfileEditView(APIView):
 
 
 class FollowAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, user_id):
         target_user = get_object_or_404(User, pk=user_id)
-        follower_user = User.objects.get(pk=3)  # Test User ID
+        # follower_user = User.objects.get(pk=3)  # Test User ID
 
-        if follower_user == target_user:
+        if request.user == target_user:
             return Response({"error": "자기 자신을 팔로우할 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        _, created = Follower.objects.get_or_create(target_id=target_user, follower_id=follower_user)
+        _, created = Follower.objects.get_or_create(target_id=target_user, follower_id=request.user)
         if created:
             return Response({"status": "팔로우 성공"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"error": "이미 팔로우한 사용자입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
 class UnfollowAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def delete(self, request, user_id):
         target_user = get_object_or_404(User, pk=user_id)
-        follower_user = User.objects.get(pk=3)  # Test User ID
-        follow_relation = get_object_or_404(Follower, target_id=target_user, follower_id=follower_user)
+        # follower_user = User.objects.get(pk=3)  # Test User ID
+        follow_relation = get_object_or_404(Follower, target_id=target_user, follower_id=request.user)
         follow_relation.delete()
         return Response({"status": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class FollowersListView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, user_id):
-        test_user = get_object_or_404(User, pk=3) # Test User ID
-        followers = [follower.follower_id for follower in test_user.followers.all()]
+        # test_user = get_object_or_404(User, pk=3) # Test User ID
+        user = get_object_or_404(User, pk=user_id)
+        followers = [follower.follower_id for follower in user.followers.all()]
 
         serializer = UserFollowSerializer(followers, many=True, context={'request': request})
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class FollowingListView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, user_id):
-        test_user = get_object_or_404(User, pk=3) # Test User ID
-        following = [follow.target_id for follow in test_user.following.all()]
-
+        # test_user = get_object_or_404(User, pk=3) # Test User ID
+        user = get_object_or_404(User, pk=user_id)
+        following = [follow.target_id for follow in user.following.all()]
         serializer = UserFollowSerializer(following, many=True, context={'request': request})
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
