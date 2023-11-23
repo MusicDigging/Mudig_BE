@@ -3,7 +3,7 @@ import json
 from .prompt import prompt
 import os
 
-def get_music_recommendation(situatuons, feature, year):
+def get_music_recommendation(situations, feature, year):
     openai.api_key = os.environ["OPEN_API_KEY"]  # 여기에 실제 API 키를 넣어주세요
 
     # 모델 - GPT 3.5 Turbo 선택
@@ -12,7 +12,7 @@ def get_music_recommendation(situatuons, feature, year):
     query = {
         "role": "user",
         "content": str({
-            "현재 기분 및 상황": situatuons,
+            "현재 기분 및 상황": situations,
             "장르 및 특성": feature,
             "연도": year
         }),
@@ -31,5 +31,12 @@ def get_music_recommendation(situatuons, feature, year):
         timeout = 600
     )
     answer = response['choices'][0]['message']['content']
-
-    return answer
+    response_json = answer.replace("'", "\"")
+    print('json', response_json)
+    try:
+        response_json = json.loads(response_json.replace("n\"t", "n\'t"))
+        print('try', response_json)
+    except json.decoder.JSONDecodeError:
+        response_json = json.loads(response_json)
+        print('except', response_json)
+    return response_json

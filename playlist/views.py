@@ -66,33 +66,23 @@ class Create(APIView):
         user = 'admin@admin.com'
         user = User.objects.get(email = user)
         
-        situatuons = request.data['situatuons']
+        situations = request.data['situations']
         genre = request.data['genre']
         year = request.data['year']
-        response_data = get_music_recommendation(situatuons, genre, year)
-        # print('data', response_data)
-        response_json = response_data.replace("'", "\"")
-        # print('json', response_json)
-        try:
-            response_json = json.loads(response_json.replace("n\"t", "n\'t"))
-        except json.decoder.JSONDecodeError:
-            response_json = json.loads(response_json)
-        # print('json', response_json)
-        playlists = response_json['playlist']
-        title = response_json['title']
-        prompt = response_json['prompt']
+        response_data = get_music_recommendation(situations, genre, year)
+        
+        playlists = response_data['playlist']
+        title = response_data['title']
+        prompt = response_data['prompt']
         
         karlo = t2i(prompt)
-        # playlists = playlists.split(',')
-        # print('playlists', playlists)
         youtube_api = []
-        # music_list = Music.objects.all()
         
         playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
-            song, singer = playlist['song'].lower(), playlist['singer'].lower()
+            song, singer = playlist['song'], playlist['singer']
             keyword = f'{song} - {singer}'
             page = None
             limit = 1
@@ -109,7 +99,7 @@ class Create(APIView):
             musicserializer = MusicSerializer(data = youtube_data)
             youtube_api.append(youtube_data)
             if musicserializer.is_valid():
-                if not Music.objects.filter(singer=singer, song=song).exists():
+                if not Music.objects.filter(singer__iexact=singer, song__iexact=song).exists():
                     music_instance = musicserializer.save()
                     music_list.append(music_instance)
                 else:
@@ -118,15 +108,14 @@ class Create(APIView):
             else:
                 return Response(musicserializer.errors)
         for order, music_instance in enumerate(music_list, start=1):
-            playlist_music = PlaylistMusic.objects.create(
+            PlaylistMusic.objects.create(
                 playlist=playlist_instance,
                 music=music_instance,
                 order=order
             )
-        if created:
-            playlist_instance.music.add(*music_list)
-            playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
-            # print(youtube_api)
+        # if created:
+        #     # playlist_instance.music.add(*music_list)
+        #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
         return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
 
 # test count 27
@@ -161,7 +150,7 @@ class Delete(APIView):
         playlist = Playlist.objects.get(id=request.data['playlist_id'])
         delete_img = S3ImgUploader(playlist.thumbnail)
         delete_img.delete()
-        # playlist.delete()
+        playlist.delete()
         # playlist.is_active = False
         # playlist.save()
         data = {

@@ -23,7 +23,6 @@ class S3ImgUploader:
                 "ContentType": self.file.content_type
             }
         )
-        print(f'Successfully uploaded to S3. URL: {url}')
         return url
     def delete(self):
         s3_client = boto3.client(
@@ -37,7 +36,6 @@ class S3ImgUploader:
                 Bucket=os.environ.get("AWS_STORAGE_BUCKET_NAME"),
                 Key=str(self.file)  
             )
-            print(f'Successfully deleted to S3. URL : {self.file}')
             return True  
         except Exception as e:
             print("S3 이미지 삭제 실패:", str(e))
