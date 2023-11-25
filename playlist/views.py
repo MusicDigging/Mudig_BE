@@ -66,6 +66,8 @@ User = get_user_model()
 # Create your views here.
 
 class RandomMovieView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     @extend_schema(
         summary="랜덤 뮤비",  # summary : 해당 method 요약
         description="랜덤 뮤비를 불러오는 API 입니다.",  # description: 해당 method 설명
@@ -120,6 +122,8 @@ class RandomMovieView(APIView):
         
         
 class EventPlaylistGenerate(APIView):
+    permission_classes = [IsAuthenticated]
+    
     @extend_schema(
         summary="이벤트성 플레이리스트 생성 기능",  # summary : 해당 method 요약
         description="이벤트성으로 한 문장으로 플레이리스트 생성 기능에 대한 API 입니다.",  # description: 해당 method 설명
@@ -208,6 +212,8 @@ class EventPlaylistGenerate(APIView):
 
 # Create your views here.
 class List(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request):
         
         ## 최신플리
@@ -247,6 +253,8 @@ class List(APIView):
 
 
 class Create(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def post(self, request):
         ## user
         # user = request.user
@@ -311,6 +319,8 @@ class Create(APIView):
 
 
 class Detail(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, pk):
         playlist_instance = get_object_or_404(Playlist, id=pk)
 
@@ -335,6 +345,8 @@ class Detail(APIView):
 
 
 class Delete(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def delete(self, request):
         playlist = Playlist.objects.get(id=request.data['playlist_id'])
         delete_img = S3ImgUploader(playlist.thumbnail)
@@ -350,6 +362,8 @@ class Delete(APIView):
 
 
 class Update(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def put(self, request, pk):
         choice_playlist = Playlist.objects.get(id=pk)
         ## del music
@@ -382,6 +396,8 @@ class Update(APIView):
 
 
 class Add(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def put(self, request):
         # pass
         playlist = Playlist.objects.get(id=request.data['playlist_id'])
@@ -412,6 +428,8 @@ class Add(APIView):
 
 ## 내 플리 리스트 클래스
 class MyPlaylist(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request):
         # user = request.user
         user = 'admin@admin.com'
@@ -426,6 +444,8 @@ class MyPlaylist(APIView):
 
 
 class Allmusiclist(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request):
         music = Music.objects.all()
         serializer = MusicSerializer()
@@ -437,6 +457,8 @@ class Allmusiclist(APIView):
 
 
 class Search(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request):
         query = request.GET.get('query') 
 
@@ -577,5 +599,3 @@ class CommentEdit(APIView):
         }
         
         return Response(data, status=status.HTTP_200_OK)
-    
-
