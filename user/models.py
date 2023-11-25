@@ -1,7 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
-
+from django.contrib.auth.models import UserManager, PermissionsMixin
+from django.db.models.signals import post_save
 
 class UserManager(BaseUserManager):
     # create_user
@@ -29,7 +30,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractUser):
+class User(AbstractUser, PermissionsMixin):
     username = None
     email = models.EmailField(unique=True, max_length=255)
     is_verified = models.BooleanField(default=False)
@@ -45,18 +46,29 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+    
+    def __str__(self):
+        return self.email
 
 
 class Profile(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE)
     name = models.CharField(default='닉네임', max_length=50, null=True, blank=True)
-    image = models.FileField(null=True, blank=True)
+    image = models.CharField(max_length=200, null=True, blank=True)
     about = models.TextField(default='자신을 소개해주세요 :)', null=True, blank=True)
     genre = models.CharField(max_length=50, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
+def user_join(sender, **kwargs):
+    if kwargs['created']:
+        user = kwargs['instance']
+        Profile.objects.create(user=user)
+
+post_save.connect(user_join, sender=User)
+
+
 class Follower(models.Model):
-    target_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target_id')
-    follower_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower_id')
+    target_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
+    follower_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
     created_at = models.DateTimeField(auto_now_add=True)

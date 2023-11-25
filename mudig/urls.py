@@ -19,9 +19,22 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.views.static import serve
 
+from django.contrib.auth.decorators import login_required
+
+from drf_spectacular.views import SpectacularJSONAPIView
+from drf_spectacular.views import SpectacularRedocView
+from drf_spectacular.views import SpectacularSwaggerView
+from drf_spectacular.views import SpectacularYAMLAPIView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('playlist/', include('playlist.urls')),
-    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    
+    # Open API 자체를 조회 : json, yaml
+    path("api/json/", login_required(SpectacularJSONAPIView.as_view()), name="schema-json"),
+    path("api/yaml/", login_required(SpectacularYAMLAPIView.as_view()), name="swagger-yaml"),
+    # Open API Document UI로 조회: Swagger, Redoc
+    path("api/swagger/", login_required(SpectacularSwaggerView.as_view(url_name="schema-json")), name="swagger-ui",),
+    path("api/redoc/", login_required(SpectacularRedocView.as_view(url_name="schema-json")), name="redoc-ui",),
 ] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
