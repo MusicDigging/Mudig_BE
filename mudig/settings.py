@@ -50,7 +50,7 @@ INSTALLED_APPS = [
 	'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'user',
-    'playlist'
+    'playlist',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +68,7 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY':'errors',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
     ),
 }
 
