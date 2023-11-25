@@ -18,12 +18,10 @@ urlpatterns = [
     path("checkname/", CheckName.as_view(), name='check-name'),
     path("login/kakao/", KakaoLogin.as_view(), name='kakao-login'),
     path("login/kakao/callback/", KakaoCallback.as_view(), name='kakao-callback'),
-    path("checkname/", CheckName.as_view(), name='check-name'),
     path("profile/", ProfileView.as_view(), name='profile'),
     path("profile/edit/", ProfileEditView.as_view(), name='profile-edit'),
     path('<int:user_id>/follow/', FollowAPIView.as_view(), name='follow'),
     path('<int:user_id>/unfollow/', UnfollowAPIView.as_view(), name='unfollow'),
     path('<int:user_id>/followers/', FollowersListView.as_view(), name='user-followers'),
     path('<int:user_id>/following/', FollowingListView.as_view(), name='user-following'),
-] 
-
+]
