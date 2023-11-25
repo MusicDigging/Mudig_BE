@@ -69,6 +69,6 @@ post_save.connect(user_join, sender=User)
 
 
 class Follower(models.Model):
-    target_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target_id')
-    follower_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower_id')
+    target_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
+    follower_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
     created_at = models.DateTimeField(auto_now_add=True)

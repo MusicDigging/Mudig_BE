@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import Join, SocialJoin, Login, GenerateOtp, Logout, ChangePassWord, Withdrawal, GoogleLogin, GoogleCallback, CheckName, KakaoLogin, KakaoCallback
+from .views import Join,SocialJoin,Login,GenerateOtp,Logout,ChangePassWord,Withdrawal,GoogleLogin,GoogleCallback,CheckName
+from .views import KakaoLogin,KakaoCallback,ProfileView,ProfileEditView,FollowAPIView,UnfollowAPIView,FollowersListView,FollowingListView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 app_name = 'user'
@@ -18,8 +19,11 @@ urlpatterns = [
     path("login/kakao/", KakaoLogin.as_view(), name='kakao-login'),
     path("login/kakao/callback/", KakaoCallback.as_view(), name='kakao-callback'),
     path("checkname/", CheckName.as_view(), name='check-name'),
-    # path("profile/", Profile.as_view(), name='profile'),
-    # path("profile/edit/", ProfileUpdate.as_view(), name='pf-edit'),
-    # path("follow/", Follow.as_view(), name='follow'),
+    path("profile/", ProfileView.as_view(), name='profile'),
+    path("profile/edit/", ProfileEditView.as_view(), name='profile-edit'),
+    path('<int:user_id>/follow/', FollowAPIView.as_view(), name='follow'),
+    path('<int:user_id>/unfollow/', UnfollowAPIView.as_view(), name='unfollow'),
+    path('<int:user_id>/followers/', FollowersListView.as_view(), name='user-followers'),
+    path('<int:user_id>/following/', FollowingListView.as_view(), name='user-following'),
 ] 
 
