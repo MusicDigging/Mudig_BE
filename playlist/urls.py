@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LikeView ,CommentWrite, CommentDelete, CommentEdit, RecommentWrite
+from .views import Search, LikeView ,CommentWrite, CommentDelete, CommentEdit, RecommentWrite
 
 app_name = 'playlist'
 
@@ -12,7 +12,7 @@ urlpatterns = [
     # path('edit/', Update.as_view() , name='edit'),
     # path('delete/', Delete.as_view() , name='delete'),
     # path('add/', Add.as_view() , name='add'),
-    # path('search/', Search.as_view() , name='search'),
+    path('search/', Search.as_view() , name='search'),
     path('like/', LikeView.as_view() , name='like'),
     # comment
     path('recomment/write/', RecommentWrite.as_view() , name='rcm-write'),

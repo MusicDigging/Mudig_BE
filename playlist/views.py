@@ -7,12 +7,44 @@ from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.db.models import Q 
 from .models import Playlist, Comment, Like
-from .serializers import CommentSerializer
+from user.models import Profile
+from .serializers import PlaylistSerializer ,CommentSerializer
+from user.serializers import ProfileSerializer
 from rest_framework.views import APIView
 # Create your views here.
 
 User = get_user_model()
+
+class Search(APIView):
+    def get(self, request):
+        query = request.GET.get('query') 
+
+        if not query:
+            return Response({"error": "Missing 'query' parameter"}, status=400)
+
+        users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')
+        profile_serializer = ProfileSerializer(users, many=True).data
+
+        recent_user = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')[:3]
+        recent_profile_serializer = ProfileSerializer(recent_user, many=True).data
+
+        playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')
+        playlist_serializer = PlaylistSerializer(playlists, many=True).data
+
+        recent_playlist = Playlist.objects.filter(Q(title__icontains=query),is_active=True).order_by('-created_at')[:3]      
+        recent_playlist_serializer = PlaylistSerializer(recent_playlist, many=True).data
+        
+        response_data = {
+            "recent_user" : recent_profile_serializer,
+            "recent_playlist" : recent_playlist_serializer,
+            "users" : profile_serializer,
+            "playlists" : playlist_serializer
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
 
 class LikeView(APIView):
     permission_classes = [IsAuthenticated]
