@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from .uploads import S3ImgUploader
 from .models import Playlist, Music, PlaylistMusic, Comment, Like
 from user.models import User, Profile, Follower
+from user.serializers import ProfileSerializer
 from .serializers import MusicSerializer, PlaylistSerializer, CommentSerializer
 from .youtube import YouTube
 from .karlo import t2i
@@ -20,10 +21,13 @@ from rest_framework.exceptions import PermissionDenied
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
+from django.db.models import Q 
 import os
 import requests
 import json
 import random
+
+# Create your views here.
 
 User = get_user_model()
 
@@ -430,6 +434,35 @@ class Allmusiclist(APIView):
             'music' : all_music
         }
         return Response(data, status=status.HTTP_200_OK)
+
+
+class Search(APIView):
+    def get(self, request):
+        query = request.GET.get('query') 
+
+        if not query:
+            return Response({"error": "Missing 'query' parameter"}, status=400)
+
+        users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')
+        profile_serializer = ProfileSerializer(users, many=True).data
+
+        recent_user = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')[:3]
+        recent_profile_serializer = ProfileSerializer(recent_user, many=True).data
+
+        playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')
+        playlist_serializer = PlaylistSerializer(playlists, many=True).data
+
+        recent_playlist = Playlist.objects.filter(Q(title__icontains=query),is_active=True).order_by('-created_at')[:3]      
+        recent_playlist_serializer = PlaylistSerializer(recent_playlist, many=True).data
+        
+        response_data = {
+            "recent_user" : recent_profile_serializer,
+            "recent_playlist" : recent_playlist_serializer,
+            "users" : profile_serializer,
+            "playlists" : playlist_serializer
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
 class LikeView(APIView):
