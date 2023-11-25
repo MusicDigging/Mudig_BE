@@ -1,3 +1,5 @@
 /venv
 *.sqlite3
 .env
+/static
+nohup.out
