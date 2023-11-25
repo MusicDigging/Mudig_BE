@@ -8,21 +8,13 @@ class S3ImgUploader:
     def __init__(self, file):
         self.file = file
 
-<<<<<<< HEAD
     def upload(self, folder):
-=======
-    def upload(self,folder):
->>>>>>> origin/yeoju
         s3_client = boto3.client(
             's3',
             aws_access_key_id     = os.environ.get("AWS_ACCESS_KEY_ID"),
             aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
         )
-<<<<<<< HEAD
         url = folder+'/'+uuid.uuid1().hex
-=======
-        url = folder +'/'+uuid.uuid1().hex
->>>>>>> origin/yeoju
         s3_client.upload_fileobj(
             self.file, 
             os.environ.get("AWS_STORAGE_BUCKET_NAME"), 

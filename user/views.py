@@ -12,11 +12,18 @@ from rest_framework.permissions import IsAuthenticated
 from .models import User, Profile
 from .utils import generate_otp, send_otp_via_email
 from playlist.uploads import S3ImgUploader
+from json.decoder import JSONDecodeError
 import dotenv
 import os
 import requests
 
 dotenv.load_dotenv()
+
+CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
+GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
+GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
+KAKAO_REST_API_KEY = os.environ['KARLO_API_KEY']
+STATE = os.environ['STATE']
 
 
 class CheckName(APIView):
@@ -213,13 +220,6 @@ class Withdrawal(APIView):
         return Response({"message": "회원탈퇴 되었습니다."}, status=status.HTTP_200_OK)
 
 
-CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
-GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
-GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
-KAKAO_REST_API_KEY = 'kakao_restapi_key'
-STATE = os.environ['STATE']
-
-
 class GoogleLogin(APIView):
     def post(self, request):
         data = {
@@ -320,16 +320,16 @@ class KakaoCallback(APIView):
         
         try:
             user = User.objects.get(email=email)
-            token = create_jwt_pair_for_user(user)
-            serializer = UserSerializer(user)
-            follower = Follower.objects.filter(follower_id=user).values()
-            notify = Notification.objects.filter(receiver=user,is_read=False).values()
+            refresh = RefreshToken.for_user(user)
+            token={
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
+            }
+            serializer = UserSerializer(user) # 변동 가능성 있음
             response = {
                 "message": "로그인 성공",
                 "token": token,
                 "user_info": serializer.data,
-                "follower": follower,
-                "notify": notify,
             }
             return Response(data=response, status=status.HTTP_200_OK)
 
