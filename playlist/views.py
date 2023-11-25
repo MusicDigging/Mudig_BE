@@ -96,6 +96,7 @@ class RandomMovieView(APIView):
             max_id = Music.objects.all().aggregate(max_id=Max("id"))['max_id'] # id Max 값 가져오기
             all_musiclist = [i for i in range(1,max_id+1)] # 모든 뮤직 리스트
             already_musiclist = [4,5,6] # 이미 본 리스트들
+            # already_musiclist = request.data.get('already_musiclist')
             result = list(set(all_musiclist) - set(already_musiclist)) # 리스트 차집합
             
             random_musics = random.sample(result,3) # 랜덤 3개 뽑기
@@ -137,11 +138,14 @@ class EventPlaylistGenerate(APIView):
         ],
     )
     def post(self, request):
+        # 봉수님 코드 참고
         user = 'admin@admin.com'
         user = User.objects.get(email = user)
+        genres = user.genre
+        genres_list = genres.split(',')
         
         situations = request.data['situations'] # 현재 기분이나 상황
-        genre = '' # 유저의 프로필에서 장르 랜덤으로 가져오기
+        genre = random.sample(genres_list,1) # 유저의 프로필에서 장르 랜덤으로 가져오기 
         response_data = event_music_recommendation(situations, genre)
         
         playlists = response_data['playlist']
