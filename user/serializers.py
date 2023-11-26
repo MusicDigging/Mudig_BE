@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import User, Profile, Follower
 from playlist.models import Playlist
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -12,6 +13,9 @@ class UserSerializer(serializers.ModelSerializer):
             email = validated_data['email'],
             password = validated_data['password'],
             )
+        
+        user.set_password(validated_data['password'])
+        user.save()
         return user
 
 

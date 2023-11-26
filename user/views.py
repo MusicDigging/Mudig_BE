@@ -1,11 +1,8 @@
 from .models import Profile, User, Follower
 from django.shortcuts import get_object_or_404
-from django.http import Http404
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import logout
-from django.shortcuts import render
 from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -61,12 +58,12 @@ class Join(APIView):
             else:
                 is_image = True
     
-                profile_data = {
-                    "user": user.id,
-                    "name": request.data.get('name'),
-                    "about": request.data.get('about'),
-                    "genre": request.data.get('genre')
-                }
+            profile_data = {
+                "user": user.id,
+                "name": request.data.get('name'),
+                "about": request.data.get('about'),
+                "genre": request.data.get('genre')
+            }
             
             if is_image:
                 img_uploader = S3ImgUploader(image)
@@ -152,11 +149,13 @@ class GenerateOtp(APIView):
 
 
 class Login(APIView):
-    def post(self, request):    
+    def post(self, request):
         user = authenticate(
             email = request.data.get('email'),
             password = request.data.get('password')
         )
+        
+        print(user)
         if user is not None:
             serializer = UserSerializer(user)
             

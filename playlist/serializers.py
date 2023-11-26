@@ -32,3 +32,30 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
+        
+
+class InputSerializer(serializers.ModelSerializer):
+    situations = serializers.CharField()
+    genre = serializers.CharField()
+    year = serializers.CharField()
+
+    class Meta:
+        model = Playlist
+        fields = ['situations','genre','year']
+        
+
+class EventSerializer(serializers.ModelSerializer):
+    situations = serializers.CharField()
+
+    class Meta:
+        model = Playlist
+        fields = ['situations']
+        
+
+class PlaylistIdSerializer(serializers.ModelSerializer):
+    Playlist_id = serializers.CharField()
+
+    class Meta:
+        model = Playlist
+        fields = ['Playlist_id']
+

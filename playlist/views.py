@@ -12,6 +12,8 @@ from .models import Playlist, Music, PlaylistMusic, Comment, Like
 from user.models import User, Profile, Follower
 from user.serializers import ProfileSerializer
 from .serializers import MusicSerializer, PlaylistSerializer, CommentSerializer
+# API 문서 자동화용 시리얼라이저
+from .serializers import InputSerializer, EventSerializer, PlaylistIdSerializer
 from .youtube import YouTube
 from .karlo import t2i
 from .gpt import get_music_recommendation, event_music_recommendation
@@ -27,41 +29,7 @@ import requests
 import json
 import random
 
-# Create your views here.
-
 User = get_user_model()
-
-###################
-# schema-option 정리
-# responses=ClassroomSerializer,
-# methods=["GET", "POST", "DELETE", "PUT", "PATCH"],
-# auth=["string"],
-# operation_id: Optional[str] = None,
-# parameters: Optional[List[Union[OpenApiParameter, _SerializerType]]] = None,
-# request: Any = empty,
-# auth: Optional[List[str]] = None,
-# deprecated: Optional[bool] = None,
-# exclude: bool = False,
-# operation: Optional[Dict] = None,
-# methods: Optional[List[str]] = None,
-# versions: Optional[List[str]] = None,
-# examples: Optional[List[OpenApiExample]] = None,
-
-# operation_id : 자동으로 설정되는 id 값, 대체로 수동할당하여 쓰진 않음
-# parameters : 해당 path로 받기로 예상된 파라미터 값 (Serializer or OpenApiParameter 사용)
-# request : 요청시 전달될 content의 형태
-# responses : 응답시 전달될 content의 형태
-# auth : 해당 method에 접근하기 위한 인증방법
-# description: 해당 method 설명
-# summary : 해당 method 요약
-# deprecated : 해당 method 사용여부
-# tags : 문서상 보여줄 묶음의 단위
-# exclude : 문서에서 제외여부
-# operation : ??? json -> yaml 하기위한 dictionary???
-# methods : 요청 받을 Http method 목록
-# versions : 문서화 할때 사용할 openAPI 버전
-# examples : 요청/응답에 대한 예시
-####################
 
 # Create your views here.
 
@@ -69,7 +37,7 @@ class RandomMovieView(APIView):
     permission_classes = [IsAuthenticated]
     
     @extend_schema(
-        summary="랜덤 뮤비",  # summary : 해당 method 요약
+        summary="랜덤 뮤비 조회 API",  # summary : 해당 method 요약
         description="랜덤 뮤비를 불러오는 API 입니다.",  # description: 해당 method 설명
         tags=["RandomMovie"],  # tags : 문서상 보여줄 묶음의 단위
         responses=MusicSerializer,
@@ -125,28 +93,18 @@ class EventPlaylistGenerate(APIView):
     permission_classes = [IsAuthenticated]
     
     @extend_schema(
-        summary="이벤트성 플레이리스트 생성 기능",  # summary : 해당 method 요약
-        description="이벤트성으로 한 문장으로 플레이리스트 생성 기능에 대한 API 입니다.",  # description: 해당 method 설명
-        tags=["EventPlaylistGenerate"],  # tags : 문서상 보여줄 묶음의 단위
+        summary="이벤트성 플레이리스트 생성 기능",
+        description="이벤트성으로 한 문장으로 플레이리스트 생성 기능에 대한 API 입니다.",
+        tags=["EventPlaylistGenerate"],
         responses=PlaylistSerializer,
+        request=EventSerializer,
         examples=[
             OpenApiExample(
                 response_only=True,
                 summary="summary example",
                 name="success_example",
                 value={
-                    "id": 1,
-                    "title": "Example Title 01",
-                    "writer": "user01",
-                    "thumbnail": "Karlo/url",
-                    "music": [{
-                        "id": 1,
-                        "title": "Snowman",
-                        "artist": "Sia",
-                        "thumbnail": "https://i.ytimg.com/vi/gset79KMmt0/mqdefault.jpg",
-                        "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
-                        "created_at": "2023-08-24T10:01:38"},],
-                    "created_at": "2023-08-24T10:01:38",
+                    "message": "음악 생성 성공하였습니다",
                 },
             ),
         ],
@@ -214,14 +172,29 @@ class EventPlaylistGenerate(APIView):
 class List(APIView):
     permission_classes = [IsAuthenticated]
     
+    @extend_schema(
+        summary="플레이리스트 메인 화면",
+        description="플레이리스트 메인 화면에 대한 API 입니다.",
+        responses=PlaylistSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "playlist_all":['object'],"my_playlist":['object'],"recommend_pli":['object']
+                },
+            ),
+        ],
+    )
     def get(self, request):
         
         ## 최신플리
         playlist_all = Playlist.objects.order_by('-created_at')[:5]
         recent_serializer = PlaylistSerializer(playlist_all, many=True).data
         ## 내가 만든 플리 
-        # user = request.user
-        user = 'admin@admin.com'
+        user = request.user
+
         if user:
             user = User.objects.get(email = user).id
             playlist_mine = Playlist.objects.filter(writer=user)[:3]
@@ -242,7 +215,6 @@ class List(APIView):
 
         ## 핫한 플리(좋아요 많은 순)
         
-        
         mudig_playlist = {
             'playlist_all' : recent_serializer,
             'my_playlist' : mine_serializer,
@@ -255,13 +227,24 @@ class List(APIView):
 class Create(APIView):
     permission_classes = [IsAuthenticated]
     
+    @extend_schema(
+        summary="플레이리스트 생성 API",
+        description="플레이리스트 생성에 대한 API 입니다.",
+        responses=PlaylistSerializer,
+        request=InputSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "message": "음악 생성 성공하였습니다"
+                },
+            ),
+        ],
+    )
     def post(self, request):
-        ## user
-        # user = request.user
-        # user = User.objects.get(email=user)
-        ##
-        user = 'admin@admin.com'
-        user = User.objects.get(email = user)
+        user = request.user
         
         situations = request.data['situations']
         genre = request.data['genre']
@@ -315,12 +298,26 @@ class Create(APIView):
         #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
         return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
 
-# test count 27
-
 
 class Detail(APIView):
     permission_classes = [IsAuthenticated]
     
+    @extend_schema(
+        summary="플레이리스트 디테일 API",
+        description="플레이리스트 디테일에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "playlist":['object'],"music":['object'],
+                },
+            ),
+        ],
+    )
     def get(self, request, pk):
         playlist_instance = get_object_or_404(Playlist, id=pk)
 
@@ -339,14 +336,27 @@ class Detail(APIView):
             'music': music_serializer.data
         }
 
-        
         return Response(data, status=status.HTTP_200_OK)
-        # pass
 
 
 class Delete(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="플레이리스트 삭제 API",
+        description="플레이리스트 삭제에 대한 API 입니다.",
+        responses=PlaylistSerializer,
+        request=PlaylistIdSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "message": "플레이리스트 삭제 완료","playlist": bool
+                },
+            ),
+        ],
+    )
     def delete(self, request):
         playlist = Playlist.objects.get(id=request.data['playlist_id'])
         delete_img = S3ImgUploader(playlist.thumbnail)
@@ -431,9 +441,7 @@ class MyPlaylist(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        # user = request.user
-        user = 'admin@admin.com'
-        user = User.objects.get(email=user)
+        user = request.user
         my_playlist = Playlist.objects.filter(writer = user.id)
         serializer = PlaylistSerializer()
         my_playlist_serializer = serializer.get_playlist_info(my_playlist)
@@ -463,7 +471,7 @@ class Search(APIView):
         query = request.GET.get('query') 
 
         if not query:
-            return Response({"error": "Missing 'query' parameter"}, status=400)
+            return Response({"error": "Missing 'query' parameter"}, status=status.HTTP_400_BAD_REQUEST)
 
         users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')
         profile_serializer = ProfileSerializer(users, many=True).data
