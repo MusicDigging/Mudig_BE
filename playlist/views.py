@@ -1,4 +1,5 @@
-from drf_spectacular.utils import OpenApiExample, extend_schema, OpenApiParameter
+from drf_spectacular.utils import OpenApiExample, extend_schema, OpenApiParameter, inline_serializer
+from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
 from django.db.models import Count, Avg, Min, Max, Sum 
@@ -12,8 +13,6 @@ from .models import Playlist, Music, PlaylistMusic, Comment, Like
 from user.models import User, Profile, Follower
 from user.serializers import ProfileSerializer
 from .serializers import MusicSerializer, PlaylistSerializer, CommentSerializer
-# API 문서 자동화용 시리얼라이저
-from .serializers import InputSerializer, EventSerializer, PlaylistIdSerializer
 from .youtube import YouTube
 from .karlo import t2i
 from .gpt import get_music_recommendation, event_music_recommendation
@@ -97,7 +96,12 @@ class EventPlaylistGenerate(APIView):
         description="이벤트성으로 한 문장으로 플레이리스트 생성 기능에 대한 API 입니다.",
         tags=["EventPlaylistGenerate"],
         responses=PlaylistSerializer,
-        request=EventSerializer,
+        request=inline_serializer(
+            name="Event Playlist Create",
+            fields={
+                "situations": serializers.CharField(),
+            },
+        ),
         examples=[
             OpenApiExample(
                 response_only=True,
@@ -182,7 +186,7 @@ class List(APIView):
                 summary="summary example",
                 name="success_example",
                 value={
-                    "playlist_all":['object'],"my_playlist":['object'],"recommend_pli":['object']
+                    "playlist_all":['objects'],"my_playlist":['objects'],"recommend_pli":['objects']
                 },
             ),
         ],
@@ -231,7 +235,14 @@ class Create(APIView):
         summary="플레이리스트 생성 API",
         description="플레이리스트 생성에 대한 API 입니다.",
         responses=PlaylistSerializer,
-        request=InputSerializer,
+        request=inline_serializer(
+            name="Playlist Create",
+            fields={
+                "situations": serializers.CharField(),
+                "genre": serializers.CharField(),
+                "year": serializers.CharField()
+            },
+        ),
         examples=[
             OpenApiExample(
                 response_only=True,
@@ -313,7 +324,7 @@ class Detail(APIView):
                 summary="summary example",
                 name="success_example",
                 value={
-                    "playlist":['object'],"music":['object'],
+                    "playlist":['objects'],"music":['objects'],
                 },
             ),
         ],
@@ -345,7 +356,12 @@ class Delete(APIView):
         summary="플레이리스트 삭제 API",
         description="플레이리스트 삭제에 대한 API 입니다.",
         responses=PlaylistSerializer,
-        request=PlaylistIdSerializer,
+        request=inline_serializer(
+            name="Playlist Update",
+            fields={
+                "playlist_id": serializers.IntegerField(),
+            },
+        ),
         examples=[
             OpenApiExample(
                 response_only=True,
@@ -373,7 +389,30 @@ class Delete(APIView):
 
 class Update(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="플레이리스트 수정 API",
+        description="플레이리스트 수정에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        request=inline_serializer(
+            name="Playlist Update",
+            fields={
+                "del_music_list": serializers.CharField(default='[del_music_list]'),
+                "add_music_list": serializers.CharField(default='[add_music_list]'),
+                "move_music": serializers.CharField(default='[move_music]'),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "message": "수정완료"
+                },
+            ),
+        ],
+    )
     def put(self, request, pk):
         choice_playlist = Playlist.objects.get(id=pk)
         ## del music
@@ -407,7 +446,29 @@ class Update(APIView):
 
 class Add(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="플레이리스트에 음악 추가 API",
+        description="플레이리스트에 특정 음악을 추가할 수 있는 기능에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        request=inline_serializer(
+            name="Playlist Add",
+            fields={
+                "playlist_id": serializers.IntegerField(),
+                "music": serializers.IntegerField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "message": "수정완료"
+                },
+            ),
+        ],
+    )
     def put(self, request):
         # pass
         playlist = Playlist.objects.get(id=request.data['playlist_id'])
@@ -439,7 +500,21 @@ class Add(APIView):
 ## 내 플리 리스트 클래스
 class MyPlaylist(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="내 플레이리스트 목록 API",
+        description="내 플레이리스트를 보내주는 기능에 대한 API 입니다.",
+        responses=PlaylistSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "my_playlist":['objects']
+                },
+            ),
+        ],
+    )
     def get(self, request):
         user = request.user
         my_playlist = Playlist.objects.filter(writer = user.id)
@@ -453,7 +528,22 @@ class MyPlaylist(APIView):
 
 class Allmusiclist(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="모든 음악 목록 API",
+        description="모든 음악 목록을 보내주는 기능에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "music":['objects']
+                },
+            ),
+        ],
+    )
     def get(self, request):
         music = Music.objects.all()
         serializer = MusicSerializer()
@@ -466,9 +556,33 @@ class Allmusiclist(APIView):
 
 class Search(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="플레이리스트 검색 API",
+        description="플레이리스트를 검색하여 결과를 보내주는 기능에 대한 API 입니다.",
+        parameters=[
+            OpenApiParameter(
+                name="query",
+                type=str,
+                description="검색할 단어",
+                required=True,
+            )],
+        responses=PlaylistSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "recent_user":['objects'],
+                    "recent_playlist":['objects'],
+                    "users":['objects'],
+                    "playlists":['objects'],
+                },
+            ),
+        ],
+    )
     def get(self, request):
-        query = request.GET.get('query') 
+        query = request.GET.get('query')
 
         if not query:
             return Response({"error": "Missing 'query' parameter"}, status=status.HTTP_400_BAD_REQUEST)
@@ -497,7 +611,36 @@ class Search(APIView):
 
 class LikeView(APIView):
     permission_classes = [IsAuthenticated]
-
+    @extend_schema(
+        summary="플레이리스트 좋아요/취소 API",
+        description="특정 플레이리스트의 좋아요/취소에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        request=inline_serializer(
+            name="Playlist Add",
+            fields={
+                "playlist_id": serializers.IntegerField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="like example",
+                name="success_example",
+                value={
+                    "detail": "좋아요 성공했습니다."
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                summary="unlike example",
+                name="success_example",
+                value={
+                    "detail": "좋아요가 취소되었습니다."
+                },
+            ),
+        ],
+    )
     def post(self, request):
         user = request.user
         
@@ -516,7 +659,30 @@ class LikeView(APIView):
 
 class RecommentWrite(APIView):
     permission_classes = [IsAuthenticated]
-
+    @extend_schema(
+        summary="플레이리스트 대댓글 작성 API",
+        description="플레이리스트 대댓글 작성에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        request=inline_serializer(
+            name="Playlist Recomment Write",
+            fields={
+                "content": serializers.CharField(),
+                "playlist_id": serializers.IntegerField(),
+                "parent_id": serializers.IntegerField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "detail": "답글 생성 완료되었습니다.",
+                },
+            ),
+        ],
+    )
     def post(self, request):
         user = request.user
 
@@ -542,7 +708,29 @@ class RecommentWrite(APIView):
 
 class CommentWrite(APIView):
     permission_classes = [IsAuthenticated]
-
+    @extend_schema(
+        summary="플레이리스트 대댓글 작성 API",
+        description="플레이리스트 대댓글 작성에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        request=inline_serializer(
+            name="Playlist Comment Write",
+            fields={
+                "content": serializers.CharField(),
+                "playlist_id": serializers.IntegerField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "detail": "댓글 생성 완료되었습니다.",
+                },
+            ),
+        ],
+    )
     def post(self, request):
         user = request.user
 
@@ -568,16 +756,35 @@ class CommentWrite(APIView):
 
 class CommentDelete(APIView):
     permission_classes = [IsAuthenticated]
-
+    @extend_schema(
+        summary="플레이리스트 댓글 삭제 API",
+        description="플레이리스트 댓글 삭제에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        request=inline_serializer(
+            name="Playlist Comment Delete",
+            fields={
+                "comment_id": serializers.IntegerField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "detail": "댓글 삭제 완료되었습니다.",
+                },
+            ),
+        ],
+    )
     def delete(self, request):
         user = request.user
 
         try:
-            comment = Comment.objects.get(playlist=request.data['playlist_id'], id=request.data['comment_id'], writer=user)
+            comment = Comment.objects.get(id=request.data['comment_id'], writer=user)
         except ObjectDoesNotExist:
             return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
-        
-        # comment = Comment.objects.get(id=request.data['comment_id'])
         
         comment.is_active = False # 논리적 삭제
         comment.save()
@@ -590,12 +797,34 @@ class CommentDelete(APIView):
 
 class CommentEdit(APIView):
     permission_classes = [IsAuthenticated]
-
+    @extend_schema(
+        summary="플레이리스트 댓글 삭제 API",
+        description="플레이리스트 댓글 삭제에 대한 API 입니다.",
+        parameters=[],
+        responses=PlaylistSerializer,
+        request=inline_serializer(
+            name="Playlist Comment Delete",
+            fields={
+                "comment_id": serializers.IntegerField(),
+                "content": serializers.CharField()
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                summary="summary example",
+                name="success_example",
+                value={
+                    "detail": "댓글 수정 완료되었습니다.",
+                },
+            ),
+        ],
+    )
     def put(self, request):
         user = request.user
 
         try:
-            comment = Comment.objects.get(playlist=request.data['playlist_id'], id=request.data['comment_id'], writer=user)
+            comment = Comment.objects.get(id=request.data['comment_id'], writer=user)
         except ObjectDoesNotExist:
             return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         
