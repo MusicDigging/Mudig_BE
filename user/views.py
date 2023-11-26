@@ -54,6 +54,10 @@ class Join(APIView):
 
             profile = Profile.objects.get(user=user)
             
+            name = request.data.get('name')
+            about = request.data.get('about')
+            genre = request.data.get('genre')
+            
             try:
                 image = request.FILES['image']
             except:
@@ -61,12 +65,16 @@ class Join(APIView):
             else:
                 is_image = True
     
-                profile_data = {
-                    "user": user.id,
-                    "name": request.data.get('name'),
-                    "about": request.data.get('about'),
-                    "genre": request.data.get('genre')
-                }
+            profile_data = {
+                "user": user.id,
+                "name": name,
+                "about": about,
+                "genre": genre
+            }
+
+            if not (name and about and genre):
+                user.delete()
+                return Response({'error': '프로필 정보를 입력해주세요.'}, status=status.HTTP_400_BAD_REQUEST)
             
             if is_image:
                 img_uploader = S3ImgUploader(image)
@@ -101,6 +109,10 @@ class SocialJoin(APIView):
         else:
             profile = Profile.objects.get(user=user)
             
+            name = request.data.get('name')
+            about = request.data.get('about')
+            genre = request.data.get('genre')
+            
             try:
                 image = request.FILES['image']
             except:
@@ -110,10 +122,14 @@ class SocialJoin(APIView):
                 
             profile_data = {
                 "user": user.id,
-                "name": request.data.get('name'),
-                "about": request.data.get('about'),
-                "genre": request.data.get('genre')
+                "name": name,
+                "about": about,
+                "genre": genre
             }
+            
+            if not (name and about and genre):
+                user.delete()
+                return Response({"error" : "프로필 정보를 입력해주세요."}, status=status.HTTP_400_BAD_REQUEST)
 
             if is_image:
                 img_uploader = S3ImgUploader(image)
