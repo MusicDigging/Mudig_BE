@@ -30,7 +30,7 @@ class RandomMovieView(APIView):
     @extend_schema(
         summary="랜덤 뮤비 조회 API",  # summary : 해당 method 요약
         description="랜덤 뮤비를 불러오는 API 입니다.",  # description: 해당 method 설명
-        tags=["RandomMovie"],  # tags : 문서상 보여줄 묶음의 단위
+        tags=["Random Movie"],  # tags : 문서상 보여줄 묶음의 단위
         responses=MusicSerializer,
         request=inline_serializer(
             name="Random Movie Play",
@@ -101,7 +101,7 @@ class EventPlaylistGenerate(APIView):
     @extend_schema(
         summary="이벤트성 플레이리스트 생성 기능",
         description="이벤트성으로 한 문장으로 플레이리스트 생성 기능에 대한 API 입니다.",
-        tags=["EventPlaylistGenerate"],
+        tags=["Event Playlist Generate"],
         responses=PlaylistSerializer,
         request=inline_serializer(
             name="Event Playlist Create",
@@ -526,6 +526,7 @@ class MyPlaylist(APIView):
     @extend_schema(
         summary="내 플레이리스트 목록 API",
         description="내 플레이리스트를 보내주는 기능에 대한 API 입니다.",
+        tags=["MyPlaylist"],
         responses=PlaylistSerializer,
         examples=[
             OpenApiExample(
@@ -582,6 +583,7 @@ class Search(APIView):
     @extend_schema(
         summary="플레이리스트 검색 API",
         description="플레이리스트를 검색하여 결과를 보내주는 기능에 대한 API 입니다.",
+        tags=["Search"],
         parameters=[
             OpenApiParameter(
                 name="query",
@@ -649,6 +651,7 @@ class LikeView(APIView):
     @extend_schema(
         summary="플레이리스트 좋아요/취소 API",
         description="특정 플레이리스트의 좋아요/취소에 대한 API 입니다.",
+        tags=["Like"],
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
@@ -709,8 +712,9 @@ class LikeView(APIView):
 class RecommentWrite(APIView):
     permission_classes = [IsAuthenticated]
     @extend_schema(
-        summary="플레이리스트 대댓글 작성 API",
-        description="플레이리스트 대댓글 작성에 대한 API 입니다.",
+        summary="플레이리스트 답글 작성 API",
+        description="플레이리스트 답글 작성에 대한 API 입니다.",
+        tags=["Comment"],
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
@@ -770,8 +774,9 @@ class RecommentWrite(APIView):
 class CommentWrite(APIView):
     permission_classes = [IsAuthenticated]
     @extend_schema(
-        summary="플레이리스트 대댓글 작성 API",
-        description="플레이리스트 대댓글 작성에 대한 API 입니다.",
+        summary="플레이리스트 댓글 작성 API",
+        description="플레이리스트 댓글 작성에 대한 API 입니다.",
+        tags=["Comment"],
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
@@ -832,6 +837,7 @@ class CommentDelete(APIView):
     @extend_schema(
         summary="플레이리스트 댓글 삭제 API",
         description="플레이리스트 댓글 삭제에 대한 API 입니다.",
+        tags=["Comment"],
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
@@ -883,8 +889,9 @@ class CommentDelete(APIView):
 class CommentEdit(APIView):
     permission_classes = [IsAuthenticated]
     @extend_schema(
-        summary="플레이리스트 댓글 삭제 API",
-        description="플레이리스트 댓글 삭제에 대한 API 입니다.",
+        summary="플레이리스트 댓글 수정 API",
+        description="플레이리스트 댓글 수정에 대한 API 입니다.",
+        tags=["Comment"],
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
