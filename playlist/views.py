@@ -2,29 +2,21 @@ from drf_spectacular.utils import OpenApiExample, extend_schema, OpenApiParamete
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
-from django.db.models import Count, Avg, Min, Max, Sum 
-from django.db import models
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
-from rest_framework import status
 from rest_framework.response import Response
-from .uploads import S3ImgUploader
-from .models import Playlist, Music, PlaylistMusic, Comment, Like
-from user.models import User, Profile, Follower
+from rest_framework.permissions import IsAuthenticated
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import get_user_model
+from django.db.models import Count, Avg, Min, Max, Sum, Q
+from django.shortcuts import get_object_or_404
+from user.models import User, Profile
 from user.serializers import ProfileSerializer
 from .serializers import MusicSerializer, PlaylistSerializer, CommentSerializer
 from .youtube import YouTube
 from .karlo import t2i
 from .gpt import get_music_recommendation, event_music_recommendation
 from .playlist_utill import PlaylistAdder, PlaylistOrderUpdater, PlaylistRemover
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import PermissionDenied
-from django.http import Http404
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import get_user_model
-from django.db.models import Q 
-import os
-import requests
+from .uploads import S3ImgUploader
+from .models import Playlist, Music, PlaylistMusic, Comment, Like
 import json
 import random
 
@@ -40,37 +32,52 @@ class RandomMovieView(APIView):
         description="랜덤 뮤비를 불러오는 API 입니다.",  # description: 해당 method 설명
         tags=["RandomMovie"],  # tags : 문서상 보여줄 묶음의 단위
         responses=MusicSerializer,
+        request=inline_serializer(
+            name="Random Movie Play",
+            fields={
+                "already_musiclist": serializers.ListField(),
+            },
+        ),
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
-                value=[{
-                    "id": 14,
-                    "title": "Snowman",
-                    "artist": "Sia",
-                    "thumbnail": "https://i.ytimg.com/vi/gset79KMmt0/mqdefault.jpg",
-                    "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
-                    "created_at": "2023-08-24T10:01:38",
-                },{
-                    "id": 7,
-                    "title": "Snow",
-                    "artist": "Red Hot Chili Peppers",
-                    "thumbnail": "https://i.ytimg.com/vi/yuFI5KSPAt4/mqdefault.jpg",
-                    "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
-                    "created_at": "2023-08-24T10:01:38",
-                },{
-                    "id": 15,
-                    "title": "Winter Song",
-                    "artist": "Sara Bareilles",
-                    "thumbnail": "https://i.ytimg.com/vi/budTp-4BGM0/mqdefault.jpg",
-                    "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
-                    "created_at": "2023-08-24T10:01:38",
-                }],
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": [
+                        {
+                            "id": 14,
+                            "title": "Snowman",
+                            "artist": "Sia",
+                            "thumbnail": "https://i.ytimg.com/vi/gset79KMmt0/mqdefault.jpg",
+                            "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
+                            "created_at": "2023-08-24T10:01:38",
+                        },{
+                            "id": 7,
+                            "title": "Snow",
+                            "artist": "Red Hot Chili Peppers",
+                            "thumbnail": "https://i.ytimg.com/vi/yuFI5KSPAt4/mqdefault.jpg",
+                            "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
+                            "created_at": "2023-08-24T10:01:38",
+                        },{
+                            "id": 15,
+                            "title": "Winter Song",
+                            "artist": "Sara Bareilles",
+                            "thumbnail": "https://i.ytimg.com/vi/budTp-4BGM0/mqdefault.jpg",
+                            "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
+                            "created_at": "2023-08-24T10:01:38",}
+                        ]},
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {"error": "Error Message"}},
             ),
         ],
     )
-    def get(self, request):
+    def post(self, request):
         try:
             max_id = Music.objects.all().aggregate(max_id=Max("id"))['max_id'] # id Max 값 가져오기
             all_musiclist = [i for i in range(1,max_id+1)] # 모든 뮤직 리스트
@@ -105,10 +112,10 @@ class EventPlaylistGenerate(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "message": "음악 생성 성공하였습니다",
+                    "status": 200,
+                    "res_data": {"message": "음악 생성 성공하였습니다"},
                 },
             ),
         ],
@@ -183,10 +190,10 @@ class List(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "playlist_all":['objects'],"my_playlist":['objects'],"recommend_pli":['objects']
+                    "status": 200,
+                    "res_data": {"playlist_all":['objects'],"my_playlist":['objects'],"recommend_pli":['objects']},
                 },
             ),
         ],
@@ -246,10 +253,10 @@ class Create(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "message": "음악 생성 성공하였습니다"
+                    "status": 200,
+                    "res_data": {"message": "음악 생성 성공하였습니다"},
                 },
             ),
         ],
@@ -321,10 +328,18 @@ class Detail(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "playlist":['objects'],"music":['objects'],
+                    "status": 200,
+                    "res_data": {"playlist":['objects'],"music":['objects']},
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {"error": "Error Message"},
                 },
             ),
         ],
@@ -365,10 +380,10 @@ class Delete(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "message": "플레이리스트 삭제 완료","playlist": bool
+                    "status": 200,
+                    "res_data": {"message": "플레이리스트 삭제 완료","playlist": bool,}
                 },
             ),
         ],
@@ -397,18 +412,26 @@ class Update(APIView):
         request=inline_serializer(
             name="Playlist Update",
             fields={
-                "del_music_list": serializers.CharField(default='[del_music_list]'),
-                "add_music_list": serializers.CharField(default='[add_music_list]'),
-                "move_music": serializers.CharField(default='[move_music]'),
+                "del_music_list": serializers.ListField(),
+                "add_music_list": serializers.ListField(),
+                "move_music": serializers.ListField(),
             },
         ),
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "message": "수정완료"
+                    "status": 200,
+                    "res_data": {"message": "수정완료"},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {"error": "Error Message"},
                 },
             ),
         ],
@@ -461,10 +484,10 @@ class Add(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "message": "수정완료"
+                    "status": 200,
+                    "res_data": {"message": "음악 이동 성공하였습니다"},
                 },
             ),
         ],
@@ -507,10 +530,10 @@ class MyPlaylist(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "my_playlist":['objects']
+                    "status": 200,
+                    "res_data": {"myplaylist": ['objects']},
                 },
             ),
         ],
@@ -536,10 +559,10 @@ class Allmusiclist(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "music":['objects']
+                    "status": 200,
+                    "res_data": {"music": ['objects']}
                 },
             ),
         ],
@@ -570,13 +593,25 @@ class Search(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "recent_user":['objects'],
-                    "recent_playlist":['objects'],
-                    "users":['objects'],
-                    "playlists":['objects'],
+                    "status": 200,
+                    "res_data": {
+                        "recent_user":['objects'],
+                        "recent_playlist":['objects'],
+                        "users":['objects'],
+                        "playlists":['objects'],
+                    }
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {
+                        "error": "Missing 'query' parameter",
+                    }
                 },
             ),
         ],
@@ -625,18 +660,32 @@ class LikeView(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="like example",
-                name="success_example",
+                name="201_CREATED",
                 value={
-                    "detail": "좋아요 성공했습니다."
+                    "status": 201,
+                    "res_data": {
+                        "detail": "좋아요 성공했습니다.",
+                    }
                 },
             ),
             OpenApiExample(
                 response_only=True,
-                summary="unlike example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "detail": "좋아요가 취소되었습니다."
+                    "status": 200,
+                    "res_data": {
+                        "detail": "좋아요가 취소되었습니다.",
+                    }
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {
+                        "detail": "잘못된 접근입니다.",
+                    }
                 },
             ),
         ],
@@ -675,10 +724,22 @@ class RecommentWrite(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="201_CREATED",
                 value={
-                    "detail": "답글 생성 완료되었습니다.",
+                    "status": 201,
+                    "res_data": {
+                        "detail": "답글 생성 완료되었습니다.",
+                    }
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {
+                        "error": "Error Message",
+                    }
                 },
             ),
         ],
@@ -723,10 +784,22 @@ class CommentWrite(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="201_CREATED",
                 value={
-                    "detail": "댓글 생성 완료되었습니다.",
+                    "status": 201,
+                    "res_data": {
+                        "detail": "댓글 생성 완료되었습니다.",
+                    }
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {
+                        "error": "Error Message",
+                    }
                 },
             ),
         ],
@@ -770,10 +843,22 @@ class CommentDelete(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "detail": "댓글 삭제 완료되었습니다.",
+                    "status": 200,
+                    "res_data": {
+                        "detail": "댓글 삭제 완료되었습니다.",
+                    }
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {
+                        "detail": "잘못된 접근입니다.",
+                    }
                 },
             ),
         ],
@@ -812,10 +897,22 @@ class CommentEdit(APIView):
         examples=[
             OpenApiExample(
                 response_only=True,
-                summary="summary example",
-                name="success_example",
+                name="200_OK",
                 value={
-                    "detail": "댓글 수정 완료되었습니다.",
+                    "status": 200,
+                    "res_data": {
+                        "detail": "댓글 수정 완료되었습니다.",
+                    }
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {
+                        "detail": "잘못된 접근입니다.",
+                    }
                 },
             ),
         ],
