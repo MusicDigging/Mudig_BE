@@ -22,7 +22,7 @@ dotenv.load_dotenv()
 CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
-KAKAO_REST_API_KEY = os.environ['KARLO_API_KEY']
+KAKAO_REST_API_KEY = os.environ['KAKAO_REST_API_KEY']
 STATE = os.environ['STATE']
 
 
@@ -323,7 +323,7 @@ class GoogleCallback(APIView):
 class KakaoLogin(APIView):
     def post(self, request):
         data = {
-            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${CALLBACK_URI}"
+            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={KAKAO_REST_API_KEY}&redirect_uri=http://127.0.0.1:5500/index.html"
         }
         return Response(data)
 
@@ -336,7 +336,7 @@ class KakaoCallback(APIView):
         request_data = {
             'grant_type': 'authorization_code',
             'client_id': KAKAO_REST_API_KEY,
-            'redirect_uri': CALLBACK_URI,
+            'redirect_uri': "http://127.0.0.1:5500/index.html",
             'code': code,
         }
         # header에 content-type을 지정해주는 부분입니다.
@@ -348,23 +348,26 @@ class KakaoCallback(APIView):
         token_json = token_res.json()
         access_token = token_json.get('access_token')
         
+
         if not access_token:
             return Response({'err_msg': 'This AccessToken Doses Not Exist'}, status=status.HTTP_400_BAD_REQUEST)
-
+        
         # kakao 회원정보 요청하는 부분입니다. 헤더에 추가해주는 부분이 구글과는 달라서 주석 달아드려요
         auth_headers = {
-            "Authorization": access_token,
+            "Authorization": f'Bearer ${access_token}',
             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
         }
-        user_info_res = requests.get("https://kapi.kakao.com/v2/user/me", headers=auth_headers)
+
+        user_info_res = requests.post("https://kapi.kakao.com/v2/user/me", headers=auth_headers)
         user_info_json = user_info_res.json()
 
         kakao_account = user_info_json.get('kakao_account')
+
         if not kakao_account:
             return Response({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
         
         email = kakao_account.get('email')
-        
+
         try:
             user = User.objects.get(email=email)
             refresh = RefreshToken.for_user(user)
@@ -386,7 +389,7 @@ class KakaoCallback(APIView):
                 "email": email,
             }
             return Response(data=response, status=status.HTTP_201_CREATED)
-         
+
 # 팔로우
 class FollowAPIView(APIView):
     permission_classes = [IsAuthenticated]
