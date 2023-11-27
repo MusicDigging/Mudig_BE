@@ -47,22 +47,22 @@ class RandomMovieView(APIView):
                     "res_data": [
                         {
                             "id": 14,
-                            "title": "Snowman",
-                            "artist": "Sia",
+                            "song": "Snowman",
+                            "singer": "Sia",
                             "thumbnail": "https://i.ytimg.com/vi/gset79KMmt0/mqdefault.jpg",
                             "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
                             "created_at": "2023-08-24T10:01:38",
                         },{
                             "id": 7,
-                            "title": "Snow",
-                            "artist": "Red Hot Chili Peppers",
+                            "song": "Snow",
+                            "singer": "Red Hot Chili Peppers",
                             "thumbnail": "https://i.ytimg.com/vi/yuFI5KSPAt4/mqdefault.jpg",
                             "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
                             "created_at": "2023-08-24T10:01:38",
                         },{
                             "id": 15,
-                            "title": "Winter Song",
-                            "artist": "Sara Bareilles",
+                            "song": "Winter Song",
+                            "singer": "Sara Bareilles",
                             "thumbnail": "https://i.ytimg.com/vi/budTp-4BGM0/mqdefault.jpg",
                             "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
                             "created_at": "2023-08-24T10:01:38",}
