@@ -31,12 +31,15 @@ def get_music_recommendation(situations, feature, year):
         timeout = 600
     )
     answer = response['choices'][0]['message']['content']
-    response_json = answer.replace("'", "\"")
+    # response_json = answer.replace("'", "\"")
+    response_json = answer.replace("'", "\"").replace('"', '\"')
     print('json', response_json)
     try:
-        response_json = json.loads(response_json.replace("n\"t", "n\'t"))
         print('try', response_json)
+        # response_json = json.loads(response_json.replace("n\"t", "n\'t"))
+        response_json = json.loads(response_json)
     except json.decoder.JSONDecodeError:
+        response_json = response_json.replace("n\"t", "n\'t")
         response_json = json.loads(response_json)
         print('except', response_json)
     return response_json

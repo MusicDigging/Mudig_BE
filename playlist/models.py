@@ -16,6 +16,7 @@ class Music(models.Model):
 class Playlist(models.Model):
     writer = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, null=True, blank=True)
+    content = models.TextField(null=True, blank=True)
     thumbnail = models.CharField(max_length=200, null=True, blank=True)
     genre = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
@@ -23,6 +24,7 @@ class Playlist(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     music = models.ManyToManyField(Music, through='PlaylistMusic', related_name='playlists')
     # music = models.ManyToManyField(Music, through='PlaylistMusicOrder')
+    is_public = models.BooleanField(default=False)
 
 
 class PlaylistMusic(models.Model):
