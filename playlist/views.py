@@ -131,14 +131,18 @@ class EventPlaylistGenerate(APIView):
         genre = random.sample(genres_list,1) # 유저의 프로필에서 장르 랜덤으로 가져오기 
         response_data = event_music_recommendation(situations, genre)
         
+        # is_public은 현우님이 정하시면 됩니다! 추가할지 안할지
+        is_public = request.data['public']
+        
         playlists = response_data['playlist']
         title = response_data['title']
         prompt = response_data['prompt']
+        explanation = response_data['explanation']
         
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -236,7 +240,7 @@ class List(APIView):
 
 
 class Create(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 생성 API",
@@ -267,16 +271,20 @@ class Create(APIView):
         situations = request.data['situations']
         genre = request.data['genre']
         year = request.data['year']
+        is_public = request.data['public']
+        
         response_data = get_music_recommendation(situations, genre, year)
         
         playlists = response_data['playlist']
         title = response_data['title']
         prompt = response_data['prompt']
+        explanation = response_data['explanation']
+        
         
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -284,10 +292,17 @@ class Create(APIView):
             keyword = f'{song} - {singer}'
             page = None
             limit = 1
-            youtube_instance = YouTube(keyword, page, limit)
-            youtube_data = youtube_instance.youtube()
-            link_url = youtube_data['message'][0]['link_url']
-            thumbnail = youtube_data['message'][0]['image_url']
+            print(song, singer)
+            existing_music = Music.objects.filter(singer__iexact=singer, song__iexact=song).first()
+            
+            if existing_music:
+                link_url = existing_music.information
+                thumbnail = existing_music.thumbnail
+            else:
+                youtube_instance = YouTube(keyword, page, limit)
+                youtube_data = youtube_instance.youtube()
+                link_url = youtube_data['message'][0]['link_url']
+                thumbnail = youtube_data['message'][0]['image_url']
             youtube_data = {
                 'information' : link_url,
                 'song' : song,
@@ -301,11 +316,13 @@ class Create(APIView):
                     music_instance = musicserializer.save()
                     music_list.append(music_instance)
                 else:
-                    exist_music = Music.objects.filter(singer=singer, song=song).first()
+                    exist_music = Music.objects.filter(singer__iexact=singer, song__iexact=song).first()
                     music_list.append(exist_music)
             else:
                 return Response(musicserializer.errors)
+        # print('music_list', music_list)
         for order, music_instance in enumerate(music_list, start=1):
+            # print(music_instance)
             PlaylistMusic.objects.create(
                 playlist=playlist_instance,
                 music=music_instance,
@@ -455,16 +472,24 @@ class Update(APIView):
         
         ## move order
         move_music_list_str = request.data.get('move_music', '')
+        # 입력 예제 6,5,4,3,2,1 임의로 정함 
+        move_music_list = [int(item) for item in move_music_list_str.split(',') if item]
         if move_music_list_str:
-            move_music_list = json.loads(move_music_list_str)
+            # move_music_list = json.loads(move_music_list_str)
             move = PlaylistOrderUpdater()
             move.update_order(choice_playlist, move_music_list)
-            
+        
+        serializer = PlaylistSerializer(choice_playlist, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
         ## order music
-        data = {
-            'message' : '수정완료'
-        }
-        return Response(data, status=status.HTTP_200_OK)
+            data = {
+                'message' : '수정완료',
+                "message" : serializer.data
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Add(APIView):
@@ -576,6 +601,29 @@ class Allmusiclist(APIView):
             'music' : all_music
         }
         return Response(data, status=status.HTTP_200_OK)
+
+
+class SearchMusic(APIView):
+    def get(self, request):
+        query = request.data.get('query', None)
+        print(query)
+        if query == '':
+            return Response({"message":"검색 창이 입력되지 않았습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            music = Music.objects.filter(
+                Q(song__contains=query)|
+                Q(singer__contains=query)
+            )
+        musicserializer = MusicSerializer(music, many=True)
+        if musicserializer.data != []:
+            data = {
+                "music_count" : len(musicserializer.data),
+                "music" : musicserializer.data
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "검색한 해당 뮤직이 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
 class Search(APIView):
