@@ -715,7 +715,7 @@ class LikeView(APIView):
                 value={
                     "status": 201,
                     "res_data": {
-                        "detail": "좋아요 성공했습니다.",
+                        "message": "좋아요 성공했습니다.",
                     }
                 },
             ),
@@ -725,7 +725,7 @@ class LikeView(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "detail": "좋아요가 취소되었습니다.",
+                        "message": "좋아요가 취소되었습니다.",
                     }
                 },
             ),
@@ -735,7 +735,7 @@ class LikeView(APIView):
                 value={
                     "status": 404,
                     "res_data": {
-                        "detail": "잘못된 접근입니다.",
+                        "error": "잘못된 접근입니다.",
                     }
                 },
             ),
@@ -748,13 +748,13 @@ class LikeView(APIView):
             playlist = Playlist.objects.get(id=request.data['playlist_id'])
             like, created = Like.objects.get_or_create(playlist=playlist, user=user)
         except ObjectDoesNotExist:
-            return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
 
         if created:
-            return Response({"detail":"좋아요 성공했습니다."}, status=status.HTTP_201_CREATED)
+            return Response({"message":"좋아요 성공했습니다."}, status=status.HTTP_201_CREATED)
         else:
             like.delete()
-            return Response({"detail":"좋아요가 취소되었습니다."}, status=status.HTTP_200_OK)
+            return Response({"message":"좋아요가 취소되었습니다."}, status=status.HTTP_200_OK)
 
 
 class RecommentWrite(APIView):
@@ -780,7 +780,7 @@ class RecommentWrite(APIView):
                 value={
                     "status": 201,
                     "res_data": {
-                        "detail": "답글 생성 완료되었습니다.",
+                        "message": "답글 생성 완료되었습니다.",
                     }
                 },
             ),
@@ -811,11 +811,13 @@ class RecommentWrite(APIView):
         if serializer.is_valid():
             serializer.save()
             datas = {
-                "detail" : "답글 생성 완료되었습니다.",
+                "message" : "답글 생성 완료되었습니다.",
             }
             return Response(datas,status=status.HTTP_201_CREATED)
         else:
-            errors = serializer.errors
+            errors = {
+                "error": serializer.errors
+            }
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         
 
@@ -841,7 +843,7 @@ class CommentWrite(APIView):
                 value={
                     "status": 201,
                     "res_data": {
-                        "detail": "댓글 생성 완료되었습니다.",
+                        "message": "댓글 생성 완료되었습니다.",
                     }
                 },
             ),
@@ -872,11 +874,13 @@ class CommentWrite(APIView):
         if serializer.is_valid():
             serializer.save()
             datas = {
-                "detail" : "댓글 생성 완료되었습니다.",
+                "message" : "댓글 생성 완료되었습니다.",
             }
             return Response(datas,status=status.HTTP_201_CREATED)
         else:
-            errors = serializer.errors
+            errors = {
+                "error": serializer.errors
+            }
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         
 
@@ -901,7 +905,7 @@ class CommentDelete(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "detail": "댓글 삭제 완료되었습니다.",
+                        "message": "댓글 삭제 완료되었습니다.",
                     }
                 },
             ),
@@ -911,7 +915,7 @@ class CommentDelete(APIView):
                 value={
                     "status": 404,
                     "res_data": {
-                        "detail": "잘못된 접근입니다.",
+                        "error": "잘못된 접근입니다.",
                     }
                 },
             ),
@@ -923,13 +927,13 @@ class CommentDelete(APIView):
         try:
             comment = Comment.objects.get(id=request.data['comment_id'], writer=user)
         except ObjectDoesNotExist:
-            return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         
         comment.is_active = False # 논리적 삭제
         comment.save()
 
         datas = {
-            "detail" : "댓글 삭제 완료되었습니다."
+            "message" : "댓글 삭제 완료되었습니다."
         }
         return Response(datas, status=status.HTTP_200_OK)   
 
@@ -956,7 +960,7 @@ class CommentEdit(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "detail": "댓글 수정 완료되었습니다.",
+                        "message": "댓글 수정 완료되었습니다.",
                     }
                 },
             ),
@@ -966,7 +970,7 @@ class CommentEdit(APIView):
                 value={
                     "status": 404,
                     "res_data": {
-                        "detail": "잘못된 접근입니다.",
+                        "error": "잘못된 접근입니다.",
                     }
                 },
             ),
@@ -978,13 +982,13 @@ class CommentEdit(APIView):
         try:
             comment = Comment.objects.get(id=request.data['comment_id'], writer=user)
         except ObjectDoesNotExist:
-            return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         
         comment.content = request.data['content']
         comment.save()
         
         data = {
-            "detail" : "댓글 수정 완료되었습니다."
+            "message" : "댓글 수정 완료되었습니다."
         }
         
         return Response(data, status=status.HTTP_200_OK)
