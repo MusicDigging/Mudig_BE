@@ -162,6 +162,9 @@ class EventPlaylistGenerate(APIView):
         genre = random.sample(genres_list,1) # 유저의 프로필에서 장르 랜덤으로 가져오기 
         response_data = event_music_recommendation(situations, genre)
         
+        # is_public은 현우님이 정하시면 됩니다! 추가할지 안할지
+        is_public = request.data['public']
+        
         playlists = response_data['playlist']
         title = response_data['title']
         prompt = response_data['prompt']
@@ -170,7 +173,7 @@ class EventPlaylistGenerate(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -268,17 +271,19 @@ class Create(APIView):
         genre = request.data['genre']
         year = request.data['year']
         is_public = request.data['public']
+        
         response_data = get_music_recommendation(situations, genre, year)
         
         playlists = response_data['playlist']
         title = response_data['title']
         prompt = response_data['prompt']
+        explanation = response_data['explanation']
         
         
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -286,10 +291,17 @@ class Create(APIView):
             keyword = f'{song} - {singer}'
             page = None
             limit = 1
-            youtube_instance = YouTube(keyword, page, limit)
-            youtube_data = youtube_instance.youtube()
-            link_url = youtube_data['message'][0]['link_url']
-            thumbnail = youtube_data['message'][0]['image_url']
+            print(song, singer)
+            existing_music = Music.objects.filter(singer__iexact=singer, song__iexact=song).first()
+            
+            if existing_music:
+                link_url = existing_music.information
+                thumbnail = existing_music.thumbnail
+            else:
+                youtube_instance = YouTube(keyword, page, limit)
+                youtube_data = youtube_instance.youtube()
+                link_url = youtube_data['message'][0]['link_url']
+                thumbnail = youtube_data['message'][0]['image_url']
             youtube_data = {
                 'information' : link_url,
                 'song' : song,
