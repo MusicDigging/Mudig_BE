@@ -23,7 +23,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ['id', 'name', 'image', 'about', 'genre', 'rep_playlist']
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):

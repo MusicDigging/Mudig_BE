@@ -259,6 +259,13 @@ class ProfileEditView(APIView):
             image_url = uploader.upload('profile')
             serializer.initial_data['image'] = image_url
 
+        rep_playlist_id = request.data.get('rep_playlist')
+        if rep_playlist_id:
+            try:
+                rep_playlist = Playlist.objects.get(pk=rep_playlist_id)
+                serializer.initial_data['rep_playlist'] = rep_playlist.id
+            except Playlist.DoesNotExist:
+                return Response({"error": "대표 플레이리스트가 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
