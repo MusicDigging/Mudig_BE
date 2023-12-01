@@ -227,8 +227,13 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, user_id=None):
-        user = request.user
-        pf_serializer = ProfileSerializer(user.profile)
+        if user_id is None:
+            user = request.user
+        else:
+            user = get_object_or_404(User, pk=user_id)
+        # user = request.user
+        profile = get_object_or_404(Profile, user=user)
+        pf_serializer = ProfileSerializer(profile)
         playlists = Playlist.objects.filter(writer=user)
         py_serializer = PlaylistSerializer(playlists, many=True)
         data = {
