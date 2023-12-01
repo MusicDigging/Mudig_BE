@@ -13,9 +13,11 @@ from rest_framework.permissions import IsAuthenticated
 from .utils import generate_otp, send_otp_via_email
 from playlist.uploads import S3ImgUploader
 from json.decoder import JSONDecodeError
-import dotenv
+import dotenv 
 import os
 import requests
+from playlist.models import Playlist
+from playlist.serializers import PlaylistSerializer
 
 dotenv.load_dotenv()
 
@@ -224,10 +226,17 @@ class ChangePassWord(APIView):
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        profile = get_object_or_404(Profile, user=request.user)
-        serializer = ProfileSerializer(profile)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, user_id=None):
+        user = request.user
+        pf_serializer = ProfileSerializer(user.profile)
+        playlists = Playlist.objects.filter(writer=user)
+        py_serializer = PlaylistSerializer(playlists, many=True)
+        data = {
+            "profile": pf_serializer.data,
+            "playlist": py_serializer.data,
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
 # 프로필 수정
@@ -236,7 +245,6 @@ class ProfileEditView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def put(self, request):
-        # user = User.objects.get(id=2)  # Test User ID
         profile = get_object_or_404(Profile, user=request.user)
         serializer = ProfileSerializer(profile, data=request.data)
 
