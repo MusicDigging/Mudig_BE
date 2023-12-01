@@ -1,18 +1,20 @@
-from .models import Profile, User, Follower
+from drf_spectacular.utils import OpenApiExample, extend_schema, OpenApiParameter, inline_serializer
 from django.shortcuts import get_object_or_404
-from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout
-from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
+from rest_framework import serializers
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .utils import generate_otp, send_otp_via_email
-from playlist.uploads import S3ImgUploader
 from json.decoder import JSONDecodeError
+from playlist.uploads import S3ImgUploader
+from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
+from .utils import generate_otp, send_otp_via_email
+from .models import Profile, User, Follower
 import dotenv
 import os
 import requests
@@ -27,6 +29,41 @@ STATE = os.environ['STATE']
 
 
 class CheckName(APIView):
+    @extend_schema(
+        summary="닉네임 유효성 검사 API",
+        description="닉네임 유효성 검사 API에 대한 설명 입니다.",
+        parameters=[],
+        responses=inline_serializer(
+            name="Res_Name_Validation",
+            fields={
+                "name": serializers.CharField(),
+            },
+        ),
+        request=inline_serializer(
+            name="Req_Name_Validation",
+            fields={
+                "name": serializers.CharField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {"message": "사용 가능한 닉네임입니다."},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error": "이미 사용 중인 닉네임 입니다"},
+                },
+            ),
+        ],
+    )
     def post(self, request):
         name = request.data.get('name')
         
@@ -37,6 +74,59 @@ class CheckName(APIView):
 
 
 class Join(APIView):
+    @extend_schema(
+        summary="회원가입 API",
+        description="회원가입 API에 대한 설명 입니다.",
+        parameters=[],
+        responses=inline_serializer(
+            name="Res_Join_API",
+            fields={
+                "email": serializers.CharField(),
+                "password": serializers.CharField(),
+                "name": serializers.CharField(),
+                "about": serializers.CharField(),
+                "genre": serializers.CharField(),
+                "image": serializers.FileField(),
+            },
+        ),
+        request=inline_serializer(
+            name="Req_Join_API",
+            fields={
+                "email": serializers.CharField(),
+                "password": serializers.CharField(),
+                "name": serializers.CharField(),
+                "about": serializers.CharField(),
+                "genre": serializers.CharField(),
+                "image": serializers.FileField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {"message": "Register success"},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 404,
+                    "res_data": {"error": "프로필 정보를 입력해주세요."},
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 406,
+                    "res_data": {"error": "serializer.errors"},
+                },
+            ),
+        ],
+    )
     def post(self, request):
         
         user_data = {
@@ -95,6 +185,57 @@ class Join(APIView):
 
 
 class SocialJoin(APIView):
+    @extend_schema(
+        summary="소셜 회원가입 API",
+        description="소셜 회원가입 API에 대한 설명 입니다.",
+        parameters=[],
+        responses=inline_serializer(
+            name="Res_SocialJoin_API",
+            fields={
+                "email": serializers.CharField(),
+                "name": serializers.CharField(),
+                "about": serializers.CharField(),
+                "genre": serializers.CharField(),
+                "image": serializers.FileField(),
+            },
+        ),
+        request=inline_serializer(
+            name="Req_SocialJoin_API",
+            fields={
+                "email": serializers.CharField(),
+                "name": serializers.CharField(),
+                "about": serializers.CharField(),
+                "genre": serializers.CharField(),
+                "image": serializers.FileField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {"message": "Register success"},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error": "프로필 정보를 입력해주세요."},
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error": "serializer.errors"},
+                },
+            ),
+        ],
+    )
     def post(self, request):
         
         try:
@@ -142,17 +283,59 @@ class SocialJoin(APIView):
 
             message = {
                 "message" : "Register success",
-                "profile" : pf_serializer.data,
             }
 
             return Response(message, status=status.HTTP_200_OK)
 
 
 class GenerateOtp(APIView):
+    @extend_schema(
+        summary="이메일 OTP 발급 API",
+        description="이메일 OTP 발급 API에 대한 설명 입니다.",
+        parameters=[],
+        responses=inline_serializer(
+            name="Res_GenerateOtp_API",
+            fields={
+                "email": serializers.CharField(),
+            },
+        ),
+        request=inline_serializer(
+            name="Req_GenerateOtp_API",
+            fields={
+                "email": serializers.CharField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {'message': '인증 번호 생성', 'otp': 'A1B2C3'},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error": "이메일 주소를 입력하세요"},
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error": "이미 가입된 사용자입니다."},
+                },
+            ),
+        ],
+    )
     def post(self, request):
         email = request.data.get('email')
         if not email:
-            return Response({'message': '이메일 주소를 입력하세요'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': '이메일 주소를 입력하세요'}, status=status.HTTP_400_BAD_REQUEST)
         
         users = User.objects.filter(email__iexact=email)
         if not users.exists():
@@ -161,17 +344,56 @@ class GenerateOtp(APIView):
             response = {'message': '인증 번호 생성', 'otp': otp}
             return Response(data=response, status=status.HTTP_200_OK)
         else:
-            return Response({'message': '이미 가입된 사용자입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': '이미 가입된 사용자입니다.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Login(APIView):
+    @extend_schema(
+        summary="이메일 OTP 발급 API",
+        description="이메일 OTP 발급 API에 대한 설명 입니다.",
+        parameters=[],
+        responses=UserSerializer,
+        request=inline_serializer(
+            name="Req_GenerateOtp_API",
+            fields={
+                "email": serializers.CharField(),
+                "password": serializers.CharField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "user": {
+                            "email": "test@gmail.com",
+                            "password": "pbkdf2_sha256$600000$6BqIDKqEcCv1OIfR011nnK$9Ylyp9MASpebQ9isL3i8yYD84s0U6BKOk8pfwQGIQMY="
+                        },
+                        "message": "Login success",
+                        "token": {
+                            "access": "eyJhbGci123213iIqwesInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxMjcwMDQwLCJpYXQiOjE3MDEyNjI4NDAsImp0aSI6IjAyNjU5NjkwZmM3YjQ3Njg4YzkxZDUxOThiMDNlMjgyIiwidXNlcl9pZCI6Nn0.TjEFfq-K3Q7Ol31roq7MybH7iJ_r9dW0cbUt9cG9Gac",
+                            "refresh": "eyJhbGc123424zI1NasiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMTM0OTI0MCwiaWF0IjoxNzAxMjYyODQwLCJqdGkiOiIxMzk0ZTdhNWJiM2Y0MzQ0Yjk0OWU3MWYyNDhjMzQ4YyIsInVzZXJfaWQiOjZ9.1eTJK2LgWV8KprCO-HcvaZyg6GjVsnQl7PlkvzuJPhM"
+                        }
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="401_UNAUTHORIZED",
+                value={
+                    "status": 401,
+                    "res_data": {"error": "이메일 또는 비밀번호가 일치하지 않습니다."},
+                },
+            ),
+        ],
+    )
     def post(self, request):
         user = authenticate(
             email = request.data.get('email'),
             password = request.data.get('password')
         )
-        
-        print(user)
         if user is not None:
             serializer = UserSerializer(user)
             
@@ -191,12 +413,29 @@ class Login(APIView):
             )
             return res
         else:
-            return Response({"message": "인증 실패"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"error": "이메일 또는 비밀번호가 일치하지 않습니다."}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class Logout(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="로그아웃 API",
+        description="로그아웃 API에 대한 설명 입니다.",
+        parameters=[],
+        responses=UserSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "message": "로그아웃 성공",
+                    },
+                }
+            ),
+        ],
+    )
     def post(self, request):
         user = request.user
         refresh_token = RefreshToken.for_user(user)
@@ -225,8 +464,9 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        profile = get_object_or_404(Profile, user=request.user)
-        serializer = ProfileSerializer(profile)
+        user = request.user
+        # profile = get_object_or_404(Profile, user=request.user)
+        serializer = ProfileSerializer(user.profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

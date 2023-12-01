@@ -33,7 +33,7 @@ class RandomMovieView(APIView):
         tags=["Random Movie"],  # tags : 문서상 보여줄 묶음의 단위
         responses=MusicSerializer,
         request=inline_serializer(
-            name="Random Movie Play",
+            name="Random_Movie_Play",
             fields={
                 "already_musiclist": serializers.ListField(),
             },
@@ -104,7 +104,7 @@ class EventPlaylistGenerate(APIView):
         tags=["Event Playlist Generate"],
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Event Playlist Create",
+            name="Event_Playlist_Generate",
             fields={
                 "situations": serializers.CharField(),
             },
@@ -182,7 +182,6 @@ class EventPlaylistGenerate(APIView):
         #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
         return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
 
-
 # Create your views here.
 class List(APIView):
     permission_classes = [IsAuthenticated]
@@ -240,14 +239,14 @@ class List(APIView):
 
 
 class Create(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 생성 API",
         description="플레이리스트 생성에 대한 API 입니다.",
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Create",
+            name="Playlist_Create",
             fields={
                 "situations": serializers.CharField(),
                 "genre": serializers.CharField(),
@@ -389,7 +388,7 @@ class Delete(APIView):
         description="플레이리스트 삭제에 대한 API 입니다.",
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Update",
+            name="Playlist_Delete",
             fields={
                 "playlist_id": serializers.IntegerField(),
             },
@@ -427,7 +426,7 @@ class Update(APIView):
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Update",
+            name="Playlist_Update",
             fields={
                 "del_music_list": serializers.ListField(),
                 "add_music_list": serializers.ListField(),
@@ -500,7 +499,7 @@ class Add(APIView):
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Add",
+            name="Playlist_Add",
             fields={
                 "playlist_id": serializers.IntegerField(),
                 "music": serializers.IntegerField(),
@@ -703,7 +702,7 @@ class LikeView(APIView):
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Add",
+            name="Playlist_Like",
             fields={
                 "playlist_id": serializers.IntegerField(),
             },
@@ -766,7 +765,7 @@ class RecommentWrite(APIView):
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Recomment Write",
+            name="Playlist_Recomment_Write",
             fields={
                 "content": serializers.CharField(),
                 "playlist_id": serializers.IntegerField(),
@@ -830,7 +829,7 @@ class CommentWrite(APIView):
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Comment Write",
+            name="Playlist_Comment_Write",
             fields={
                 "content": serializers.CharField(),
                 "playlist_id": serializers.IntegerField(),
@@ -893,7 +892,7 @@ class CommentDelete(APIView):
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Comment Delete",
+            name="Playlist_Comment_Delete",
             fields={
                 "comment_id": serializers.IntegerField(),
             },
@@ -947,7 +946,7 @@ class CommentEdit(APIView):
         parameters=[],
         responses=PlaylistSerializer,
         request=inline_serializer(
-            name="Playlist Comment Delete",
+            name="Playlist_Comment_Edit",
             fields={
                 "comment_id": serializers.IntegerField(),
                 "content": serializers.CharField()
