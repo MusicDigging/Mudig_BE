@@ -19,6 +19,7 @@ urlpatterns = [
     path("login/kakao/", KakaoLogin.as_view(), name='kakao-login'),
     path("login/kakao/callback/", KakaoCallback.as_view(), name='kakao-callback'),
     path("profile/", ProfileView.as_view(), name='profile'),
+    path('profile/<int:user_id>/', ProfileView.as_view(), name='profile-detail'),
     path("profile/edit/", ProfileEditView.as_view(), name='profile-edit'),
     path('<int:user_id>/follow/', FollowAPIView.as_view(), name='follow'),
     path('<int:user_id>/unfollow/', UnfollowAPIView.as_view(), name='unfollow'),

@@ -12,6 +12,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from json.decoder import JSONDecodeError
 from playlist.uploads import S3ImgUploader
+from playlist.models import Playlist
+from playlist.serializers import PlaylistSerializer
 from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
 from .utils import generate_otp, send_otp_via_email
 from .models import Profile, User, Follower
@@ -463,11 +465,22 @@ class ChangePassWord(APIView):
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        user = request.user
-        # profile = get_object_or_404(Profile, user=request.user)
-        serializer = ProfileSerializer(user.profile)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, user_id=None):
+        if user_id is None:
+            user = request.user
+        else:
+            user = get_object_or_404(User, pk=user_id)
+        # user = request.user
+        profile = get_object_or_404(Profile, user=user)
+        pf_serializer = ProfileSerializer(profile)
+        playlists = Playlist.objects.filter(writer=user)
+        py_serializer = PlaylistSerializer(playlists, many=True)
+        data = {
+            "profile": pf_serializer.data,
+            "playlist": py_serializer.data,
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
 # 프로필 수정
@@ -476,7 +489,6 @@ class ProfileEditView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def put(self, request):
-        # user = User.objects.get(id=2)  # Test User ID
         profile = get_object_or_404(Profile, user=request.user)
         serializer = ProfileSerializer(profile, data=request.data)
 
@@ -486,6 +498,13 @@ class ProfileEditView(APIView):
             image_url = uploader.upload('profile')
             serializer.initial_data['image'] = image_url
 
+        rep_playlist_id = request.data.get('rep_playlist')
+        if rep_playlist_id:
+            try:
+                rep_playlist = Playlist.objects.get(pk=rep_playlist_id)
+                serializer.initial_data['rep_playlist'] = rep_playlist.id
+            except Playlist.DoesNotExist:
+                return Response({"error": "대표 플레이리스트가 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
