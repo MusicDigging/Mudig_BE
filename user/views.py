@@ -78,8 +78,8 @@ class CheckName(APIView):
 
 class Join(APIView):
     @extend_schema(
-        summary="회원가입 API",
-        description="회원가입 API에 대한 설명 입니다.",
+        summary="자체 회원가입 API",
+        description="자체 회원가입 API에 대한 설명 입니다.",
         parameters=[],
         tags=["User"],
         responses=inline_serializer(
@@ -355,13 +355,13 @@ class GenerateOtp(APIView):
 
 class Login(APIView):
     @extend_schema(
-        summary="이메일 OTP 발급 API",
-        description="이메일 OTP 발급 API에 대한 설명 입니다.",
+        summary="자체 로그인 API",
+        description="자체 로그인 API에 대한 설명 입니다.",
         parameters=[],
         tags=["User"],
         responses=UserSerializer,
         request=inline_serializer(
-            name="Req_GenerateOtp_API",
+            name="Login_API",
             fields={
                 "email": serializers.CharField(),
                 "password": serializers.CharField(),
@@ -619,6 +619,7 @@ class Withdrawal(APIView):
         summary="회원 탈퇴 API",
         description="회원 탈퇴 API에 대한 설명 입니다.",
         parameters=[],
+        responses=UserSerializer,
         tags=["User"],
         examples=[
             OpenApiExample(
@@ -649,6 +650,7 @@ class GoogleLogin(APIView):
         summary="구글 로그인 API",
         description="구글 로그인 API에 대한 설명 입니다.",
         parameters=[],
+        responses=UserSerializer,
         tags=["Social Login"],
         examples=[
             OpenApiExample(
@@ -775,6 +777,7 @@ class KakaoLogin(APIView):
         summary="카카오 로그인 API",
         description="카카오 로그인 API에 대한 설명 입니다.",
         parameters=[],
+        responses=UserSerializer,
         tags=["Social Login"],
         examples=[
             OpenApiExample(
