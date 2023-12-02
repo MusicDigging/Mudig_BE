@@ -35,6 +35,7 @@ class CheckName(APIView):
         summary="닉네임 유효성 검사 API",
         description="닉네임 유효성 검사 API에 대한 설명 입니다.",
         parameters=[],
+        tags=["User"],
         responses=inline_serializer(
             name="Res_Name_Validation",
             fields={
@@ -80,6 +81,7 @@ class Join(APIView):
         summary="회원가입 API",
         description="회원가입 API에 대한 설명 입니다.",
         parameters=[],
+        tags=["User"],
         responses=inline_serializer(
             name="Res_Join_API",
             fields={
@@ -191,6 +193,7 @@ class SocialJoin(APIView):
         summary="소셜 회원가입 API",
         description="소셜 회원가입 API에 대한 설명 입니다.",
         parameters=[],
+        tags=["Social Login"],
         responses=inline_serializer(
             name="Res_SocialJoin_API",
             fields={
@@ -295,6 +298,7 @@ class GenerateOtp(APIView):
         summary="이메일 OTP 발급 API",
         description="이메일 OTP 발급 API에 대한 설명 입니다.",
         parameters=[],
+        tags=["User"],
         responses=inline_serializer(
             name="Res_GenerateOtp_API",
             fields={
@@ -354,6 +358,7 @@ class Login(APIView):
         summary="이메일 OTP 발급 API",
         description="이메일 OTP 발급 API에 대한 설명 입니다.",
         parameters=[],
+        tags=["User"],
         responses=UserSerializer,
         request=inline_serializer(
             name="Req_GenerateOtp_API",
@@ -424,6 +429,7 @@ class Logout(APIView):
         summary="로그아웃 API",
         description="로그아웃 API에 대한 설명 입니다.",
         parameters=[],
+        tags=["User"],
         responses=UserSerializer,
         examples=[
             OpenApiExample(
@@ -448,13 +454,44 @@ class Logout(APIView):
 
 class ChangePassWord(APIView):
     permission_classes = [IsAuthenticated]
-        
+    @extend_schema(
+        summary="비밀번호 변경 API",
+        description="비밀번호 변경 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["User"],
+        responses=ChangePasswordSerializer,
+        request=inline_serializer(
+            name="Change_Password",
+            fields={
+                "old_password": serializers.CharField(),
+                "new_password": serializers.CharField()
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {"message": "비밀번호가 성공적으로 변경되었습니다."},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error": "현재 비밀번호가 일치하지 않습니다."},
+                },
+            ),
+        ],
+    )
     def put(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
         
         if serializer.is_valid():
             if not request.user.check_password(serializer.validated_data['old_password']):
-                return Response({"messsage": "현재 비밀번호가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": "현재 비밀번호가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
                 
             request.user.set_password(serializer.validated_data['new_password'])
             request.user.save()
@@ -464,13 +501,42 @@ class ChangePassWord(APIView):
 # 프로필 조회
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
-
-    def get(self, request, user_id=None):
-        if user_id is None:
-            user = request.user
-        else:
-            user = get_object_or_404(User, pk=user_id)
-        # user = request.user
+    @extend_schema(
+        summary="프로필 조회 API",
+        description="프로필 조회 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Profile"],
+        responses=inline_serializer(
+            name="Get_Profile",
+            fields={
+                "profile": serializers.CharField(),
+                "playlist": serializers.CharField()
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "profile": "profile",
+                        "playlist": "Playlist"
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {"error": "프로필 정보를 찾을 수 없습니다."},
+                },
+            ),
+        ],
+    )
+    def get(self, request, user_id):
+        user = get_object_or_404(User,pk=user_id)
         profile = get_object_or_404(Profile, user=user)
         pf_serializer = ProfileSerializer(profile)
         playlists = Playlist.objects.filter(writer=user)
@@ -487,7 +553,42 @@ class ProfileView(APIView):
 class ProfileEditView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
-
+    @extend_schema(
+        summary="프로필 수정 API",
+        description="프로필 수정 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Profile"],
+        responses=ProfileSerializer,
+        request=ProfileSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "message": "프로필 수정이 완료되었습니다."
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {"error": "프로필 정보를 찾을 수 없습니다."},
+                },
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error": "올바르지 않은 프로필 데이터입니다."},
+                },
+            ),
+        ],
+    )
     def put(self, request):
         profile = get_object_or_404(Profile, user=request.user)
         serializer = ProfileSerializer(profile, data=request.data)
@@ -507,14 +608,31 @@ class ProfileEditView(APIView):
                 return Response({"error": "대표 플레이리스트가 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({"message": "프로필 수정이 완료되었습니다."}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Withdrawal(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="회원 탈퇴 API",
+        description="회원 탈퇴 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["User"],
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "message": "회원탈퇴 되었습니다."
+                    },
+                }
+            ),
+        ],
+    )
     def delete(self, request):
         user = request.user
         refresh_token = RefreshToken.for_user(user)
@@ -527,14 +645,87 @@ class Withdrawal(APIView):
 
 
 class GoogleLogin(APIView):
-    def post(self, request):
+    @extend_schema(
+        summary="구글 로그인 API",
+        description="구글 로그인 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Social Login"],
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "data": f"https://accounts.google.com/o/oauth2/v2/auth?client_id=GOOGLE_CLIENT_ID&response_type=code&redirect_uri=CALLBACK_URI&scope=https://www.googleapis.com/auth/userinfo.email"
+                    },
+                }
+            ),
+        ],
+    )
+    def get(self, request):
         data = {
             'url': f"https://accounts.google.com/o/oauth2/v2/auth?client_id={GOOGLE_CLIENT_ID}&response_type=code&redirect_uri={CALLBACK_URI}&scope=https://www.googleapis.com/auth/userinfo.email"
         }
-        return Response(data)
+        return Response(data,status=status.HTTP_200_OK)
 
 
 class GoogleCallback(APIView):
+    @extend_schema(
+        summary="구글 로그인 콜백 API",
+        description="구글 로그인 콜백 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Social Login"],
+        responses=ProfileSerializer,
+        request=inline_serializer(
+            name="GoogleCallback",
+            fields={
+                "code": serializers.CharField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="가입이력있음",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "message": "로그인 성공",
+                        "user": {
+                            "email": "test@gmail.com",
+                            "password": "pbkdf2_sha256$600000$6BqIDKqEcCv1OIfR011nnK$9Ylyp9MASpebQ9isL3i8yYD84s0U6BKOk8pfwQGIQMY="
+                        },
+                        "token": {
+                            "access": "eyJhbGci123213iIqwesInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxMjcwMDQwLCJpYXQiOjE3MDEyNjI4NDAsImp0aSI6IjAyNjU5NjkwZmM3YjQ3Njg4YzkxZDUxOThiMDNlMjgyIiwidXNlcl9pZCI6Nn0.TjEFfq-K3Q7Ol31roq7MybH7iJ_r9dW0cbUt9cG9Gac",
+                            "refresh": "eyJhbGc123424zI1NasiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMTM0OTI0MCwiaWF0IjoxNzAxMjYyODQwLCJqdGkiOiIxMzk0ZTdhNWJiM2Y0MzQ0Yjk0OWU3MWYyNDhjMzQ4YyIsInVzZXJfaWQiOjZ9.1eTJK2LgWV8KprCO-HcvaZyg6GjVsnQl7PlkvzuJPhM"
+                        }
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="가입이력없음",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "email": "test@gmail.com",
+                        "message": "프로필 생성 진행"
+                        
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {
+                        "error": f"failed to get email"
+                    },
+                }
+            ),
+        ],
+    )
     def post(self, request):
         code = request.data['code']
 
@@ -552,7 +743,7 @@ class GoogleCallback(APIView):
         email_req_status = email_req.status_code
 
         if email_req_status != 200:
-            return Response({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
 
         email_req_json = email_req.json()
         email = email_req_json.get('email')
@@ -568,7 +759,7 @@ class GoogleCallback(APIView):
             response = {
                 "message": "로그인 성공",
                 "token": token,
-                "user_info": serializer.data,
+                "user": serializer.data,
             }
             return Response(data=response, status=status.HTTP_200_OK)
         except User.DoesNotExist:
@@ -580,14 +771,97 @@ class GoogleCallback(APIView):
 
 
 class KakaoLogin(APIView):
-    def post(self, request):
+    @extend_schema(
+        summary="카카오 로그인 API",
+        description="카카오 로그인 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Social Login"],
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "data": f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=KAKAO_REST_API_KEY&redirect_uri=http://127.0.0.1:5500/index.html"
+                    },
+                }
+            ),
+        ],
+    )
+    def get(self, request):
         data = {
             'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={KAKAO_REST_API_KEY}&redirect_uri=http://127.0.0.1:5500/index.html"
         }
-        return Response(data)
+        return Response(data,status=status.HTTP_200_OK)
 
 
 class KakaoCallback(APIView):
+    @extend_schema(
+        summary="카카오 로그인 콜백 API",
+        description="카카오 로그인 콜백 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Social Login"],
+        responses=ProfileSerializer,
+        request=inline_serializer(
+            name="KakaoCallback",
+            fields={
+                "code": serializers.CharField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="가입이력있음",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "message": "로그인 성공",
+                        "user": {
+                            "email": "test@gmail.com",
+                            "password": "pbkdf2_sha256$600000$6BqIDKqEcCv1OIfR011nnK$9Ylyp9MASpebQ9isL3i8yYD84s0U6BKOk8pfwQGIQMY="
+                        },
+                        "token": {
+                            "access": "eyJhbGci123213iIqwesInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxMjcwMDQwLCJpYXQiOjE3MDEyNjI4NDAsImp0aSI6IjAyNjU5NjkwZmM3YjQ3Njg4YzkxZDUxOThiMDNlMjgyIiwidXNlcl9pZCI6Nn0.TjEFfq-K3Q7Ol31roq7MybH7iJ_r9dW0cbUt9cG9Gac",
+                            "refresh": "eyJhbGc123424zI1NasiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMTM0OTI0MCwiaWF0IjoxNzAxMjYyODQwLCJqdGkiOiIxMzk0ZTdhNWJiM2Y0MzQ0Yjk0OWU3MWYyNDhjMzQ4YyIsInVzZXJfaWQiOjZ9.1eTJK2LgWV8KprCO-HcvaZyg6GjVsnQl7PlkvzuJPhM"
+                        }
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="가입이력없음",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "email": "test@gmail.com",
+                        "message": "프로필 생성 진행"
+                        
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {
+                        "error": f"failed to get email"
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {
+                        "error": f"This AccessToken Doses Not Exist"
+                    },
+                }
+            ),
+        ],
+    )
     def post(self, request):
         code = request.data['code']
 
@@ -609,7 +883,7 @@ class KakaoCallback(APIView):
         
 
         if not access_token:
-            return Response({'err_msg': 'This AccessToken Doses Not Exist'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'This AccessToken Doses Not Exist'}, status=status.HTTP_400_BAD_REQUEST)
         
         # kakao 회원정보 요청하는 부분입니다. 헤더에 추가해주는 부분이 구글과는 달라서 주석 달아드려요
         auth_headers = {
@@ -623,7 +897,7 @@ class KakaoCallback(APIView):
         kakao_account = user_info_json.get('kakao_account')
 
         if not kakao_account:
-            return Response({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
         
         email = kakao_account.get('email')
 
@@ -647,22 +921,77 @@ class KakaoCallback(APIView):
                 "message": "프로필 생성 진행",
                 "email": email,
             }
-            return Response(data=response, status=status.HTTP_201_CREATED)
+            return Response(data=response, status=status.HTTP_200_OK)
 
 # 팔로우
 class FollowAPIView(APIView):
     permission_classes = [IsAuthenticated]
-
-    def post(self, request, user_id):
+    @extend_schema(
+        summary="팔로우 기능 API",
+        description="팔로우 기능 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Follow"],
+        responses=UserFollowSerializer,
+        request=inline_serializer(
+            name="FollowAPIView",
+            fields={
+                "user_id": serializers.IntegerField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="201_CREATED",
+                value={
+                    "status": 201,
+                    "res_data": {
+                        "message": "팔로우 성공"
+                        
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {
+                        "error": f"이미 팔로우한 사용자입니다."
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {
+                        "error": f"자기 자신을 팔로우할 수 없습니다."
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {
+                        "error": f"해당 유저를 찾을 수 없습니다."
+                    },
+                }
+            ),
+        ],
+    )
+    def post(self, request):
+        user_id = request.data['user_id']
         target_user = get_object_or_404(User, pk=user_id)
-        # follower_user = User.objects.get(pk=3)  # Test User ID
 
         if request.user == target_user:
             return Response({"error": "자기 자신을 팔로우할 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         _, created = Follower.objects.get_or_create(target_id=target_user, follower_id=request.user)
         if created:
-            return Response({"status": "팔로우 성공"}, status=status.HTTP_201_CREATED)
+            return Response({"message": "팔로우 성공"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"error": "이미 팔로우한 사용자입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -670,34 +999,126 @@ class FollowAPIView(APIView):
 # 언팔로우
 class UnfollowAPIView(APIView):
     permission_classes = [IsAuthenticated]
-
-    def delete(self, request, user_id):
+    @extend_schema(
+        summary="언팔로우 기능 API",
+        description="언팔로우 기능 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Follow"],
+        responses=UserFollowSerializer,
+        request=inline_serializer(
+            name="FollowAPIView",
+            fields={
+                "user_id": serializers.IntegerField(),
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="201_CREATED",
+                value={
+                    "status": 201,
+                    "res_data": {
+                        "message": "언팔로우 성공"
+                        
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {
+                        "error": f"해당 유저를 찾을 수 없습니다."
+                    },
+                }
+            ),
+        ],
+    )
+    def delete(self, request):
+        user_id = request.data['user_id']
         target_user = get_object_or_404(User, pk=user_id)
         # follower_user = User.objects.get(pk=3)  # Test User ID
         follow_relation = get_object_or_404(Follower, target_id=target_user, follower_id=request.user)
         follow_relation.delete()
-        return Response({"status": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "언팔로우 성공"}, status=status.HTTP_204_NO_CONTENT)
 
 
 # 팔로워 목록 조회
 class FollowersListView(APIView):
     permission_classes = [IsAuthenticated]
-
+    @extend_schema(
+        summary="팔로워 목록 조회 기능 API",
+        description="팔로워 목록 조회 기능 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Follow"],
+        responses=UserFollowSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "follow_list": "serializer.data"
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {
+                        "error": f"해당 유저를 찾을 수 없습니다."
+                    },
+                }
+            ),
+        ],
+    )
     def get(self, request, user_id):
         # test_user = get_object_or_404(User, pk=3) # Test User ID
         user = get_object_or_404(User, pk=user_id)
         followers = [follower.follower_id for follower in user.followers.all()]
         serializer = UserFollowSerializer(followers, many=True, context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"follower_list": serializer.data}, status=status.HTTP_200_OK)
 
 
 # 팔로잉 목록 조회
 class FollowingListView(APIView):
     permission_classes = [IsAuthenticated]
-    
+    @extend_schema(
+        summary="팔로잉 목록 조회 기능 API",
+        description="팔로잉 목록 조회 기능 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["Follow"],
+        responses=UserFollowSerializer,
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {
+                        "following_list": "serializer.data"
+                    },
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="404_NOT_FOUND",
+                value={
+                    "status": 404,
+                    "res_data": {
+                        "error": f"해당 유저를 찾을 수 없습니다."
+                    },
+                }
+            ),
+        ],
+    )
     def get(self, request, user_id):
         # test_user = get_object_or_404(User, pk=3) # Test User ID
         user = get_object_or_404(User, pk=user_id)
         following = [follow.target_id for follow in user.following.all()]
         serializer = UserFollowSerializer(following, many=True, context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"following_list": serializer.data}, status=status.HTTP_200_OK)
