@@ -29,7 +29,7 @@ GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
 KAKAO_REST_API_KEY = os.environ['KAKAO_REST_API_KEY']
 STATE = os.environ['STATE']
 
-
+ 
 class CheckName(APIView):
     @extend_schema(
         summary="닉네임 유효성 검사 API",
