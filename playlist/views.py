@@ -184,7 +184,7 @@ class EventPlaylistGenerate(APIView):
 
 # Create your views here.
 class List(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 메인 화면",
@@ -208,7 +208,6 @@ class List(APIView):
         recent_serializer = PlaylistSerializer(playlist_all, many=True).data
         ## 내가 만든 플리 
         user = request.user
-
         if user:
             user = User.objects.get(email = user).id
             playlist_mine = Playlist.objects.filter(writer=user)[:3]
@@ -228,18 +227,21 @@ class List(APIView):
             recommend_serializer = ''
 
         ## 핫한 플리(좋아요 많은 순)
+        most_liked_playlists = Playlist.objects.annotate(count_like=Count('like')).order_by('-count_like')
+        liked_serializer = PlaylistSerializer(most_liked_playlists, many=True).data[:3]
         
         mudig_playlist = {
             'playlist_all' : recent_serializer,
             'my_playlist' : mine_serializer,
-            'recommend_pli' : recommend_serializer
+            'recommend_pli' : recommend_serializer,
+            'liked_playlist' : liked_serializer
         }
         
-        return Response(mudig_playlist)
+        return Response(mudig_playlist, status=status.HTTP_200_OK)
 
 
 class Create(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 생성 API",
@@ -265,7 +267,9 @@ class Create(APIView):
         ],
     )
     def post(self, request):
-        user = request.user
+        # user = request.user
+        user = 'admin@admin.com'
+        user = User.objects.get(email=user)
         
         situations = request.data['situations']
         genre = request.data['genre']
@@ -334,7 +338,7 @@ class Create(APIView):
 
 
 class Detail(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 디테일 API",
@@ -372,10 +376,20 @@ class Detail(APIView):
         
         music_serializer = MusicSerializer(sorted_music_instances, many=True)
         playlist_serializer = PlaylistSerializer(playlist_instance)
-        
+        user = Profile.objects.get(user = playlist_serializer.data['writer'])
+        profile = ProfileSerializer(user)
+        comment = Comment.objects.filter(playlist=playlist_instance)
+        commentserializer = CommentSerializer(comment, many=True)
+        comment = {
+            'comment' : commentserializer.data,
+            
+        }
         data = {
+            'user' : profile.data,
+            'comments' : commentserializer.data,
             'playlist': playlist_serializer.data,
-            'music': music_serializer.data
+            'music': music_serializer.data,
+            
         }
 
         return Response(data, status=status.HTTP_200_OK)
