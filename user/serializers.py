@@ -6,7 +6,7 @@ from playlist.models import Playlist
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ['id', 'email']
 
     def create(self, validated_data):
         user = User.objects.create(
