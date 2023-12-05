@@ -758,7 +758,7 @@ class GoogleCallback(APIView):
                 "access": str(refresh.access_token),
                 "refresh": str(refresh)
             }
-            serializer = UserSerializer(user) # 변동 가능성 있음
+            serializer = ProfileSerializer(user.profile)
             response = {
                 "message": "로그인 성공",
                 "token": token,
@@ -912,7 +912,7 @@ class KakaoCallback(APIView):
                 "access": str(refresh.access_token),
                 "refresh": str(refresh)
             }
-            serializer = UserSerializer(user) # 변동 가능성 있음
+            serializer = ProfileSerializer(user.profile) # 변동 가능성 있음
             response = {
                 "message": "로그인 성공",
                 "token": token,
