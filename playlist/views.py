@@ -208,7 +208,6 @@ class List(APIView):
         recent_serializer = PlaylistSerializer(playlist_all, many=True).data
         ## 내가 만든 플리 
         user = request.user
-
         if user:
             user = User.objects.get(email = user).id
             playlist_mine = Playlist.objects.filter(writer=user)[:3]
@@ -228,14 +227,17 @@ class List(APIView):
             recommend_serializer = ''
 
         ## 핫한 플리(좋아요 많은 순)
+        most_liked_playlists = Playlist.objects.annotate(count_like=Count('like')).order_by('-count_like')
+        liked_serializer = PlaylistSerializer(most_liked_playlists, many=True).data[:3]
         
         mudig_playlist = {
             'playlist_all' : recent_serializer,
             'my_playlist' : mine_serializer,
-            'recommend_pli' : recommend_serializer
+            'recommend_pli' : recommend_serializer,
+            'liked_playlist' : liked_serializer
         }
         
-        return Response(mudig_playlist)
+        return Response(mudig_playlist, status=status.HTTP_200_OK)
 
 
 class Create(APIView):
