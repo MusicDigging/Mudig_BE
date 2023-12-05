@@ -6,7 +6,7 @@ from playlist.models import Playlist
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email']
+        fields = ['id', 'email', 'password']
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -20,10 +20,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-
+    email = serializers.CharField(source='user.email', read_only=True)
     class Meta:
         model = Profile
-        fields = ['id', 'name', 'image', 'about', 'genre', 'rep_playlist']
+        fields = ['id', 'name', 'image', 'about', 'genre', 'email', 'rep_playlist']
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):

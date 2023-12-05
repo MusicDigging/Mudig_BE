@@ -173,7 +173,7 @@ class Join(APIView):
                 profile_data['image'] = uploaded_url
             
             pf_serializer = ProfileSerializer(profile, profile_data)
-
+            
             if pf_serializer.is_valid():
                 pf_serializer.save()
             else:
@@ -401,9 +401,9 @@ class Login(APIView):
             email = request.data.get('email'),
             password = request.data.get('password')
         )
+        
         if user is not None:
-            serializer = UserSerializer(user)
-            
+            serializer = ProfileSerializer(user.profile)
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
             access_token = str(token.access_token)
@@ -497,6 +497,7 @@ class ChangePassWord(APIView):
             request.user.save()
             
             return Response({"message": "비밀번호가 성공적으로 변경되었습니다."}, status=status.HTTP_200_OK)
+
 
 # 프로필 조회
 class ProfileView(APIView):
