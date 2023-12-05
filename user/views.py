@@ -376,7 +376,7 @@ class Login(APIView):
                     "res_data": {
                         "user": {
                             "email": "test@gmail.com",
-                            "password": "pbkdf2_sha256$600000$6BqIDKqEcCv1OIfR011nnK$9Ylyp9MASpebQ9isL3i8yYD84s0U6BKOk8pfwQGIQMY="
+                            "id": "1"
                         },
                         "message": "Login success",
                         "token": {
