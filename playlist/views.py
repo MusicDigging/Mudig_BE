@@ -81,8 +81,8 @@ class RandomMovieView(APIView):
         try:
             max_id = Music.objects.all().aggregate(max_id=Max("id"))['max_id'] # id Max 값 가져오기
             all_musiclist = [i for i in range(1,max_id+1)] # 모든 뮤직 리스트
-            already_musiclist = [4,5,6] # 이미 본 리스트들
-            # already_musiclist = request.data.get('already_musiclist')
+            # already_musiclist = [4,5,6] # 이미 본 리스트들
+            already_musiclist = request.data.get('already_musiclist')
             result = list(set(all_musiclist) - set(already_musiclist)) # 리스트 차집합
             
             random_musics = random.sample(result,3) # 랜덤 3개 뽑기
@@ -122,8 +122,7 @@ class EventPlaylistGenerate(APIView):
     )
     def post(self, request):
         # 봉수님 코드 참고
-        user = 'admin@admin.com'
-        user = User.objects.get(email = user)
+        user = request.user
         genres = user.genre
         genres_list = genres.split(',')
         
@@ -196,7 +195,7 @@ class List(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"playlist_all":['objects'],"my_playlist":['objects'],"recommend_pli":['objects']},
+                    "res_data": {"playlist_all":['objects'],"my_playlist":['objects'],"recommend_pli":['objects'],"liked_playlist":['objects']},
                 },
             ),
         ],
@@ -267,9 +266,7 @@ class Create(APIView):
         ],
     )
     def post(self, request):
-        # user = request.user
-        user = 'admin@admin.com'
-        user = User.objects.get(email=user)
+        user = request.user
         
         situations = request.data['situations']
         genre = request.data['genre']
@@ -323,22 +320,17 @@ class Create(APIView):
                     music_list.append(exist_music)
             else:
                 return Response(musicserializer.errors)
-        # print('music_list', music_list)
         for order, music_instance in enumerate(music_list, start=1):
-            # print(music_instance)
             PlaylistMusic.objects.create(
                 playlist=playlist_instance,
                 music=music_instance,
                 order=order
             )
-        # if created:
-        #     # playlist_instance.music.add(*music_list)
-        #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
         return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
 
 
 class Detail(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 디테일 API",
@@ -423,8 +415,6 @@ class Delete(APIView):
         delete_img = S3ImgUploader(playlist.thumbnail)
         delete_img.delete()
         playlist.delete()
-        # playlist.is_active = False
-        # playlist.save()
         data = {
             "message" : "플레이리스트 삭제 완료",
             "playlist" : playlist.is_active
