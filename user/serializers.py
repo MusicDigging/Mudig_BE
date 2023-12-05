@@ -23,7 +23,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='user.email', read_only=True)
     class Meta:
         model = Profile
-        fields = ['id', 'name', 'image', 'about', 'genre', 'email']
+        fields = ['id', 'name', 'image', 'about', 'genre', 'email', 'rep_playlist']
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
