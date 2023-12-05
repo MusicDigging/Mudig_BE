@@ -173,7 +173,7 @@ class Join(APIView):
                 profile_data['image'] = uploaded_url
             
             pf_serializer = ProfileSerializer(profile, profile_data)
-
+            
             if pf_serializer.is_valid():
                 pf_serializer.save()
             else:
@@ -401,9 +401,9 @@ class Login(APIView):
             email = request.data.get('email'),
             password = request.data.get('password')
         )
+        
         if user is not None:
-            serializer = UserSerializer(user)
-            
+            serializer = ProfileSerializer(user.profile)
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
             access_token = str(token.access_token)
@@ -497,6 +497,7 @@ class ChangePassWord(APIView):
             request.user.save()
             
             return Response({"message": "비밀번호가 성공적으로 변경되었습니다."}, status=status.HTTP_200_OK)
+
 
 # 프로필 조회
 class ProfileView(APIView):
@@ -692,11 +693,11 @@ class GoogleCallback(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "message": "로그인 성공",
                         "user": {
                             "email": "test@gmail.com",
-                            "password": "pbkdf2_sha256$600000$6BqIDKqEcCv1OIfR011nnK$9Ylyp9MASpebQ9isL3i8yYD84s0U6BKOk8pfwQGIQMY="
+                            "id": "1"
                         },
+                        "message": "Login success",
                         "token": {
                             "access": "eyJhbGci123213iIqwesInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxMjcwMDQwLCJpYXQiOjE3MDEyNjI4NDAsImp0aSI6IjAyNjU5NjkwZmM3YjQ3Njg4YzkxZDUxOThiMDNlMjgyIiwidXNlcl9pZCI6Nn0.TjEFfq-K3Q7Ol31roq7MybH7iJ_r9dW0cbUt9cG9Gac",
                             "refresh": "eyJhbGc123424zI1NasiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMTM0OTI0MCwiaWF0IjoxNzAxMjYyODQwLCJqdGkiOiIxMzk0ZTdhNWJiM2Y0MzQ0Yjk0OWU3MWYyNDhjMzQ4YyIsInVzZXJfaWQiOjZ9.1eTJK2LgWV8KprCO-HcvaZyg6GjVsnQl7PlkvzuJPhM"
@@ -757,7 +758,7 @@ class GoogleCallback(APIView):
                 "access": str(refresh.access_token),
                 "refresh": str(refresh)
             }
-            serializer = UserSerializer(user) # 변동 가능성 있음
+            serializer = ProfileSerializer(user.profile)
             response = {
                 "message": "로그인 성공",
                 "token": token,
@@ -819,11 +820,11 @@ class KakaoCallback(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "message": "로그인 성공",
                         "user": {
                             "email": "test@gmail.com",
-                            "password": "pbkdf2_sha256$600000$6BqIDKqEcCv1OIfR011nnK$9Ylyp9MASpebQ9isL3i8yYD84s0U6BKOk8pfwQGIQMY="
+                            "id": "1"
                         },
+                        "message": "Login success",
                         "token": {
                             "access": "eyJhbGci123213iIqwesInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxMjcwMDQwLCJpYXQiOjE3MDEyNjI4NDAsImp0aSI6IjAyNjU5NjkwZmM3YjQ3Njg4YzkxZDUxOThiMDNlMjgyIiwidXNlcl9pZCI6Nn0.TjEFfq-K3Q7Ol31roq7MybH7iJ_r9dW0cbUt9cG9Gac",
                             "refresh": "eyJhbGc123424zI1NasiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMTM0OTI0MCwiaWF0IjoxNzAxMjYyODQwLCJqdGkiOiIxMzk0ZTdhNWJiM2Y0MzQ0Yjk0OWU3MWYyNDhjMzQ4YyIsInVzZXJfaWQiOjZ9.1eTJK2LgWV8KprCO-HcvaZyg6GjVsnQl7PlkvzuJPhM"
@@ -911,7 +912,7 @@ class KakaoCallback(APIView):
                 "access": str(refresh.access_token),
                 "refresh": str(refresh)
             }
-            serializer = UserSerializer(user) # 변동 가능성 있음
+            serializer = ProfileSerializer(user.profile) # 변동 가능성 있음
             response = {
                 "message": "로그인 성공",
                 "token": token,
