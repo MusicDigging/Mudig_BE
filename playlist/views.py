@@ -184,7 +184,7 @@ class EventPlaylistGenerate(APIView):
 
 # Create your views here.
 class List(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 메인 화면",
@@ -239,7 +239,7 @@ class List(APIView):
 
 
 class Create(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 생성 API",
@@ -265,7 +265,9 @@ class Create(APIView):
         ],
     )
     def post(self, request):
-        user = request.user
+        # user = request.user
+        user = 'admin@admin.com'
+        user = User.objects.get(email=user)
         
         situations = request.data['situations']
         genre = request.data['genre']
@@ -334,7 +336,7 @@ class Create(APIView):
 
 
 class Detail(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 디테일 API",
@@ -372,10 +374,20 @@ class Detail(APIView):
         
         music_serializer = MusicSerializer(sorted_music_instances, many=True)
         playlist_serializer = PlaylistSerializer(playlist_instance)
-        
+        user = Profile.objects.get(user = playlist_serializer.data['writer'])
+        profile = ProfileSerializer(user)
+        comment = Comment.objects.filter(playlist=playlist_instance)
+        commentserializer = CommentSerializer(comment, many=True)
+        comment = {
+            'comment' : commentserializer.data,
+            
+        }
         data = {
+            'user' : profile.data,
+            'comments' : commentserializer.data,
             'playlist': playlist_serializer.data,
-            'music': music_serializer.data
+            'music': music_serializer.data,
+            
         }
 
         return Response(data, status=status.HTTP_200_OK)
