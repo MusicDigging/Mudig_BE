@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import UserManager, PermissionsMixin
 from django.db.models.signals import post_save
 
+
 class UserManager(BaseUserManager):
     # create_user
     def create_user(self, email, password, is_staff, is_superuser, **extra_fields):
@@ -50,6 +51,8 @@ class User(AbstractUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+from playlist.models import Playlist
+
 
 class Profile(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE)
@@ -57,6 +60,7 @@ class Profile(models.Model):
     image = models.CharField(max_length=200, null=True, blank=True)
     about = models.TextField(default='자신을 소개해주세요 :)', null=True, blank=True)
     genre = models.CharField(max_length=50, null=True, blank=True)
+    rep_playlist = models.ForeignKey(Playlist,null=True,blank=True,on_delete=models.CASCADE)
     updated_at = models.DateTimeField(auto_now=True)
 
 
