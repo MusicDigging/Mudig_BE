@@ -569,8 +569,6 @@ class CommentDelete(APIView):
         except ObjectDoesNotExist:
             return Response({"detail":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         
-        # comment = Comment.objects.get(id=request.data['comment_id'])
-        
         comment.is_active = False # 논리적 삭제
         comment.save()
 
