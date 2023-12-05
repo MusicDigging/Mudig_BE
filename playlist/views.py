@@ -343,8 +343,47 @@ class Detail(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"playlist":['objects'],"music":['objects']},
-                },
+                    "res_data": {"playlist":['objects'],
+                                "music":['objects'],
+                                'user' : {
+                                    "id": 2,
+                                    "name": "닉네임",
+                                    "image": "null",
+                                    "about": "자신을 소개해주세요 :)",
+                                    "genre": "null",
+                                    "rep_playlist": "null"
+                                },
+                                "comments" : [{
+                                "id": 1,
+                                "content": "qwewqe",
+                                "writer": 2,
+                                "writer_profile": {
+                                    "id": 2,
+                                    "name": "닉네임",
+                                    "image": "null",
+                                    "about": "자신을 소개해주세요 :)",
+                                    "genre": "null",
+                                    "rep_playlist": "null"
+                                },
+                                "created_at": "2023-12-05T16:41:54.092731+09:00",
+                                "updated_at": "2023-12-05T16:41:54.092731+09:00"
+                            },
+                                {
+                                    "id": 2,
+                                    "content": "qwewqe",
+                                    "writer": 2,
+                                    "writer_profile": {
+                                        "id": 2,
+                                        "name": "닉네임",
+                                        "image": "null",
+                                        "about": "자신을 소개해주세요 :)",
+                                        "genre": "null",
+                                        "rep_playlist": "null"
+                                    },
+                                    "created_at": "2023-12-05T16:43:10.716962+09:00",
+                                    "updated_at": "2023-12-05T16:43:10.716962+09:00"
+                                }],},
+                            },
             ),
             OpenApiExample(
                 response_only=True,
