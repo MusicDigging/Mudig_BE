@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import UserManager, PermissionsMixin
 from django.db.models.signals import post_save
 
+
 class UserManager(BaseUserManager):
     # create_user
     def create_user(self, email, password, is_staff, is_superuser, **extra_fields):
