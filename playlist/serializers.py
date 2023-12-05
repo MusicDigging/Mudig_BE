@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Playlist, Music, Like, Comment
+from user.serializers import ProfileSerializer
 
 class PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,9 +23,10 @@ class MusicSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    writer_profile = ProfileSerializer(source='writer.profile', read_only=True)
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ['id', 'content', 'writer', 'writer_profile', 'created_at', 'updated_at']
 
 
 class LikeSerializer(serializers.ModelSerializer):

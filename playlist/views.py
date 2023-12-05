@@ -81,8 +81,8 @@ class RandomMovieView(APIView):
         try:
             max_id = Music.objects.all().aggregate(max_id=Max("id"))['max_id'] # id Max 값 가져오기
             all_musiclist = [i for i in range(1,max_id+1)] # 모든 뮤직 리스트
-            already_musiclist = [4,5,6] # 이미 본 리스트들
-            # already_musiclist = request.data.get('already_musiclist')
+            # already_musiclist = [4,5,6] # 이미 본 리스트들
+            already_musiclist = request.data.get('already_musiclist')
             result = list(set(all_musiclist) - set(already_musiclist)) # 리스트 차집합
             
             random_musics = random.sample(result,3) # 랜덤 3개 뽑기
@@ -122,8 +122,7 @@ class EventPlaylistGenerate(APIView):
     )
     def post(self, request):
         # 봉수님 코드 참고
-        user = 'admin@admin.com'
-        user = User.objects.get(email = user)
+        user = request.user
         genres = user.genre
         genres_list = genres.split(',')
         
@@ -184,7 +183,7 @@ class EventPlaylistGenerate(APIView):
 
 # Create your views here.
 class List(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 메인 화면",
@@ -196,7 +195,7 @@ class List(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"playlist_all":['objects'],"my_playlist":['objects'],"recommend_pli":['objects']},
+                    "res_data": {"playlist_all":['objects'],"my_playlist":['objects'],"recommend_pli":['objects'],"liked_playlist":['objects']},
                 },
             ),
         ],
@@ -208,7 +207,6 @@ class List(APIView):
         recent_serializer = PlaylistSerializer(playlist_all, many=True).data
         ## 내가 만든 플리 
         user = request.user
-
         if user:
             user = User.objects.get(email = user).id
             playlist_mine = Playlist.objects.filter(writer=user)[:3]
@@ -228,18 +226,21 @@ class List(APIView):
             recommend_serializer = ''
 
         ## 핫한 플리(좋아요 많은 순)
+        most_liked_playlists = Playlist.objects.annotate(count_like=Count('like')).order_by('-count_like')
+        liked_serializer = PlaylistSerializer(most_liked_playlists, many=True).data[:3]
         
         mudig_playlist = {
             'playlist_all' : recent_serializer,
             'my_playlist' : mine_serializer,
-            'recommend_pli' : recommend_serializer
+            'recommend_pli' : recommend_serializer,
+            'liked_playlist' : liked_serializer
         }
         
-        return Response(mudig_playlist)
+        return Response(mudig_playlist, status=status.HTTP_200_OK)
 
 
 class Create(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 생성 API",
@@ -319,17 +320,12 @@ class Create(APIView):
                     music_list.append(exist_music)
             else:
                 return Response(musicserializer.errors)
-        # print('music_list', music_list)
         for order, music_instance in enumerate(music_list, start=1):
-            # print(music_instance)
             PlaylistMusic.objects.create(
                 playlist=playlist_instance,
                 music=music_instance,
                 order=order
             )
-        # if created:
-        #     # playlist_instance.music.add(*music_list)
-        #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
         return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
 
 
@@ -372,10 +368,20 @@ class Detail(APIView):
         
         music_serializer = MusicSerializer(sorted_music_instances, many=True)
         playlist_serializer = PlaylistSerializer(playlist_instance)
-        
+        user = Profile.objects.get(user = playlist_serializer.data['writer'])
+        profile = ProfileSerializer(user)
+        comment = Comment.objects.filter(playlist=playlist_instance)
+        commentserializer = CommentSerializer(comment, many=True)
+        comment = {
+            'comment' : commentserializer.data,
+            
+        }
         data = {
+            'user' : profile.data,
+            'comments' : commentserializer.data,
             'playlist': playlist_serializer.data,
-            'music': music_serializer.data
+            'music': music_serializer.data,
+            
         }
 
         return Response(data, status=status.HTTP_200_OK)
@@ -409,8 +415,6 @@ class Delete(APIView):
         delete_img = S3ImgUploader(playlist.thumbnail)
         delete_img.delete()
         playlist.delete()
-        # playlist.is_active = False
-        # playlist.save()
         data = {
             "message" : "플레이리스트 삭제 완료",
             "playlist" : playlist.is_active
