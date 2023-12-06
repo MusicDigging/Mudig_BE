@@ -706,7 +706,7 @@ class Search(APIView):
             search_recent_playlist.append(recent_playlist_info)
 
         response_data = {
-            "recent_user" : recent_profile_serializer,
+            "recent_users" : recent_profile_serializer,
             "recent_playlists" : search_recent_playlist,
             "users" : profile_serializer,
             "playlists" : search_playlist
