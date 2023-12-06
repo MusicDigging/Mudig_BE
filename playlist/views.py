@@ -131,7 +131,7 @@ class EventPlaylistGenerate(APIView):
         response_data = event_music_recommendation(situations, genre)
         
         # is_public은 현우님이 정하시면 됩니다! 추가할지 안할지
-        is_public = request.data['public']
+        # is_public = request.data['public']
         
         playlists = response_data['playlist']
         title = response_data['title']
@@ -141,7 +141,7 @@ class EventPlaylistGenerate(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -240,7 +240,7 @@ class List(APIView):
 
 
 class Create(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 생성 API",
@@ -271,7 +271,7 @@ class Create(APIView):
         situations = request.data['situations']
         genre = request.data['genre']
         year = request.data['year']
-        is_public = request.data['public']
+        # is_public = request.data['public']
         
         response_data = get_music_recommendation(situations, genre, year)
         
@@ -284,7 +284,8 @@ class Create(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
+        # playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -292,7 +293,6 @@ class Create(APIView):
             keyword = f'{song} - {singer}'
             page = None
             limit = 1
-            print(song, singer)
             existing_music = Music.objects.filter(singer__iexact=singer, song__iexact=song).first()
             
             if existing_music:
