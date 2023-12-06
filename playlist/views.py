@@ -241,7 +241,7 @@ class List(APIView):
 
 
 class Create(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 생성 API",
@@ -267,14 +267,14 @@ class Create(APIView):
         ],
     )
     def post(self, request):
-        # user = request.user
-        user = 'admin@admin.com'
-        user = User.objects.get(email=user)
+        user = request.user
+        # user = 'admin@admin.com'
+        # user = User.objects.get(email=user)
         
         situations = request.data['situations']
         genre = request.data['genre']
         year = request.data['year']
-        is_public = request.data['public']
+        # is_public = request.data['public']
         
         response_data = get_music_recommendation(situations, genre, year)
         
@@ -287,7 +287,8 @@ class Create(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
+        # playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
