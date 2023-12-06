@@ -694,7 +694,7 @@ class Search(APIView):
         recent_playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')[:3]
         recent_playlist_serializer = PlaylistSerializer(recent_playlists, many=True).data
 
-        search_recent_playlist = [] 
+        recent_search_playlist = [] 
         for recent_p_s in recent_playlist_serializer:
             recent_writer = Profile.objects.get(id=recent_p_s['writer'])
             recent_writer_info = ProfileSerializer(recent_writer).data
@@ -703,11 +703,11 @@ class Search(APIView):
                 'playlist' : recent_p_s,
                 'writer' : recent_writer_info
             }
-            search_recent_playlist.append(recent_playlist_info)
+            recent_search_playlist.append(recent_playlist_info)
 
         response_data = {
             "recent_users" : recent_profile_serializer,
-            "recent_playlists" : search_recent_playlist,
+            "recent_playlists" : recent_search_playlist, 
             "users" : profile_serializer,
             "playlists" : search_playlist
         }
