@@ -123,7 +123,7 @@ class EventPlaylistGenerate(APIView):
     def post(self, request):
         # 봉수님 코드 참고
         user = request.user
-        genres = user.genre
+        genres = user.profile.genre
         genres_list = genres.split(',')
         
         situations = request.data['situations'] # 현재 기분이나 상황
