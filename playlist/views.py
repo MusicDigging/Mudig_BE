@@ -123,7 +123,7 @@ class EventPlaylistGenerate(APIView):
     def post(self, request):
         # 봉수님 코드 참고
         user = request.user
-        genres = user.genre
+        genres = user.profile.genre
         genres_list = genres.split(',')
         
         situations = request.data['situations'] # 현재 기분이나 상황
@@ -1110,11 +1110,11 @@ class CommentDelete(APIView):
             ),
         ],
     )
-    def delete(self, request):
+    def delete(self, request, comment_id):
         user = request.user
 
         try:
-            comment = Comment.objects.get(id=request.data['comment_id'], writer=user)
+            comment = Comment.objects.get(id=comment_id, writer=user)
         except ObjectDoesNotExist:
             return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         
@@ -1124,8 +1124,8 @@ class CommentDelete(APIView):
         datas = {
             "message" : "댓글 삭제 완료되었습니다."
         }
-        return Response(datas, status=status.HTTP_200_OK)   
-
+        return Response(datas, status=status.HTTP_200_OK)     
+    
 
 class CommentEdit(APIView):
     permission_classes = [IsAuthenticated]
