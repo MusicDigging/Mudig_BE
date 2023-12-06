@@ -680,14 +680,36 @@ class Search(APIView):
         playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')
         playlist_serializer = PlaylistSerializer(playlists, many=True).data
 
-        recent_playlist = Playlist.objects.filter(Q(title__icontains=query),is_active=True).order_by('-created_at')[:3]      
-        recent_playlist_serializer = PlaylistSerializer(recent_playlist, many=True).data
+        search_playlist = []
+        for p_s in playlist_serializer:
+            writer = Profile.objects.get(id=p_s['writer'])
+            writer_info = ProfileSerializer(writer).data
         
+            playlist_info = {
+                'playlist' : p_s,
+                'writer' : writer_info
+            }
+            search_playlist.append(playlist_info)
+
+        recent_playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')[:3]
+        recent_playlist_serializer = PlaylistSerializer(recent_playlists, many=True).data
+
+        search_recent_playlist = [] 
+        for recent_p_s in recent_playlist_serializer:
+            recent_writer = Profile.objects.get(id=recent_p_s['writer'])
+            recent_writer_info = ProfileSerializer(recent_writer).data
+
+            recent_playlist_info = {
+                'playlist' : recent_p_s,
+                'writer' : recent_writer_info
+            }
+            search_recent_playlist.append(recent_playlist_info)
+
         response_data = {
             "recent_user" : recent_profile_serializer,
-            "recent_playlist" : recent_playlist_serializer,
+            "recent_playlists" : search_recent_playlist,
             "users" : profile_serializer,
-            "playlists" : playlist_serializer
+            "playlists" : search_playlist
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
