@@ -10,12 +10,9 @@ def get_music_recommendation(situations, feature, year):
     model = "gpt-3.5-turbo"
     # 질문 작성하기
     query = {
-        "role": "user",
-        "content": str({
-            "현재 기분 및 상황": situations,
-            "장르 및 특성": feature,
-            "연도": year
-        }),
+        "현재 기분 및 상황": situations,
+        "장르 및 특성": feature,
+        "연도": year
     }
 
     questions = {
@@ -32,17 +29,14 @@ def get_music_recommendation(situations, feature, year):
     )
     answer = response['choices'][0]['message']['content']
     # response_json = answer.replace("'", "\"")
-    response_json = answer.replace("'", "\"").replace('"', '\"')
-    print('json', response_json)
+    response_json = answer.replace("'", '"')
     try:
-        print('try', response_json)
-        # response_json = json.loads(response_json.replace("n\"t", "n\'t"))
-        response_json = json.loads(response_json)
+        res_answer = json.loads(response_json)
     except json.decoder.JSONDecodeError:
         response_json = response_json.replace("n\"t", "n\'t")
-        response_json = json.loads(response_json)
-        print('except', response_json)
-    return response_json
+        res_answer = json.loads(response_json)
+
+    return res_answer
 
 def event_music_recommendation(situations, feature):
     openai.api_key = os.environ["OPEN_API_KEY"]  # 여기에 실제 API 키를 넣어주세요
@@ -51,11 +45,8 @@ def event_music_recommendation(situations, feature):
     model = "gpt-3.5-turbo"
     # 질문 작성하기
     query = {
-        "role": "user",
-        "content": str({
-            "현재 기분 및 상황": situations,
-            "장르 및 특성": feature,
-        }),
+        "현재 기분 및 상황": situations,
+        "장르 및 특성": feature,
     }
 
     questions = {
@@ -71,12 +62,11 @@ def event_music_recommendation(situations, feature):
         timeout = 600
     )
     answer = response['choices'][0]['message']['content']
-    response_json = answer.replace("'", "\"")
-    print('json', response_json)
+    response_json = answer.replace("'", '"')
     try:
-        response_json = json.loads(response_json.replace("n\"t", "n\'t"))
-        print('try', response_json)
+        res_answer = json.loads(response_json)
     except json.decoder.JSONDecodeError:
-        response_json = json.loads(response_json)
-        print('except', response_json)
-    return response_json
+        response_json = response_json.replace("n\"t", "n\'t")
+        res_answer = json.loads(response_json)
+
+    return res_answer

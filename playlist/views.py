@@ -131,7 +131,7 @@ class EventPlaylistGenerate(APIView):
         response_data = event_music_recommendation(situations, genre)
         
         # is_public은 현우님이 정하시면 됩니다! 추가할지 안할지
-        is_public = request.data['public']
+        # is_public = request.data['public']
         
         playlists = response_data['playlist']
         title = response_data['title']
@@ -141,7 +141,7 @@ class EventPlaylistGenerate(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -240,7 +240,7 @@ class List(APIView):
 
 
 class Create(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 생성 API",
@@ -271,7 +271,7 @@ class Create(APIView):
         situations = request.data['situations']
         genre = request.data['genre']
         year = request.data['year']
-        is_public = request.data['public']
+        # is_public = request.data['public']
         
         response_data = get_music_recommendation(situations, genre, year)
         
@@ -284,7 +284,8 @@ class Create(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
+        # playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -292,7 +293,6 @@ class Create(APIView):
             keyword = f'{song} - {singer}'
             page = None
             limit = 1
-            print(song, singer)
             existing_music = Music.objects.filter(singer__iexact=singer, song__iexact=song).first()
             
             if existing_music:
@@ -689,10 +689,135 @@ class Search(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "recent_user":['objects'],
-                        "recent_playlist":['objects'],
-                        "users":['objects'],
-                        "playlists":['objects'],
+                        "recent_users": [
+                            {
+                                "id": 8,
+                                "name": "test4",
+                                "image": None,
+                                "about": "안녕",
+                                "genre": "K-pop,댄스,발라드",
+                                "rep_playlist": None
+                            },
+                            {
+                                "id": 7,
+                                "name": "test3",
+                                "image": None,
+                                "about": "안녕",
+                                "genre": "K-pop,J-pop,힙합",
+                                "rep_playlist": None
+                            },
+                        ],
+                        "recent_playlists": [
+                            {
+                                "playlist": {
+                                    "id": 6,
+                                    "title": "test ply6",
+                                    "content": "test ply6",
+                                    "thumbnail": None,
+                                    "genre": "발라드,댄스,힙합",
+                                    "is_active": True,
+                                    "created_at": "2023-12-06T16:21:35.535827+09:00",
+                                    "updated_at": "2023-12-06T16:29:17.516812+09:00",
+                                    "is_public": False,
+                                    "writer": 8,
+                                    "music": []
+                                },
+                                "writer": {
+                                    "id": 8,
+                                    "name": "test4",
+                                    "image": None,
+                                    "about": "안녕",
+                                    "genre": "K-pop,댄스,발라드",
+                                    "rep_playlist": None
+                                }
+                            },
+                            {
+                                "playlist": {
+                                    "id": 5,
+                                    "title": "test ply5",
+                                    "content": "test ply5",
+                                    "thumbnail": None,
+                                    "genre": "댄스, Pop",
+                                    "is_active": True,
+                                    "created_at": "2023-12-06T14:52:19.764839+09:00",
+                                    "updated_at": "2023-12-06T16:29:32.466029+09:00",
+                                    "is_public": False,
+                                    "writer": 1,
+                                    "music": []
+                                },
+                                "writer": {
+                                    "id": 1,
+                                    "name": "닉네임",
+                                    "image": None,
+                                    "about": "자신을 소개해주세요 :)",
+                                    "genre": None,
+                                    "rep_playlist": None
+                                }
+                            },],
+                        "users": [
+                            {
+                                "id": 8,
+                                "name": "test4",
+                                "image": None,
+                                "about": "안녕",
+                                "genre": "K-pop,댄스,발라드",
+                                "rep_playlist": None
+                            },
+                            {
+                                "id": 7,
+                                "name": "test3",
+                                "image": None,
+                                "about": "안녕",
+                                "genre": "K-pop,J-pop,힙합",
+                                "rep_playlist": None
+                            },],
+                        "playlists": [
+                            {
+                                "playlist": {
+                                    "id": 6,
+                                    "title": "test ply6",
+                                    "content": "test ply6",
+                                    "thumbnail": None,
+                                    "genre": "발라드,댄스,힙합",
+                                    "is_active": True,
+                                    "created_at": "2023-12-06T16:21:35.535827+09:00",
+                                    "updated_at": "2023-12-06T16:29:17.516812+09:00",
+                                    "is_public": False,
+                                    "writer": 8,
+                                    "music": []
+                                },
+                                "writer": {
+                                    "id": 8,
+                                    "name": "test4",
+                                    "image": None,
+                                    "about": "안녕",
+                                    "genre": "K-pop,댄스,발라드",
+                                    "rep_playlist": None
+                                }
+                            },
+                            {
+                                "playlist": {
+                                    "id": 5,
+                                    "title": "test ply5",
+                                    "content": "test ply5",
+                                    "thumbnail": None,
+                                    "genre": "댄스, Pop",
+                                    "is_active": True,
+                                    "created_at": "2023-12-06T14:52:19.764839+09:00",
+                                    "updated_at": "2023-12-06T16:29:32.466029+09:00",
+                                    "is_public": False,
+                                    "writer": 1,
+                                    "music": []
+                                },
+                                "writer": {
+                                    "id": 1,
+                                    "name": "닉네임",
+                                    "image": None,
+                                    "about": "자신을 소개해주세요 :)",
+                                    "genre": None,
+                                    "rep_playlist": None
+                                }
+                            },]
                     }
                 },
             ),
@@ -723,14 +848,36 @@ class Search(APIView):
         playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')
         playlist_serializer = PlaylistSerializer(playlists, many=True).data
 
-        recent_playlist = Playlist.objects.filter(Q(title__icontains=query),is_active=True).order_by('-created_at')[:3]      
-        recent_playlist_serializer = PlaylistSerializer(recent_playlist, many=True).data
+        search_playlist = []
+        for p_s in playlist_serializer:
+            writer = Profile.objects.get(id=p_s['writer'])
+            writer_info = ProfileSerializer(writer).data
         
+            playlist_info = {
+                'playlist' : p_s,
+                'writer' : writer_info
+            }
+            search_playlist.append(playlist_info)
+
+        recent_playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')[:3]
+        recent_playlist_serializer = PlaylistSerializer(recent_playlists, many=True).data
+
+        recent_search_playlist = [] 
+        for recent_p_s in recent_playlist_serializer:
+            recent_writer = Profile.objects.get(id=recent_p_s['writer'])
+            recent_writer_info = ProfileSerializer(recent_writer).data
+
+            recent_playlist_info = {
+                'playlist' : recent_p_s,
+                'writer' : recent_writer_info
+            }
+            recent_search_playlist.append(recent_playlist_info)
+
         response_data = {
-            "recent_user" : recent_profile_serializer,
-            "recent_playlist" : recent_playlist_serializer,
+            "recent_users" : recent_profile_serializer,
+            "recent_playlists" : recent_search_playlist,
             "users" : profile_serializer,
-            "playlists" : playlist_serializer
+            "playlists" : search_playlist
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
