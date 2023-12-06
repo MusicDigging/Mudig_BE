@@ -689,10 +689,135 @@ class Search(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "recent_user":['objects'],
-                        "recent_playlist":['objects'],
-                        "users":['objects'],
-                        "playlists":['objects'],
+                        "recent_users": [
+                            {
+                                "id": 8,
+                                "name": "test4",
+                                "image": None,
+                                "about": "안녕",
+                                "genre": "K-pop,댄스,발라드",
+                                "rep_playlist": None
+                            },
+                            {
+                                "id": 7,
+                                "name": "test3",
+                                "image": None,
+                                "about": "안녕",
+                                "genre": "K-pop,J-pop,힙합",
+                                "rep_playlist": None
+                            },
+                        ],
+                        "recent_playlists": [
+                            {
+                                "playlist": {
+                                    "id": 6,
+                                    "title": "test ply6",
+                                    "content": "test ply6",
+                                    "thumbnail": None,
+                                    "genre": "발라드,댄스,힙합",
+                                    "is_active": True,
+                                    "created_at": "2023-12-06T16:21:35.535827+09:00",
+                                    "updated_at": "2023-12-06T16:29:17.516812+09:00",
+                                    "is_public": False,
+                                    "writer": 8,
+                                    "music": []
+                                },
+                                "writer": {
+                                    "id": 8,
+                                    "name": "test4",
+                                    "image": None,
+                                    "about": "안녕",
+                                    "genre": "K-pop,댄스,발라드",
+                                    "rep_playlist": None
+                                }
+                            },
+                            {
+                                "playlist": {
+                                    "id": 5,
+                                    "title": "test ply5",
+                                    "content": "test ply5",
+                                    "thumbnail": None,
+                                    "genre": "댄스, Pop",
+                                    "is_active": True,
+                                    "created_at": "2023-12-06T14:52:19.764839+09:00",
+                                    "updated_at": "2023-12-06T16:29:32.466029+09:00",
+                                    "is_public": False,
+                                    "writer": 1,
+                                    "music": []
+                                },
+                                "writer": {
+                                    "id": 1,
+                                    "name": "닉네임",
+                                    "image": None,
+                                    "about": "자신을 소개해주세요 :)",
+                                    "genre": None,
+                                    "rep_playlist": None
+                                }
+                            },],
+                        "users": [
+                            {
+                                "id": 8,
+                                "name": "test4",
+                                "image": None,
+                                "about": "안녕",
+                                "genre": "K-pop,댄스,발라드",
+                                "rep_playlist": None
+                            },
+                            {
+                                "id": 7,
+                                "name": "test3",
+                                "image": None,
+                                "about": "안녕",
+                                "genre": "K-pop,J-pop,힙합",
+                                "rep_playlist": None
+                            },],
+                        "playlists": [
+                            {
+                                "playlist": {
+                                    "id": 6,
+                                    "title": "test ply6",
+                                    "content": "test ply6",
+                                    "thumbnail": None,
+                                    "genre": "발라드,댄스,힙합",
+                                    "is_active": True,
+                                    "created_at": "2023-12-06T16:21:35.535827+09:00",
+                                    "updated_at": "2023-12-06T16:29:17.516812+09:00",
+                                    "is_public": False,
+                                    "writer": 8,
+                                    "music": []
+                                },
+                                "writer": {
+                                    "id": 8,
+                                    "name": "test4",
+                                    "image": None,
+                                    "about": "안녕",
+                                    "genre": "K-pop,댄스,발라드",
+                                    "rep_playlist": None
+                                }
+                            },
+                            {
+                                "playlist": {
+                                    "id": 5,
+                                    "title": "test ply5",
+                                    "content": "test ply5",
+                                    "thumbnail": None,
+                                    "genre": "댄스, Pop",
+                                    "is_active": True,
+                                    "created_at": "2023-12-06T14:52:19.764839+09:00",
+                                    "updated_at": "2023-12-06T16:29:32.466029+09:00",
+                                    "is_public": False,
+                                    "writer": 1,
+                                    "music": []
+                                },
+                                "writer": {
+                                    "id": 1,
+                                    "name": "닉네임",
+                                    "image": None,
+                                    "about": "자신을 소개해주세요 :)",
+                                    "genre": None,
+                                    "rep_playlist": None
+                                }
+                            },]
                     }
                 },
             ),
