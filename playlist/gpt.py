@@ -71,7 +71,7 @@ def get_music_recommendation(situations, feature, year):
     )
     answer = response['choices'][0]['message']['content']
     print(answer)
-    answer = answer.replace("\"", "")
+    # answer = answer.replace("\"", "")
     print('answer', answer)
     response_json = answer.replace("'",'"')
     print('res_answer', response_json)

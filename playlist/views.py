@@ -289,6 +289,7 @@ class Create(APIView):
         
         # playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
         playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
+        playlistserializer = PlaylistSerializer(playlist_instance)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -335,7 +336,11 @@ class Create(APIView):
         # if created:
         #     # playlist_instance.music.add(*music_list)
         #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
-        return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
+        data = {
+            "message" : "음악 생성 성공하였습니다.",
+            "playlist" : playlistserializer.data
+        }
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class Detail(APIView):
