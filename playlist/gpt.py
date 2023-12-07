@@ -2,6 +2,7 @@ import openai
 import json
 from .prompt import prompt, event_prompt
 import os
+import re
 
 # def get_music_recommendation(situations, feature, year):
 #     openai.api_key = os.environ["OPEN_API_KEY"]  # 여기에 실제 API 키를 넣어주세요
@@ -70,17 +71,16 @@ def get_music_recommendation(situations, feature, year):
     )
     answer = response['choices'][0]['message']['content']
     print(answer)
+    answer = answer.replace("\"", "")
+    print('answer', answer)
     response_json = answer.replace("'",'"')
-    # response_json = answer.replace("'", "\"").replace('"', '\"')
-    
-    # res_answer = json.loads(response_json)
     print('res_answer', response_json)
     try:
         res_answer = json.loads(response_json)
         print('try', res_answer)
     except json.decoder.JSONDecodeError:
         response_json = response_json.replace("n\"t", "n\'t")
-        response_json = response_json.replace("\"\"", "\"")
+        response_json = response_json.replace("\\\"", "\'")
         print('except', response_json)
         res_answer = json.loads(response_json)
 
