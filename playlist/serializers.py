@@ -3,9 +3,13 @@ from .models import Playlist, Music, Like, Comment
 from user.serializers import ProfileSerializer
 
 class PlaylistSerializer(serializers.ModelSerializer):
+    like_count = serializers.SerializerMethodField()
     class Meta:
         model = Playlist
         fields = '__all__'
+        
+    def get_like_count(self, obj):
+        return obj.like_set.count()
     
     def get_playlist_info(self, obj):
         playlist_info = [{'id': playlist.id, 'thumbnail': playlist.thumbnail,'title':playlist.title} for playlist in obj]

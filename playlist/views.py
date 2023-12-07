@@ -397,7 +397,6 @@ class Detail(APIView):
     )
     def get(self, request, pk):
         playlist_instance = get_object_or_404(Playlist, id=pk)
-
         # PlaylistMusic 모델을 통해 플레이리스트에 속한 음악들을 가져옵니다.
 
         ordered_music_instances = playlist_instance.playlistmusic_set.order_by('order').values_list('music', flat=True)
@@ -407,6 +406,7 @@ class Detail(APIView):
         
         music_serializer = MusicSerializer(sorted_music_instances, many=True)
         playlist_serializer = PlaylistSerializer(playlist_instance)
+        playlist_serializer.get_like_count(playlist_instance)
         user = Profile.objects.get(user = playlist_serializer.data['writer'])
         profile = ProfileSerializer(user)
         comment = Comment.objects.filter(playlist=playlist_instance)
