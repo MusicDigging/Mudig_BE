@@ -23,7 +23,7 @@ import requests
 
 dotenv.load_dotenv()
 
-CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
+CALLBACK_URI = 'http://localhost:3000/login'
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
 KAKAO_REST_API_KEY = os.environ['KAKAO_REST_API_KEY']
@@ -873,7 +873,7 @@ class KakaoCallback(APIView):
         request_data = {
             'grant_type': 'authorization_code',
             'client_id': KAKAO_REST_API_KEY,
-            'redirect_uri': "http://127.0.0.1:5500/index.html",
+            'redirect_uri': "http://localhost:3000/login",
             'code': code,
         }
         # header에 content-type을 지정해주는 부분입니다.
