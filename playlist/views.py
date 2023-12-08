@@ -260,8 +260,27 @@ class Create(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"message": "음악 생성 성공하였습니다"},
-                },
+                    "res_data": {
+                        "message": "음악 생성 성공하였습니다.",
+                        "playlist": {
+                            "id": 7,
+                            "like_count": 0,
+                            "title": "눈이 내리는 날을 위한 우울하지 않은 노래들",
+                            "content": "이 노래들은 눈이 내리는 날의 분위기에 잘 어울리며 우울하지 않은 톤으로 겨울을 즐기는 느낌을 전해줍니다. 이 플레이리스트를 통해 눈 오는 날의 풍경과 함께 편안한 시간을 보내세요!",
+                            "thumbnail": "karlo/bda686f594f511eeacf3e0d464928253",
+                            "genre": "pop",
+                            "is_active": True,
+                            "created_at": "2023-12-07T20:42:46.741054+09:00",
+                            "updated_at": "2023-12-07T20:42:46.741054+09:00",
+                            "is_public": False,
+                            "writer": 1,
+                            "music": [
+                                11,
+                                26,
+                                27,
+                                28,
+                                14]}
+                    }},
             ),
         ],
     )
