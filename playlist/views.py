@@ -671,10 +671,10 @@ class Search(APIView):
         if not query:
             return Response({"error": "Missing 'query' parameter"}, status=status.HTTP_400_BAD_REQUEST)
 
-        users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')
+        users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')
         profile_serializer = ProfileSerializer(users, many=True).data
 
-        recent_user = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')[:3]
+        recent_user = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')[:3]
         recent_profile_serializer = ProfileSerializer(recent_user, many=True).data
 
         playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')
