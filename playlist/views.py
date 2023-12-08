@@ -142,6 +142,7 @@ class EventPlaylistGenerate(APIView):
         youtube_api = []
         
         playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
+        playlistserializer = PlaylistSerializer(playlist_instance)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -179,7 +180,11 @@ class EventPlaylistGenerate(APIView):
         # if created:
         #     # playlist_instance.music.add(*music_list)
         #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
-        return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
+        data = {
+            "message" : "음악 생성 성공하였습니다.",
+            "playlist" : playlistserializer.data
+        }
+        return Response(data, status=status.HTTP_200_OK)
 
 # Create your views here.
 class List(APIView):
@@ -260,8 +265,27 @@ class Create(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"message": "음악 생성 성공하였습니다"},
-                },
+                    "res_data": {
+                        "message": "음악 생성 성공하였습니다.",
+                        "playlist": {
+                            "id": 7,
+                            "like_count": 0,
+                            "title": "눈이 내리는 날을 위한 우울하지 않은 노래들",
+                            "content": "이 노래들은 눈이 내리는 날의 분위기에 잘 어울리며 우울하지 않은 톤으로 겨울을 즐기는 느낌을 전해줍니다. 이 플레이리스트를 통해 눈 오는 날의 풍경과 함께 편안한 시간을 보내세요!",
+                            "thumbnail": "karlo/bda686f594f511eeacf3e0d464928253",
+                            "genre": "pop",
+                            "is_active": True,
+                            "created_at": "2023-12-07T20:42:46.741054+09:00",
+                            "updated_at": "2023-12-07T20:42:46.741054+09:00",
+                            "is_public": False,
+                            "writer": 1,
+                            "music": [
+                                11,
+                                26,
+                                27,
+                                28,
+                                14]}
+                    }},
             ),
         ],
     )
@@ -286,6 +310,7 @@ class Create(APIView):
         
         # playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
         playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
+        playlistserializer = PlaylistSerializer(playlist_instance)
         music_list = []
         for playlist in playlists:
             # song, singer = map(str.strip, playlist.split(' - '))
@@ -326,7 +351,14 @@ class Create(APIView):
                 music=music_instance,
                 order=order
             )
-        return Response({"message":"음악 생성 성공하였습니다"}, status=status.HTTP_200_OK)
+        # if created:
+        #     # playlist_instance.music.add(*music_list)
+        #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
+        data = {
+            "message" : "음악 생성 성공하였습니다.",
+            "playlist" : playlistserializer.data
+        }
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class Detail(APIView):
@@ -839,10 +871,10 @@ class Search(APIView):
         if not query:
             return Response({"error": "Missing 'query' parameter"}, status=status.HTTP_400_BAD_REQUEST)
 
-        users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')
+        users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')
         profile_serializer = ProfileSerializer(users, many=True).data
 
-        recent_user = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query)).order_by('-id')[:3]
+        recent_user = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')[:3]
         recent_profile_serializer = ProfileSerializer(recent_user, many=True).data
 
         playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')

@@ -70,7 +70,9 @@ def get_music_recommendation(situations, feature, year):
         timeout = 600
     )
     answer = response['choices'][0]['message']['content']
-    answer = answer.replace("\"", "")
+    print(answer)
+    # answer = answer.replace("\"", "")
+    print('answer', answer)
     response_json = answer.replace("'",'"')
     try:
         res_answer = json.loads(response_json)
