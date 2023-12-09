@@ -184,6 +184,7 @@ class Join(APIView):
             refresh_token = str(token)
             
             message = {
+                "message": "회원가입 성공",
                 "user" : pf_serializer.data,
                 "token" : {               
                     "access": access_token,
@@ -299,6 +300,7 @@ class SocialJoin(APIView):
             refresh_token = str(token)
             
             message = {
+                "message": "회원가입 성공",
                 "user" : pf_serializer.data,
                 "token" : {               
                     "access": access_token,
@@ -932,7 +934,7 @@ class KakaoCallback(APIView):
             response = {
                 "message": "로그인 성공",
                 "token": token,
-                "user_info": serializer.data,
+                "user": serializer.data,
             }
             return Response(data=response, status=status.HTTP_200_OK)
 
