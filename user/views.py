@@ -184,12 +184,7 @@ class Join(APIView):
             refresh_token = str(token)
             
             message = {
-                "message" : "Register success",
-                "about" : about,
-                "genre" : genre,
-                "user" : user.id,
-                "image" : image if is_image else None,
-                "name" : name,
+                "user" : pf_serializer.data,
                 "token" : {               
                     "access": access_token,
                     "refresh": refresh_token,
@@ -304,12 +299,7 @@ class SocialJoin(APIView):
             refresh_token = str(token)
             
             message = {
-                "message" : "Register success",
-                "about" : about,
-                "genre" : genre,
-                "user" : user.id,
-                "image" : image if is_image else None,
-                "name" : name,
+                "user" : pf_serializer.data,
                 "token" : {               
                     "access": access_token,
                     "refresh": refresh_token,
