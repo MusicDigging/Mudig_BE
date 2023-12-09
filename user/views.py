@@ -787,7 +787,7 @@ class KakaoLogin(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "data": f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=KAKAO_REST_API_KEY&redirect_uri=http://127.0.0.1:5500/index.html"
+                        "data": f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=KAKAO_REST_API_KEY&redirect_uri=CALLBACK_URI"
                     },
                 }
             ),
@@ -795,7 +795,7 @@ class KakaoLogin(APIView):
     )
     def get(self, request):
         data = {
-            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={KAKAO_REST_API_KEY}&redirect_uri=http://127.0.0.1:5500/index.html"
+            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={KAKAO_REST_API_KEY}&redirect_uri={CALLBACK_URI}"
         }
         return Response(data,status=status.HTTP_200_OK)
 
