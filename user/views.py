@@ -29,7 +29,7 @@ GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
 KAKAO_REST_API_KEY = os.environ['KAKAO_REST_API_KEY']
 STATE = os.environ['STATE']
 
- 
+
 class CheckName(APIView):
     @extend_schema(
         summary="닉네임 유효성 검사 API",
@@ -160,7 +160,7 @@ class Join(APIView):
                 "user": user.id,
                 "name": name,
                 "about": about,
-                "genre": genre
+                "genre": genre,
             }
 
             if not (name and about and genre):
@@ -178,9 +178,17 @@ class Join(APIView):
                 pf_serializer.save()
             else:
                 return Response(pf_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            
+            token = RefreshToken.for_user(user)
+            access_token = str(token.access_token)
+            refresh_token = str(token)
+            
             message = {
-                "message" : "Register success"
+                "user" : pf_serializer.data,
+                "token" : {               
+                    "access": access_token,
+                    "refresh": refresh_token,
+                }
             }
 
             return Response(message, status=status.HTTP_200_OK)
@@ -267,7 +275,7 @@ class SocialJoin(APIView):
                 "user": user.id,
                 "name": name,
                 "about": about,
-                "genre": genre
+                "genre": genre,
             }
             
             if not (name and about and genre):
@@ -285,9 +293,17 @@ class SocialJoin(APIView):
                 pf_serializer.save()
             else:
                 return Response(pf_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
+            
+            token = RefreshToken.for_user(user)
+            access_token = str(token.access_token)
+            refresh_token = str(token)
+            
             message = {
-                "message" : "Register success",
+                "user" : pf_serializer.data,
+                "token" : {               
+                    "access": access_token,
+                    "refresh": refresh_token,
+                }
             }
 
             return Response(message, status=status.HTTP_200_OK)
