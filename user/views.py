@@ -2,6 +2,7 @@ from drf_spectacular.utils import OpenApiExample, extend_schema, OpenApiParamete
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout
+from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
@@ -663,6 +664,10 @@ class Withdrawal(APIView):
     )
     def delete(self, request):
         user = request.user
+        provided_password = request.data.get('password', None)
+        if not provided_password or not check_password(provided_password, user.password):
+            return Response({"error": "비밀번호가 정확하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
         refresh_token = RefreshToken.for_user(user)
         refresh_token.blacklist()
         
