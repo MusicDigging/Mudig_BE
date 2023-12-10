@@ -72,18 +72,24 @@ def get_music_recommendation(situations, feature, year):
     answer = response['choices'][0]['message']['content']
     print(answer)
     # answer = answer.replace("\"", "")
+    # answer = re.sub(r'"(\w*[^"]*\w*)"', r'\1', answer)
     print('answer', answer)
+    
     response_json = answer.replace("'",'"')
     print('res_answer', response_json)
     try:
         res_answer = json.loads(response_json)
         print('try', res_answer)
     except json.decoder.JSONDecodeError:
-        response_json = response_json.replace("n\"t", "n\'t")
-        response_json = response_json.replace("\\\"", "\'")
-        print('except', response_json)
-        res_answer = json.loads(response_json)
-
+        try:
+            response_json = response_json.replace("n\"t", "n\'t")
+            response_json = response_json.replace("\\\"", "\'")
+            print('except', response_json)
+            res_answer = json.loads(response_json)
+        except json.decoder.JSONDecodeError:
+            response_json = response_json.replace('""', '\'"')
+            print('except', response_json)
+            res_answer = json.loads(response_json)
     return res_answer
 
 def event_music_recommendation(situations, feature):

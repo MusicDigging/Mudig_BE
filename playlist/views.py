@@ -336,10 +336,13 @@ class Create(APIView):
         # if created:
         #     # playlist_instance.music.add(*music_list)
         #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
+        music_serializer = MusicSerializer(music_list, many=True)
         data = {
             "message" : "음악 생성 성공하였습니다.",
-            "playlist" : playlistserializer.data
+            "playlist" : playlistserializer.data,
+            "playlist_music_list": music_serializer.data
         }
+        
         return Response(data, status=status.HTTP_200_OK)
 
 
