@@ -347,7 +347,7 @@ class Create(APIView):
 
 
 class Detail(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 디테일 API",
