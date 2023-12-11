@@ -42,6 +42,7 @@ class YouTube:
                 'part': 'snippet',
                 'key': key,
                 'regionCode': 'KR',
+                'order': 'viewCount',
                 'order': 'relevance',
                 'maxResults': LIMIT,
                 'type': 'video',
