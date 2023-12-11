@@ -1009,8 +1009,8 @@ class FollowAPIView(APIView):
             ),
         ],
     )
-    def post(self, request):
-        user_id = request.data['user_id']
+    def post(self, request, user_id):
+        #user_id = request.data['user_id']
         target_user = get_object_or_404(User, pk=user_id)
 
         if request.user == target_user:
