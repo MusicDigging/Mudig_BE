@@ -1062,8 +1062,8 @@ class UnfollowAPIView(APIView):
             ),
         ],
     )
-    def delete(self, request):
-        user_id = request.data['user_id']
+    def delete(self, request, user_id):
+        #user_id = request.data['user_id']
         target_user = get_object_or_404(User, pk=user_id)
         # follower_user = User.objects.get(pk=3)  # Test User ID
         follow_relation = get_object_or_404(Follower, target_id=target_user, follower_id=request.user)
