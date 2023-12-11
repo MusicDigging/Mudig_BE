@@ -555,8 +555,12 @@ class ProfileView(APIView):
             ),
         ],
     )
-    def get(self, request, user_id):
-        user = get_object_or_404(User,pk=user_id)
+    def get(self, request, user_id=None):
+        if user_id is None:
+            user = request.user
+        else:
+            user = get_object_or_404(User, pk=user_id)
+        #user = get_object_or_404(User,pk=user_id)
         profile = get_object_or_404(Profile, user=user)
         pf_serializer = ProfileSerializer(profile)
         playlists = Playlist.objects.filter(writer=user)
@@ -1009,8 +1013,8 @@ class FollowAPIView(APIView):
             ),
         ],
     )
-    def post(self, request):
-        user_id = request.data['user_id']
+    def post(self, request, user_id):
+        #user_id = request.data['user_id']
         target_user = get_object_or_404(User, pk=user_id)
 
         if request.user == target_user:
@@ -1062,8 +1066,8 @@ class UnfollowAPIView(APIView):
             ),
         ],
     )
-    def delete(self, request):
-        user_id = request.data['user_id']
+    def delete(self, request, user_id):
+        #user_id = request.data['user_id']
         target_user = get_object_or_404(User, pk=user_id)
         # follower_user = User.objects.get(pk=3)  # Test User ID
         follow_relation = get_object_or_404(Follower, target_id=target_user, follower_id=request.user)
