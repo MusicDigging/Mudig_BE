@@ -555,8 +555,12 @@ class ProfileView(APIView):
             ),
         ],
     )
-    def get(self, request, user_id):
-        user = get_object_or_404(User,pk=user_id)
+    def get(self, request, user_id=None):
+        if user_id is None:
+            user = request.user
+        else:
+            user = get_object_or_404(User, pk=user_id)
+        #user = get_object_or_404(User,pk=user_id)
         profile = get_object_or_404(Profile, user=user)
         pf_serializer = ProfileSerializer(profile)
         playlists = Playlist.objects.filter(writer=user)
