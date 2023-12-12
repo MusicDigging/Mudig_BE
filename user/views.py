@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from json.decoder import JSONDecodeError
 from playlist.uploads import S3ImgUploader
-from playlist.models import Playlist
+from playlist.models import Playlist, Like
 from playlist.serializers import PlaylistSerializer
 from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
 from .utils import generate_otp, send_otp_via_email
@@ -420,8 +420,8 @@ class Login(APIView):
             email = request.data.get('email'),
             password = request.data.get('password')
         )
-        
-        if user is not None:
+
+        if user is not None and user.is_active:
             serializer = ProfileSerializer(user.profile)
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
@@ -565,9 +565,12 @@ class ProfileView(APIView):
         pf_serializer = ProfileSerializer(profile)
         playlists = Playlist.objects.filter(writer=user)
         py_serializer = PlaylistSerializer(playlists, many=True)
+        liked_playlists = Like.objects.filter(user=user).select_related('playlist')
+        liked_playlists_serializer = PlaylistSerializer([like.playlist for like in liked_playlists], many=True)
         data = {
             "profile": pf_serializer.data,
             "playlist": py_serializer.data,
+            "liked_playlists": liked_playlists_serializer.data
         }
 
         return Response(data, status=status.HTTP_200_OK)
