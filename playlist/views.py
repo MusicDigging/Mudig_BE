@@ -128,7 +128,7 @@ class EventPlaylistGenerate(APIView):
         
         situations = request.data['situations'] # 현재 기분이나 상황
         genre = random.sample(genres_list,1) # 유저의 프로필에서 장르 랜덤으로 가져오기 
-        response_data = event_music_recommendation(situations, genre)
+        response_data = event_music_recommendation(situations, genre[0])
         
         # is_public은 현우님이 정하시면 됩니다! 추가할지 안할지
         # is_public = request.data['public']
@@ -141,7 +141,7 @@ class EventPlaylistGenerate(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre[0], content=explanation)
         playlistserializer = PlaylistSerializer(playlist_instance)
         music_list = []
         for playlist in playlists:
