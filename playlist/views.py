@@ -885,8 +885,13 @@ class Search(APIView):
 
         search_playlist = []
         for p_s in playlist_serializer:
-            writer = Profile.objects.get(id=p_s['writer'])
-            writer_info = ProfileSerializer(writer).data
+            try:
+                writer = Profile.objects.get(id=p_s['writer'])
+            except:
+                writer_info = "유저 정보 없음"
+            else:
+                writer_info = ProfileSerializer(writer).data
+                
         
             playlist_info = {
                 'playlist' : p_s,
@@ -899,8 +904,12 @@ class Search(APIView):
 
         recent_search_playlist = [] 
         for recent_p_s in recent_playlist_serializer:
-            recent_writer = Profile.objects.get(id=recent_p_s['writer'])
-            recent_writer_info = ProfileSerializer(recent_writer).data
+            try:
+                recent_writer = Profile.objects.get(id=recent_p_s['writer'])
+            except:
+                recent_writer_info = "유저 정보 없음"
+            else:
+                recent_writer_info = ProfileSerializer(recent_writer).data
 
             recent_playlist_info = {
                 'playlist' : recent_p_s,
