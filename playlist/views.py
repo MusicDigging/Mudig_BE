@@ -81,10 +81,11 @@ class RandomMovieView(APIView):
         try:
             max_id = Music.objects.all().aggregate(max_id=Max("id"))['max_id'] # id Max 값 가져오기
             all_musiclist = [i for i in range(1,max_id+1)] # 모든 뮤직 리스트
-            # already_musiclist = [4,5,6] # 이미 본 리스트들
-            already_musiclist = request.data.get('already_musiclist')
-            result = list(set(all_musiclist) - set(already_musiclist)) # 리스트 차집합
+
+            already_musiclist_str = request.data.get('already_musiclist')
+            already_musiclist = [int(item) for item in already_musiclist_str.split(',') if item]
             
+            result = list(set(all_musiclist) - set(already_musiclist)) # 리스트 차집합
             random_musics = random.sample(result,3) # 랜덤 3개 뽑기
             queryset = Music.objects.filter(id__in=random_musics) # 해당 리스트를 검색
             # queryset = Music.objects.exclude(id__in=random_musics) # exclud 해당 리스트를 제외하고 검색
