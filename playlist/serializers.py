@@ -30,7 +30,7 @@ class CommentSerializer(serializers.ModelSerializer):
     writer_profile = ProfileSerializer(source='writer.profile', read_only=True)
     class Meta:
         model = Comment
-        fields = ['playlist', 'id', 'content', 'writer', 'parent','writer_profile', 'created_at', 'updated_at']
+        fields = ['is_active', 'playlist', 'id', 'content', 'writer', 'parent','writer_profile', 'created_at', 'updated_at']
 
 
 class LikeSerializer(serializers.ModelSerializer):
