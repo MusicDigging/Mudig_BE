@@ -21,9 +21,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='user.email', read_only=True)
+    is_following = serializers.SerializerMethodField()
     class Meta:
         model = Profile
-        fields = ['id', 'name', 'image', 'about', 'genre', 'email', 'rep_playlist']
+        fields = ['id', 'name', 'image', 'about', 'genre', 'email', 'rep_playlist', 'is_following' ]
+    def get_is_following(self, obj):
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            if obj.user == request.user:
+                return None
+            return Follower.objects.filter(target_id=obj.user, follower_id=request.user).exists()
+        return False
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
