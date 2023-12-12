@@ -430,22 +430,25 @@ class Login(APIView):
         )
         
         if user is not None:
-            serializer = ProfileSerializer(user.profile)
-            token = TokenObtainPairSerializer.get_token(user)
-            refresh_token = str(token)
-            access_token = str(token.access_token)
-            res = Response(
-                {
-                    "user" : serializer.data,
-                    "message" : "Login success",
-                    "token" : {
-                        "access" : access_token,
-                        "refresh" : refresh_token,
+            if user.is_active:
+                return Response({"error" : "이미 계정이 있습니다."}, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                serializer = ProfileSerializer(user.profile)
+                token = TokenObtainPairSerializer.get_token(user)
+                refresh_token = str(token)
+                access_token = str(token.access_token)
+                res = Response(
+                    {
+                        "user" : serializer.data,
+                        "message" : "Login success",
+                        "token" : {
+                            "access" : access_token,
+                            "refresh" : refresh_token,
+                        },
                     },
-                },
-                status=status.HTTP_200_OK,
-            )
-            return res
+                    status=status.HTTP_200_OK,
+                )
+                return res
         else:
             return Response({"error": "이메일 또는 비밀번호가 일치하지 않습니다."}, status=status.HTTP_401_UNAUTHORIZED)
 
