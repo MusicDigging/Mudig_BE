@@ -420,8 +420,8 @@ class Login(APIView):
             email = request.data.get('email'),
             password = request.data.get('password')
         )
-        
-        if user is not None:
+
+        if user is not None and user.is_active:
             serializer = ProfileSerializer(user.profile)
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
