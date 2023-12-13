@@ -373,8 +373,8 @@ class Detail(APIView):
             ),
         ],
     )
-    def get(self, request, pk):
-        playlist_instance = get_object_or_404(Playlist, id=pk)
+    def get(self, request, playlist_id):
+        playlist_instance = get_object_or_404(Playlist, id=playlist_id)
         # PlaylistMusic 모델을 통해 플레이리스트에 속한 음악들을 가져옵니다.
 
         ordered_music_instances = playlist_instance.playlistmusic_set.order_by('order').values_list('music', flat=True)
@@ -386,7 +386,6 @@ class Detail(APIView):
         playlist_serializer = PlaylistSerializer(playlist_instance, context={'request': request})
         playlist_serializer.get_like_count(playlist_instance)
         user_like = playlist_serializer.get_like_playlist(playlist_instance)
-        print('qweqwe',user_like)
         user = Profile.objects.get(user = playlist_serializer.data['writer'])
         profile = ProfileSerializer(user)
         comment = Comment.objects.filter(playlist=playlist_instance)
@@ -429,9 +428,9 @@ class Delete(APIView):
             ),
         ],
     )
-    def delete(self, request):
+    def delete(self, request, playlist_id):
         try:
-            playlist = Playlist.objects.get(id=request.data['playlist_id'])
+            playlist = Playlist.objects.get(id=playlist_id)
         except ObjectDoesNotExist:
             return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         
@@ -481,8 +480,8 @@ class Update(APIView):
             ),
         ],
     )
-    def put(self, request, pk):
-        choice_playlist = Playlist.objects.get(id=pk)
+    def put(self, request, playlist_id):
+        choice_playlist = Playlist.objects.get(id=playlist_id)
         ## del music
         del_music_list_str = request.data.get('del_music_list', '')
         ## 언제든지 수정가능

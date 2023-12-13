@@ -18,7 +18,6 @@ class PlaylistSerializer(serializers.ModelSerializer):
     
     def get_like_playlist(self, obj):
         user = self.context['request'].user
-        print(user)
         if obj.like_set.filter(user=user).exists():
             return True
         return False
