@@ -210,7 +210,7 @@ class List(APIView):
         user = request.user
         if user:
             user = User.objects.get(email = user).id
-            playlist_mine = Playlist.objects.filter(writer=user)[:3]
+            playlist_mine = Playlist.objects.filter(writer=user).order_by('-created_at')[:4]
             mine_serializer = PlaylistSerializer(playlist_mine, many=True).data
         
         ## 나를 위한 추천
@@ -218,7 +218,7 @@ class List(APIView):
             if most_common_genre:
                 most_genre = most_common_genre['genre']
             
-                recommend_playlist = Playlist.objects.filter(genre=most_genre).order_by('?')[:3]
+                recommend_playlist = Playlist.objects.filter(genre=most_genre).exclude(writer=user).order_by('?')[:5]
                 recommend_serializer = PlaylistSerializer(recommend_playlist, many=True).data
             else:
                 recommend_serializer = ''
@@ -228,7 +228,7 @@ class List(APIView):
 
         ## 핫한 플리(좋아요 많은 순)
         most_liked_playlists = Playlist.objects.annotate(count_like=Count('like')).order_by('-count_like')
-        liked_serializer = PlaylistSerializer(most_liked_playlists, many=True).data[:3]
+        liked_serializer = PlaylistSerializer(most_liked_playlists, many=True).data[:5]
         
         mudig_playlist = {
             'playlist_all' : recent_serializer,
@@ -383,8 +383,10 @@ class Detail(APIView):
         sorted_music_instances = [music_dict[music_id] for music_id in ordered_music_instances]
         
         music_serializer = MusicSerializer(sorted_music_instances, many=True)
-        playlist_serializer = PlaylistSerializer(playlist_instance)
+        playlist_serializer = PlaylistSerializer(playlist_instance, context={'request': request})
         playlist_serializer.get_like_count(playlist_instance)
+        user_like = playlist_serializer.get_like_playlist(playlist_instance)
+        print('qweqwe',user_like)
         user = Profile.objects.get(user = playlist_serializer.data['writer'])
         profile = ProfileSerializer(user)
         comment = Comment.objects.filter(playlist=playlist_instance)
@@ -428,7 +430,11 @@ class Delete(APIView):
         ],
     )
     def delete(self, request):
-        playlist = Playlist.objects.get(id=request.data['playlist_id'])
+        try:
+            playlist = Playlist.objects.get(id=request.data['playlist_id'])
+        except ObjectDoesNotExist:
+            return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
+        
         delete_img = S3ImgUploader(playlist.thumbnail)
         delete_img.delete()
         playlist.delete()
