@@ -290,6 +290,10 @@ class Create(APIView):
             ),
         ],
     )
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
     def post(self, request):
         user = request.user
         
@@ -487,8 +491,9 @@ class Delete(APIView):
         ],
     )
     def delete(self, request, playlist_id):
+        user = request.user
         try:
-            playlist = Playlist.objects.get(id=playlist_id)
+            playlist = Playlist.objects.get(id = playlist_id, writer = user)
         except ObjectDoesNotExist:
             return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         
@@ -537,7 +542,8 @@ class Update(APIView):
         ],
     )
     def put(self, request, playlist_id):
-        choice_playlist = Playlist.objects.get(id=playlist_id)
+        user = request.user
+        choice_playlist = Playlist.objects.get(id=playlist_id, writer=user)
         ## del music
         del_music_list_str = request.data.get('del_music_list', '')
         ## 언제든지 수정가능
@@ -602,7 +608,8 @@ class Add(APIView):
     )
     def put(self, request):
         # pass
-        playlist = Playlist.objects.get(id=request.data['playlist_id'])
+        user = request.user
+        playlist = Playlist.objects.get(id=request.data['playlist_id'], writer = user)
         # music_list = request.data['music']
         music_list = list(map(int, request.data['music'].split(',')))
         music_add = PlaylistAdder()
