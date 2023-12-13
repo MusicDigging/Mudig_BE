@@ -486,7 +486,8 @@ class Update(APIView):
         ],
     )
     def put(self, request, playlist_id):
-        choice_playlist = Playlist.objects.get(id=playlist_id)
+        user = request.user
+        choice_playlist = Playlist.objects.get(id=playlist_id, writer=user)
         ## del music
         del_music_list_str = request.data.get('del_music_list', '')
         ## 언제든지 수정가능
@@ -551,7 +552,8 @@ class Add(APIView):
     )
     def put(self, request):
         # pass
-        playlist = Playlist.objects.get(id=request.data['playlist_id'])
+        user = request.user
+        playlist = Playlist.objects.get(id=request.data['playlist_id'], writer = user)
         # music_list = request.data['music']
         music_list = list(map(int, request.data['music'].split(',')))
         music_add = PlaylistAdder()
