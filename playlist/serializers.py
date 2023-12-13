@@ -4,6 +4,7 @@ from user.serializers import ProfileSerializer
 
 class PlaylistSerializer(serializers.ModelSerializer):
     like_count = serializers.SerializerMethodField()
+    like_playlist = serializers.SerializerMethodField()
     class Meta:
         model = Playlist
         fields = '__all__'
@@ -14,6 +15,12 @@ class PlaylistSerializer(serializers.ModelSerializer):
     def get_playlist_info(self, obj):
         playlist_info = [{'id': playlist.id, 'thumbnail': playlist.thumbnail,'title':playlist.title} for playlist in obj]
         return playlist_info
+    
+    def get_like_playlist(self, obj):
+        user = self.context['request'].user
+        if obj.like_set.filter(user=user).exists():
+            return True
+        return False
 
 
 class MusicSerializer(serializers.ModelSerializer):

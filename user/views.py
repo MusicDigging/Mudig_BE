@@ -562,7 +562,7 @@ class ProfileView(APIView):
             user = get_object_or_404(User, pk=user_id)
         #user = get_object_or_404(User,pk=user_id)
         profile = get_object_or_404(Profile, user=user)
-        pf_serializer = ProfileSerializer(profile)
+        pf_serializer = ProfileSerializer(profile, context={'request':request})
         playlists = Playlist.objects.filter(writer=user)
         py_serializer = PlaylistSerializer(playlists, many=True)
         liked_playlists = Like.objects.filter(user=user).select_related('playlist')
