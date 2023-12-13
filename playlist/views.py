@@ -266,6 +266,10 @@ class Create(APIView):
             ),
         ],
     )
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
     def post(self, request):
         user = request.user
         # user = 'admin@admin.com'
@@ -429,8 +433,9 @@ class Delete(APIView):
         ],
     )
     def delete(self, request, playlist_id):
+        user = request.user
         try:
-            playlist = Playlist.objects.get(id=playlist_id)
+            playlist = Playlist.objects.get(id = playlist_id, writer = user)
         except ObjectDoesNotExist:
             return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
         

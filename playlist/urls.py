@@ -11,7 +11,7 @@ urlpatterns = [
     # playlist CRUD
     path('detail/<int:playlist_id>/', Detail.as_view() , name='detail'),
     path('create/', Create.as_view() , name='write'),
-    path('delete/<int:playlist_id>', Delete.as_view() , name='delete'),
+    path('delete/<int:playlist_id>/', Delete.as_view() , name='delete'),
     path('detail/<int:playlist_id>/edit/', Update.as_view() , name='edit'),
     path('add/', Add.as_view() , name='add'),
     path('myplaylist/', MyPlaylist.as_view() , name='myplaylist'),
