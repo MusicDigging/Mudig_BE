@@ -6,10 +6,11 @@ from .models import Music, Playlist, PlaylistMusic
 class PlaylistOrderUpdater:
     def update_order(self, playlist, new_orders):
         ## 모든 values
-        playlist_music_list = playlist.playlistmusic_set.all()
-        for old_order, new_order in zip(playlist_music_list, new_orders):
-            old_order.order = new_order
-            old_order.save()
+        for ordering, music in enumerate(new_orders, start = 1):
+            music_order = PlaylistMusic.objects.get(playlist = playlist, music_id=music)
+            music_order.order = ordering
+            music_order.save()
+            
 
 
 class PlaylistAdder:
