@@ -45,11 +45,14 @@
 
 |                                                                         강현우                                                                         |                        김여주                         |                                                                                  사수봉                                                                                  |                      심민정                       |                                                                  황봉수                                                                   |
 | :----------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
-| <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> |   <img src="" width="400" style="max-width: 100%;">   | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> |
+| <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> |   <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;">   | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> |
 |                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  | <a href="https://github.com/kimyeoju">🔗 kimyeoju</a> |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             | <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a> |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             |
 
 저희는 Mudig의 주니어 개발자 백엔드 팀 입니다.
-Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전공자와 전공자들로 이루어져 있습니다. 앞서 설명드린 것 처럼 요즘 핫하다는 ChatGPT(LLM, AI 모델)를 이용하여 새로운 기술을 받아들임에 있어서 열린 마음을 가진 분들이 모였습니다! 항상 잘부탁드립니다 :)
+Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전공자와 전공자들로 이루어져 있습니다. 
+앞서 설명드린 것 처럼 요즘 핫하다는 ChatGPT(LLM, AI 모델)를 이용하여 
+새로운 기술을 받아들임에 있어서 열린 마음을 가진 분들이 모였습니다! 
+항상 잘부탁드립니다 :)
 
 ### 협업 도구
 
@@ -157,120 +160,59 @@ DRF
 
 #### 3.2.1. API 명세서: https://api.mudig.co.kr/api/swaggers
 
-![스크린샷 2023-10-18 144438](https://github.com/ESTsoft-OrGo/OrGo/assets/107661525/9a23d9b3-38eb-441e-bc79-f6a5683d40bb)
+![스크린샷 2023-12-17 215443](https://github.com/MusicDigging/Mudig_BE/assets/107661525/c1e41600-d0c4-476d-8615-b71b72fc6df5)
 
 ### 3.3. URL 설계
 
 #### api.mudig.co.kr
 
-| 이름             | URL                           | Method    |
-| ---------------- | ----------------------------- | --------- |
-| User             |                               |           |
-| 로그인           | user/login/                   | POST      |
-| 소셜 로그인      | user/login/provider           | POST      |
-| 회원가입         | user/join/                    | POST      |
-| 이메일 OTP       | user/otp/                     | POST      |
-| 프로필 조회      | user/profile/                 | GET       |
-| 프로필 수정      | user/profile/update/          | PUT       |
-| 비밀번호 변경    | user/profile/change-password/ | PUT       |
-| 회원탈퇴         | user/profile/delete/          | DELETE    |
-| Post             |                               |           |
-| 게시글 조회      | post/                         | GET       |
-| 게시글 작성      | post/write/                   | POST      |
-| 게시글 수정      | post/edit/                    | PUT       |
-| 게시글 삭제      | post/delete/                  | DELETE    |
-| 게시글 상세보기  | post/view/                    | GET       |
-| Search           |                               |           |
-| 검색             | post/search/                  | GET       |
-| Like             |                               |           |
-| 좋아요           | post/like/                    | POST      |
-| 좋아요 취소      | post/unlike/                  | DELETE    |
-| Follow           |                               |           |
-| 팔로잉/언팔로잉  | user/follow/                  | POST      |
-| Comment          |                               |           |
-| 쓰기             | post/comment/write/           | POST      |
-| 삭제             | post/comment/delete/          | DELETE    |
-| 대댓글 쓰기      | post/re-comment/write/        | POST      |
-| Study            |                               |           |
-| 목록             | study/?page=number            | GET       |
-| 생성             | study/create/                 | POST      |
-| 참가             | study/join/                   | POST      |
-| 참가 취소        | study/join/cancle/            | DELETE    |
-| 수정             | study/edit/                   | PUT       |
-| 삭제             | study/delete/                 | DELETE    |
-| tag 생성         | study/tag/write/              | POST      |
-| tag 삭제         | study/tag/delete/             | DELETE    |
-| Notify           |                               |           |
-| 실시간 알림 받기 | notify/str:user_id/           | Websocket |
-| 알림 목록        | notify/                       | GET       |
+| 기능 | URL | Method | 담당 |
+| --- | --- | --- | --- |
+| USER |  |  |  |
+| 이메일 인증 | /user/otp | POST | 김여주 |
+| 닉네임 중복 검사 | /user/checkname | POST |  |
+| 회원가입 | /user/join | POST |  |
+| 로그인 | /user/login | POST |  |
+| 로그아웃 | /user/logout | POST |  |
+| 소셜 로그인 | /user/login/{provider} | GET |  |
+| 소셜 로그인 콜백 | /user/login/{provider}/callback | POST |  |
+| 소셜 회원 가입 | /user/socialjoin/ | POST |  |
+| 비밀번호 변경 | /user/changepassword | PUT |  |
+| 회원 탈퇴 | /user/withdrawal | DELETE |  |
+| 프로필 조회 | /user/profile | GET | 심민정 |
+| 타 유저 프로필 조회 | /user/profile/<int:user_id> | GET |  |
+| 프로필 수정 | /user/profile/edit | PUT |  |
+| 팔로우 | /user/<int:user_id>/follow | POST |  |
+| 언팔로우 | /user/<int:user_id>/unfollow | DELETE |  |
+| 팔로워 목록 조회 | /user/<int:user_id>/followers | GET |  |
+| 팔로잉 목록 조회 | /user/<int:user_id>/following | GET |  |
+| PLAYLIST |  |  |  |
+| 플리 조회 | /playlist | GET | 황봉수 |
+| 플리 생성 | /playlist/create | POST |  |
+| 플리 삭제 | /playlist/delete/<int:playlist_id> | DELETE |  |
+| 플리 수정 | /playlist/detail/<int:playlist_id>/edit | PUT |  |
+| 플리 상세보기 | /playlist/detail/<int:playlist_id> | GET |  |
+| 기존 플리에 곡 추가 | /playlist/add | PUT  |  |
+| 내 플리 보기 (음악추가 할 때) | /playlist/myplaylist | GET |  |
+| 모든음악 (음악추가할 때) | /playlist/music | GET |  |
+| 플리 검색 | /playlist/search?query={string} | GET | 사수봉 |
+| 플리 좋아요 | /playlist/like | POST |  |
+| 플리 댓글 작성 | /playlist/comment/write | POST |  |
+| 플리 대댓글 작성 | /playlist/recomment/write | POST |  |
+| 플리 댓글 수정 | /playlist/comment/edit | PUT |  |
+| 플리 댓글 삭제 | /playlist/comment/delete/<int:comment_id> | DELETE |  |
+| 랜덤 뮤비 | /playlist/random-mv | POST | 강현우 |
+| 이벤트성 플리 생성 | /playlist/event | POST |  |
 
 ### 3.4. 프로젝트 설계 및 프로세스
 
 #### 3.4.1. Architecture
 
-![그림2](https://github.com/ESTsoft-OrGo/OrGoChat/assets/107661525/ea9b19ff-e6a9-425b-a0d1-ca8fa5fd54ff)
+추가예정
 
 #### 3.4.5. 폴더 트리
 
-```
-📦OrGo
- ┣ 📂Orgo
- ┃ ┣ 📜asgi.py
- ┃ ┣ 📜wsgi.py
- ┃ ┣ 📜settings.py
- ┃ ┣ 📜urls.py
- ┣ 📂chat
- ┃ ┣ 📜admin.py
- ┃ ┣ 📜apps.py
- ┃ ┣ 📜consumers.py
- ┃ ┣ 📜models.py
- ┃ ┣ 📜routing.py
- ┃ ┣ 📜tests.py
- ┃ ┣ 📜urls.py
- ┃ ┣ 📜view.py
- ┣ 📂notify
- ┃ ┣ 📜admin.py
- ┃ ┣ 📜apps.py
- ┃ ┣ 📜consumers.py
- ┃ ┣ 📜models.py
- ┃ ┣ 📜routing.py
- ┃ ┣ 📜serializers.py
- ┃ ┣ 📜tests.py
- ┃ ┣ 📜urls.py
- ┃ ┣ 📜view.py
- ┣ 📂post
- ┃ ┣ 📜admin.py
- ┃ ┣ 📜apps.py
- ┃ ┣ 📜uploads.py
- ┃ ┣ 📜models.py
- ┃ ┣ 📜serializers.py
- ┃ ┣ 📜tests.py
- ┃ ┣ 📜urls.py
- ┃ ┣ 📜view.py
- ┣ 📂study
- ┃ ┣ 📜admin.py
- ┃ ┣ 📜apps.py
- ┃ ┣ 📜uploads.py
- ┃ ┣ 📜models.py
- ┃ ┣ 📜serializers.py
- ┃ ┣ 📜pagination.py
- ┃ ┣ 📜tests.py
- ┃ ┣ 📜urls.py
- ┃ ┣ 📜view.py
- ┣ 📂user
- ┃ ┣ 📜admin.py
- ┃ ┣ 📜apps.py
- ┃ ┣ 📜uploads.py
- ┃ ┣ 📜models.py
- ┃ ┣ 📜serializers.py
- ┃ ┣ 📜tokens.py
- ┃ ┣ 📜tests.py
- ┃ ┣ 📜urls.py
- ┃ ┣ 📜view.py
- ┣ 📜manage.py
- ┣ 📜README.md
- ┗ 📜requirements.txt
-```
+추가예정
 
 ### 3.5. 개발 일정
 
@@ -282,9 +224,9 @@ DRF
 
 ##### 회의록
 
-- 프로젝트 회의록 : https://withorgo.notion.site/c7274b6b1f3e44579d1da91bfc771314?pvs=4
+- 프로젝트 회의록 : https://www.notion.so/Mudig-4de021314fe54804a03d291908f3d508
 
-![스크린샷 2023-09-06 091325](https://github.com/Hyunwooz/DjangoGptProject_BE/assets/107661525/076839eb-94da-48ba-87fa-bcc264ba7657)
+![스크린샷 2023-12-17 220226](https://github.com/MusicDigging/Mudig_BE/assets/107661525/c2f07559-6668-4d91-8e84-b051e45474d9)
 
 ##### 일정 관리
 
@@ -314,13 +256,13 @@ DRF
 
 ### 메인 페이지
 
-![www withorgo site_index html (1)](https://github.com/ESTsoft-OrGo/OrGo/assets/107661525/78033f41-a08d-4681-ba5b-dc09927a9b72)
+수정 예정
 
 ### 세부 페이지
 
 Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&node-id=2-54&mode=design&t=DPLaDoTa3ZSmgwT4-0
-![스크린샷 2023-09-02 112048](https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/2d97c668-c584-4225-b7fd-9b5f76ac746a)
 
+수정 예정
 ## 5. 기능
 
 ## 6. 개발하며 느낀점
