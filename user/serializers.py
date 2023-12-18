@@ -34,6 +34,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         return False
 
 
+class ProfileSeadrchSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email', read_only=True)
+    class Meta:
+        model = Profile
+        fields = ['id', 'name', 'image', 'about', 'genre', 'email', 'rep_playlist']
+
+
 class ChangePasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
