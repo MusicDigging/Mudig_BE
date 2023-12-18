@@ -189,7 +189,7 @@ class EventPlaylistGenerate(APIView):
 
 # Create your views here.
 class List(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 메인 화면",
@@ -209,7 +209,7 @@ class List(APIView):
     def get(self, request):
         
         ## 최신플리
-        playlist_all = Playlist.objects.order_by('-created_at')[:5]
+        playlist_all = Playlist.objects.filter(is_public=True).order_by('-created_at')[:5]
         recent_serializer = PlaylistSerializer(playlist_all, many=True).data
         ## 내가 만든 플리 
         user = request.user
@@ -217,22 +217,31 @@ class List(APIView):
             user = User.objects.get(email = user).id
             playlist_mine = Playlist.objects.filter(writer=user).order_by('-created_at')[:4]
             mine_serializer = PlaylistSerializer(playlist_mine, many=True).data
-        
-        ## 나를 위한 추천
-            most_common_genre = Playlist.objects.filter(writer=user).values('genre').annotate(genre_count=Count('genre')).order_by('-genre_count').first()
+            most_common_genre = []
+            ## 나를 위한 추천
+            # 'POP, K-POP, J-POP, 힙합, R&B, 발라드, 댄스, 인디, OST' 
+            profile = Profile.objects.get(user=user)
+            profile_genre = list(profile.genre.split(',')) if profile.genre else []
+            try:
+                while not most_common_genre:
+                    selected_genre = random.choice(profile_genre)
+                    print(selected_genre)
+                    profile_genre.remove(selected_genre)
+                    most_common_genre = Playlist.objects.filter(genre=selected_genre, is_public=True).exclude(writer=user).order_by('?')[:5]
+                    print(most_common_genre)
+                    selected_genre = []
+            except IndexError:
+                most_common_genre = Playlist.objects.filter(is_public=True).exclude(writer=user).order_by('?')[:5]
             if most_common_genre:
-                most_genre = most_common_genre['genre']
-            
-                recommend_playlist = Playlist.objects.filter(genre=most_genre).exclude(writer=user).order_by('?')[:5]
-                recommend_serializer = PlaylistSerializer(recommend_playlist, many=True).data
+                recommend_serializer = PlaylistSerializer(most_common_genre, many=True).data
             else:
-                recommend_serializer = ''
+                recommend_serializer = []
         else:
-            mine_serializer = ''
-            recommend_serializer = ''
+            mine_serializer = []
+            recommend_serializer = []
 
         ## 핫한 플리(좋아요 많은 순)
-        most_liked_playlists = Playlist.objects.annotate(count_like=Count('like')).order_by('-count_like')
+        most_liked_playlists = Playlist.objects.filter(is_public=True).annotate(count_like=Count('like')).order_by('-count_like')
         liked_serializer = PlaylistSerializer(most_liked_playlists, many=True).data[:5]
         
         mudig_playlist = {
