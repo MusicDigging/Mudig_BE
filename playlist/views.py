@@ -189,7 +189,7 @@ class EventPlaylistGenerate(APIView):
 
 # Create your views here.
 class List(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 메인 화면",
@@ -217,16 +217,21 @@ class List(APIView):
             user = User.objects.get(email = user).id
             playlist_mine = Playlist.objects.filter(writer=user).order_by('-created_at')[:4]
             mine_serializer = PlaylistSerializer(playlist_mine, many=True).data
-        
-        ## 나를 위한 추천
-            most_common_genre = Playlist.objects.filter(writer=user).values('genre').annotate(genre_count=Count('genre')).order_by('-genre_count').first()
-            if most_common_genre:
-                most_genre = most_common_genre['genre']
-            
-                recommend_playlist = Playlist.objects.filter(genre=most_genre).exclude(writer=user).order_by('?')[:5]
-                recommend_serializer = PlaylistSerializer(recommend_playlist, many=True).data
+            most_common_genre = []
+            ## 나를 위한 추천
+            # 'POP, K-POP, J-POP, 힙합, R&B, 발라드, 댄스, 인디, OST' 
+            profile = Profile.objects.get(user=user)
+            profile_genre = list(profile.genre.split(',')) if profile.genre else []
+            if not profile_genre:
+                most_common_genre = Playlist.objects.all().exclude(writer=user).order_by('?')[:5]
             else:
-                recommend_serializer = ''
+                while not most_common_genre:
+                    selected_genre = random.choice(profile_genre)
+                    profile_genre.remove(selected_genre)
+                    most_common_genre = Playlist.objects.filter(genre=selected_genre).exclude(writer=user).order_by('?')[:5]
+                    selected_genre = []
+            # if most_common_genre:
+            recommend_serializer = PlaylistSerializer(most_common_genre, many=True).data
         else:
             mine_serializer = ''
             recommend_serializer = ''
