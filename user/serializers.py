@@ -24,7 +24,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     is_following = serializers.SerializerMethodField()
     class Meta:
         model = Profile
-        fields = ['id', 'name', 'image', 'about', 'genre', 'email', 'rep_playlist', 'is_following' ]
+        fields = ['id', 'name', 'about', 'genre', 'email', 'rep_playlist', 'is_following' ]
     def get_is_following(self, obj):
         request = self.context.get("request")
         if request and hasattr(request, "user"):
@@ -32,6 +32,13 @@ class ProfileSerializer(serializers.ModelSerializer):
                 return None
             return Follower.objects.filter(target_id=obj.user, follower_id=request.user).exists()
         return False
+
+
+class ProfileSeadrchSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email', read_only=True)
+    class Meta:
+        model = Profile
+        fields = ['id', 'name', 'image', 'about', 'genre', 'email', 'rep_playlist']
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
