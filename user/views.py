@@ -563,12 +563,16 @@ class ProfileView(APIView):
         #user = get_object_or_404(User,pk=user_id)
         profile = get_object_or_404(Profile, user=user)
         pf_serializer = ProfileSerializer(profile, context={'request':request})
+        
+        profile_data = pf_serializer.data
+        profile_data['image'] = profile.image
+        
         playlists = Playlist.objects.filter(writer=user)
         py_serializer = PlaylistSerializer(playlists, many=True)
         liked_playlists = Like.objects.filter(user=user).select_related('playlist')
         liked_playlists_serializer = PlaylistSerializer([like.playlist for like in liked_playlists], many=True)
         data = {
-            "profile": pf_serializer.data,
+            "profile": profile_data,
             "playlist": py_serializer.data,
             "liked_playlists": liked_playlists_serializer.data
         }
@@ -624,7 +628,8 @@ class ProfileEditView(APIView):
             image_file = request.FILES['image']
             uploader = S3ImgUploader(image_file)
             image_url = uploader.upload('profile')
-            serializer.initial_data['image'] = image_url
+            profile.image = image_url
+            profile.save()
 
         rep_playlist_id = request.data.get('rep_playlist')
         if rep_playlist_id:

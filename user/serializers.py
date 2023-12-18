@@ -24,7 +24,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     is_following = serializers.SerializerMethodField()
     class Meta:
         model = Profile
-        fields = ['id', 'name', 'image', 'about', 'genre', 'email', 'rep_playlist', 'is_following' ]
+        fields = ['id', 'name', 'about', 'genre', 'email', 'rep_playlist', 'is_following' ]
     def get_is_following(self, obj):
         request = self.context.get("request")
         if request and hasattr(request, "user"):
