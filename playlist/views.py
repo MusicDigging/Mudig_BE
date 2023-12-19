@@ -86,7 +86,7 @@ class RandomMovieView(APIView):
             already_musiclist = [int(item) for item in already_musiclist_str.split(',') if item]
             
             result = list(set(all_musiclist) - set(already_musiclist)) # 리스트 차집합
-            random_musics = random.sample(result,3) # 랜덤 3개 뽑기
+            random_musics = random.sample(result,5) # 랜덤 5개 뽑기
             queryset = Music.objects.filter(id__in=random_musics) # 해당 리스트를 검색
             # queryset = Music.objects.exclude(id__in=random_musics) # exclud 해당 리스트를 제외하고 검색
 

@@ -43,15 +43,15 @@
 
 ### 안녕하세요. Team OrGo 입니다!
 
-|                                                                         강현우                                                                         |                        김여주                         |                                                                                  사수봉                                                                                  |                      심민정                       |                                                                  황봉수                                                                   |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
-| <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> |   <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;">   | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> |
-|                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  | <a href="https://github.com/kimyeoju">🔗 kimyeoju</a> |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             | <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a> |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             |
+|                                                                         강현우                                                                         |                                                 김여주                                                 |                                                                                  사수봉                                                                                  |                      심민정                       |                                                                  황봉수                                                                   |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
+| <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> |
+|                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  |                         <a href="https://github.com/kimyeoju">🔗 kimyeoju</a>                          |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             | <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a> |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             |
 
 저희는 Mudig의 주니어 개발자 백엔드 팀 입니다.
-Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전공자와 전공자들로 이루어져 있습니다. 
-앞서 설명드린 것 처럼 요즘 핫하다는 ChatGPT(LLM, AI 모델)를 이용하여 
-새로운 기술을 받아들임에 있어서 열린 마음을 가진 분들이 모였습니다! 
+Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전공자와 전공자들로 이루어져 있습니다.
+앞서 설명드린 것 처럼 요즘 핫하다는 ChatGPT(LLM, AI 모델)를 이용하여
+새로운 기술을 받아들임에 있어서 열린 마음을 가진 분들이 모였습니다!
 항상 잘부탁드립니다 :)
 
 ### 협업 도구
@@ -105,7 +105,7 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 
   <!-- [# 팔로우 시연 영상](#57-팔로우-기능) -->
 
-- 댓글과 대댓글 CRD
+- 댓글과 대댓글 CRUD
   ```
   댓글을 이용하여 게시글에 대한 의견을 남길 수도 있으며 댓글의 대댓글 기능 까지 지원하고 있습니다.
   댓글을 수정, 삭제하는 기능까지 제공 되고 있습니다.
@@ -166,43 +166,43 @@ DRF
 
 #### api.mudig.co.kr
 
-| 기능 | URL | Method | 담당 |
-| --- | --- | --- | --- |
-| USER |  |  |  |
-| 이메일 인증 | /user/otp | POST | 김여주 |
-| 닉네임 중복 검사 | /user/checkname | POST |  |
-| 회원가입 | /user/join | POST |  |
-| 로그인 | /user/login | POST |  |
-| 로그아웃 | /user/logout | POST |  |
-| 소셜 로그인 | /user/login/{provider} | GET |  |
-| 소셜 로그인 콜백 | /user/login/{provider}/callback | POST |  |
-| 소셜 회원 가입 | /user/socialjoin/ | POST |  |
-| 비밀번호 변경 | /user/changepassword | PUT |  |
-| 회원 탈퇴 | /user/withdrawal | DELETE |  |
-| 프로필 조회 | /user/profile | GET | 심민정 |
-| 타 유저 프로필 조회 | /user/profile/<int:user_id> | GET |  |
-| 프로필 수정 | /user/profile/edit | PUT |  |
-| 팔로우 | /user/<int:user_id>/follow | POST |  |
-| 언팔로우 | /user/<int:user_id>/unfollow | DELETE |  |
-| 팔로워 목록 조회 | /user/<int:user_id>/followers | GET |  |
-| 팔로잉 목록 조회 | /user/<int:user_id>/following | GET |  |
-| PLAYLIST |  |  |  |
-| 플리 조회 | /playlist | GET | 황봉수 |
-| 플리 생성 | /playlist/create | POST |  |
-| 플리 삭제 | /playlist/delete/<int:playlist_id> | DELETE |  |
-| 플리 수정 | /playlist/detail/<int:playlist_id>/edit | PUT |  |
-| 플리 상세보기 | /playlist/detail/<int:playlist_id> | GET |  |
-| 기존 플리에 곡 추가 | /playlist/add | PUT  |  |
-| 내 플리 보기 (음악추가 할 때) | /playlist/myplaylist | GET |  |
-| 모든음악 (음악추가할 때) | /playlist/music | GET |  |
-| 플리 검색 | /playlist/search?query={string} | GET | 사수봉 |
-| 플리 좋아요 | /playlist/like | POST |  |
-| 플리 댓글 작성 | /playlist/comment/write | POST |  |
-| 플리 대댓글 작성 | /playlist/recomment/write | POST |  |
-| 플리 댓글 수정 | /playlist/comment/edit | PUT |  |
-| 플리 댓글 삭제 | /playlist/comment/delete/<int:comment_id> | DELETE |  |
-| 랜덤 뮤비 | /playlist/random-mv | POST | 강현우 |
-| 이벤트성 플리 생성 | /playlist/event | POST |  |
+| 기능                          | URL                                       | Method | 담당   |
+| ----------------------------- | ----------------------------------------- | ------ | ------ |
+| USER                          |                                           |        |        |
+| 이메일 인증                   | /user/otp                                 | POST   | 김여주 |
+| 닉네임 중복 검사              | /user/checkname                           | POST   |        |
+| 회원가입                      | /user/join                                | POST   |        |
+| 로그인                        | /user/login                               | POST   |        |
+| 로그아웃                      | /user/logout                              | POST   |        |
+| 소셜 로그인                   | /user/login/{provider}                    | GET    |        |
+| 소셜 로그인 콜백              | /user/login/{provider}/callback           | POST   |        |
+| 소셜 회원 가입                | /user/socialjoin/                         | POST   |        |
+| 비밀번호 변경                 | /user/changepassword                      | PUT    |        |
+| 회원 탈퇴                     | /user/withdrawal                          | DELETE |        |
+| 프로필 조회                   | /user/profile                             | GET    | 심민정 |
+| 타 유저 프로필 조회           | /user/profile/<int:user_id>               | GET    |        |
+| 프로필 수정                   | /user/profile/edit                        | PUT    |        |
+| 팔로우                        | /user/<int:user_id>/follow                | POST   |        |
+| 언팔로우                      | /user/<int:user_id>/unfollow              | DELETE |        |
+| 팔로워 목록 조회              | /user/<int:user_id>/followers             | GET    |        |
+| 팔로잉 목록 조회              | /user/<int:user_id>/following             | GET    |        |
+| PLAYLIST                      |                                           |        |        |
+| 플리 조회                     | /playlist                                 | GET    | 황봉수 |
+| 플리 생성                     | /playlist/create                          | POST   |        |
+| 플리 삭제                     | /playlist/delete/<int:playlist_id>        | DELETE |        |
+| 플리 수정                     | /playlist/detail/<int:playlist_id>/edit   | PUT    |        |
+| 플리 상세보기                 | /playlist/detail/<int:playlist_id>        | GET    |        |
+| 기존 플리에 곡 추가           | /playlist/add                             | PUT    |        |
+| 내 플리 보기 (음악추가 할 때) | /playlist/myplaylist                      | GET    |        |
+| 모든음악 (음악추가할 때)      | /playlist/music                           | GET    |        |
+| 플리 검색                     | /playlist/search?query={string}           | GET    | 사수봉 |
+| 플리 좋아요                   | /playlist/like                            | POST   |        |
+| 플리 댓글 작성                | /playlist/comment/write                   | POST   |        |
+| 플리 대댓글 작성              | /playlist/recomment/write                 | POST   |        |
+| 플리 댓글 수정                | /playlist/comment/edit                    | PUT    |        |
+| 플리 댓글 삭제                | /playlist/comment/delete/<int:comment_id> | DELETE |        |
+| 랜덤 뮤비                     | /playlist/random-mv                       | POST   | 강현우 |
+| 이벤트성 플리 생성            | /playlist/event                           | POST   |        |
 
 ### 3.4. 프로젝트 설계 및 프로세스
 
@@ -263,6 +263,7 @@ DRF
 Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&node-id=2-54&mode=design&t=DPLaDoTa3ZSmgwT4-0
 
 수정 예정
+
 ## 5. 기능
 
 ## 6. 개발하며 느낀점
