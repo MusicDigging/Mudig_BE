@@ -98,7 +98,7 @@ def event_music_recommendation(situations, feature):
     # 질문 작성하기
     query = {
         "현재 기분 및 상황": situations,
-        "장르 및 특성": feature,
+        "장르": feature,
     }
 
     questions = {
@@ -110,7 +110,7 @@ def event_music_recommendation(situations, feature):
     # ChatGPT API 호출하기
     response = openai.ChatCompletion.create(
         model=model,
-        messages=prompt,
+        messages=event_prompt,
         timeout = 600
     )
     answer = response['choices'][0]['message']['content']

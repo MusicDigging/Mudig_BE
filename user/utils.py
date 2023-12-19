@@ -1,4 +1,5 @@
 import random
+from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import User
@@ -10,6 +11,6 @@ def generate_otp():
 
 def send_otp_via_email(email, otp):
     subject = '[MusicDigging] 환영합니다! 이메일을 인증해 주세요.'
-    message = f'아래의 코드를 입력하면 회원가입이 완료됩니다. \nCODE : {otp}'
-    email_from = settings.EMAIL_HOST_USER
-    send_mail(subject, message, email_from, [email])
+    context = {'otp': otp, 'email': settings.EMAIL_HOST_USER}
+    message = render_to_string('user/email_template.html', context)
+    send_mail(subject, '', settings.EMAIL_HOST_USER, [email], html_message=message)

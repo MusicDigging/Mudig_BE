@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count, Avg, Min, Max, Sum, Q
 from django.shortcuts import get_object_or_404
 from user.models import User, Profile
-from user.serializers import ProfileSerializer
+from user.serializers import ProfileSerializer, ProfileSeadrchSerializer
 from .serializers import MusicSerializer, PlaylistSerializer, CommentSerializer
 from .youtube import YouTube
 from .karlo import t2i
@@ -81,10 +81,11 @@ class RandomMovieView(APIView):
         try:
             max_id = Music.objects.all().aggregate(max_id=Max("id"))['max_id'] # id Max 값 가져오기
             all_musiclist = [i for i in range(1,max_id+1)] # 모든 뮤직 리스트
-            # already_musiclist = [4,5,6] # 이미 본 리스트들
-            already_musiclist = request.data.get('already_musiclist')
-            result = list(set(all_musiclist) - set(already_musiclist)) # 리스트 차집합
+
+            already_musiclist_str = request.data.get('already_musiclist')
+            already_musiclist = [int(item) for item in already_musiclist_str.split(',') if item]
             
+            result = list(set(all_musiclist) - set(already_musiclist)) # 리스트 차집합
             random_musics = random.sample(result,3) # 랜덤 3개 뽑기
             queryset = Music.objects.filter(id__in=random_musics) # 해당 리스트를 검색
             # queryset = Music.objects.exclude(id__in=random_musics) # exclud 해당 리스트를 제외하고 검색
@@ -128,7 +129,7 @@ class EventPlaylistGenerate(APIView):
         
         situations = request.data['situations'] # 현재 기분이나 상황
         genre = random.sample(genres_list,1) # 유저의 프로필에서 장르 랜덤으로 가져오기 
-        response_data = event_music_recommendation(situations, genre)
+        response_data = event_music_recommendation(situations, genre[0])
         
         # is_public은 현우님이 정하시면 됩니다! 추가할지 안할지
         # is_public = request.data['public']
@@ -141,7 +142,7 @@ class EventPlaylistGenerate(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
+        playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre[0], content=explanation)
         playlistserializer = PlaylistSerializer(playlist_instance)
         music_list = []
         for playlist in playlists:
@@ -188,7 +189,7 @@ class EventPlaylistGenerate(APIView):
 
 # Create your views here.
 class List(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     @extend_schema(
         summary="플레이리스트 메인 화면",
@@ -208,31 +209,40 @@ class List(APIView):
     def get(self, request):
         
         ## 최신플리
-        playlist_all = Playlist.objects.order_by('-created_at')[:5]
+        playlist_all = Playlist.objects.filter(is_public=True).order_by('-created_at')[:5]
         recent_serializer = PlaylistSerializer(playlist_all, many=True).data
         ## 내가 만든 플리 
         user = request.user
         if user:
             user = User.objects.get(email = user).id
-            playlist_mine = Playlist.objects.filter(writer=user)[:3]
+            playlist_mine = Playlist.objects.filter(writer=user).order_by('-created_at')[:4]
             mine_serializer = PlaylistSerializer(playlist_mine, many=True).data
-        
-        ## 나를 위한 추천
-            most_common_genre = Playlist.objects.filter(writer=user).values('genre').annotate(genre_count=Count('genre')).order_by('-genre_count').first()
+            most_common_genre = []
+            ## 나를 위한 추천
+            # 'POP, K-POP, J-POP, 힙합, R&B, 발라드, 댄스, 인디, OST' 
+            profile = Profile.objects.get(user=user)
+            profile_genre = list(profile.genre.split(',')) if profile.genre else []
+            try:
+                while not most_common_genre:
+                    selected_genre = random.choice(profile_genre)
+                    print(selected_genre)
+                    profile_genre.remove(selected_genre)
+                    most_common_genre = Playlist.objects.filter(genre=selected_genre, is_public=True).exclude(writer=user).order_by('?')[:5]
+                    print(most_common_genre)
+                    selected_genre = []
+            except IndexError:
+                most_common_genre = Playlist.objects.filter(is_public=True).exclude(writer=user).order_by('?')[:5]
             if most_common_genre:
-                most_genre = most_common_genre['genre']
-            
-                recommend_playlist = Playlist.objects.filter(genre=most_genre).order_by('?')[:3]
-                recommend_serializer = PlaylistSerializer(recommend_playlist, many=True).data
+                recommend_serializer = PlaylistSerializer(most_common_genre, many=True).data
             else:
-                recommend_serializer = ''
+                recommend_serializer = []
         else:
-            mine_serializer = ''
-            recommend_serializer = ''
+            mine_serializer = []
+            recommend_serializer = []
 
         ## 핫한 플리(좋아요 많은 순)
-        most_liked_playlists = Playlist.objects.annotate(count_like=Count('like')).order_by('-count_like')
-        liked_serializer = PlaylistSerializer(most_liked_playlists, many=True).data[:3]
+        most_liked_playlists = Playlist.objects.filter(is_public=True).annotate(count_like=Count('like')).order_by('-count_like')
+        liked_serializer = PlaylistSerializer(most_liked_playlists, many=True).data[:5]
         
         mudig_playlist = {
             'playlist_all' : recent_serializer,
@@ -289,6 +299,10 @@ class Create(APIView):
             ),
         ],
     )
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
     def post(self, request):
         user = request.user
         
@@ -430,8 +444,8 @@ class Detail(APIView):
             ),
         ],
     )
-    def get(self, request, pk):
-        playlist_instance = get_object_or_404(Playlist, id=pk)
+    def get(self, request, playlist_id):
+        playlist_instance = get_object_or_404(Playlist, id=playlist_id)
         # PlaylistMusic 모델을 통해 플레이리스트에 속한 음악들을 가져옵니다.
 
         ordered_music_instances = playlist_instance.playlistmusic_set.order_by('order').values_list('music', flat=True)
@@ -440,8 +454,9 @@ class Detail(APIView):
         sorted_music_instances = [music_dict[music_id] for music_id in ordered_music_instances]
         
         music_serializer = MusicSerializer(sorted_music_instances, many=True)
-        playlist_serializer = PlaylistSerializer(playlist_instance)
+        playlist_serializer = PlaylistSerializer(playlist_instance, context={'request': request})
         playlist_serializer.get_like_count(playlist_instance)
+        user_like = playlist_serializer.get_like_playlist(playlist_instance)
         user = Profile.objects.get(user = playlist_serializer.data['writer'])
         profile = ProfileSerializer(user)
         comment = Comment.objects.filter(playlist=playlist_instance)
@@ -484,8 +499,13 @@ class Delete(APIView):
             ),
         ],
     )
-    def delete(self, request):
-        playlist = Playlist.objects.get(id=request.data['playlist_id'])
+    def delete(self, request, playlist_id):
+        user = request.user
+        try:
+            playlist = Playlist.objects.get(id = playlist_id, writer = user)
+        except ObjectDoesNotExist:
+            return Response({"error":"잘못된 접근입니다."}, status=status.HTTP_404_NOT_FOUND)
+        
         delete_img = S3ImgUploader(playlist.thumbnail)
         delete_img.delete()
         playlist.delete()
@@ -530,8 +550,9 @@ class Update(APIView):
             ),
         ],
     )
-    def put(self, request, pk):
-        choice_playlist = Playlist.objects.get(id=pk)
+    def put(self, request, playlist_id):
+        user = request.user
+        choice_playlist = Playlist.objects.get(id=playlist_id, writer=user)
         ## del music
         del_music_list_str = request.data.get('del_music_list', '')
         ## 언제든지 수정가능
@@ -596,7 +617,8 @@ class Add(APIView):
     )
     def put(self, request):
         # pass
-        playlist = Playlist.objects.get(id=request.data['playlist_id'])
+        user = request.user
+        playlist = Playlist.objects.get(id=request.data['playlist_id'], writer = user)
         # music_list = request.data['music']
         music_list = list(map(int, request.data['music'].split(',')))
         music_add = PlaylistAdder()
@@ -875,18 +897,23 @@ class Search(APIView):
             return Response({"error": "Missing 'query' parameter"}, status=status.HTTP_400_BAD_REQUEST)
 
         users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')
-        profile_serializer = ProfileSerializer(users, many=True).data
+        profile_serializer = ProfileSeadrchSerializer(users, many=True).data
 
         recent_user = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')[:3]
-        recent_profile_serializer = ProfileSerializer(recent_user, many=True).data
+        recent_profile_serializer = ProfileSeadrchSerializer(recent_user, many=True).data
 
         playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')
         playlist_serializer = PlaylistSerializer(playlists, many=True).data
 
         search_playlist = []
         for p_s in playlist_serializer:
-            writer = Profile.objects.get(id=p_s['writer'])
-            writer_info = ProfileSerializer(writer).data
+            try:
+                writer = Profile.objects.get(id=p_s['writer'])
+            except:
+                writer_info = "유저 정보 없음"
+            else:
+                writer_info = ProfileSeadrchSerializer(writer).data
+                
         
             playlist_info = {
                 'playlist' : p_s,
@@ -899,8 +926,12 @@ class Search(APIView):
 
         recent_search_playlist = [] 
         for recent_p_s in recent_playlist_serializer:
-            recent_writer = Profile.objects.get(id=recent_p_s['writer'])
-            recent_writer_info = ProfileSerializer(recent_writer).data
+            try:
+                recent_writer = Profile.objects.get(id=recent_p_s['writer'])
+            except:
+                recent_writer_info = "유저 정보 없음"
+            else:
+                recent_writer_info = ProfileSeadrchSerializer(recent_writer).data
 
             recent_playlist_info = {
                 'playlist' : recent_p_s,

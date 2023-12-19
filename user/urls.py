@@ -25,4 +25,5 @@ urlpatterns = [
     path('<int:user_id>/unfollow/', UnfollowAPIView.as_view(), name='unfollow'),
     path('<int:user_id>/followers/', FollowersListView.as_view(), name='user-followers'),
     path('<int:user_id>/following/', FollowingListView.as_view(), name='user-following'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

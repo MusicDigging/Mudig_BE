@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from json.decoder import JSONDecodeError
 from playlist.uploads import S3ImgUploader
-from playlist.models import Playlist
+from playlist.models import Playlist, Like
 from playlist.serializers import PlaylistSerializer
 from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
 from .utils import generate_otp, send_otp_via_email
@@ -420,8 +420,8 @@ class Login(APIView):
             email = request.data.get('email'),
             password = request.data.get('password')
         )
-        
-        if user is not None:
+
+        if user is not None and user.is_active:
             serializer = ProfileSerializer(user.profile)
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
@@ -562,12 +562,19 @@ class ProfileView(APIView):
             user = get_object_or_404(User, pk=user_id)
         #user = get_object_or_404(User,pk=user_id)
         profile = get_object_or_404(Profile, user=user)
-        pf_serializer = ProfileSerializer(profile)
+        pf_serializer = ProfileSerializer(profile, context={'request':request})
+        
+        profile_data = pf_serializer.data
+        profile_data['image'] = profile.image
+        
         playlists = Playlist.objects.filter(writer=user)
         py_serializer = PlaylistSerializer(playlists, many=True)
+        liked_playlists = Like.objects.filter(user=user).select_related('playlist')
+        liked_playlists_serializer = PlaylistSerializer([like.playlist for like in liked_playlists], many=True)
         data = {
-            "profile": pf_serializer.data,
+            "profile": profile_data,
             "playlist": py_serializer.data,
+            "liked_playlists": liked_playlists_serializer.data
         }
 
         return Response(data, status=status.HTTP_200_OK)
@@ -614,22 +621,16 @@ class ProfileEditView(APIView):
         ],
     )
     def put(self, request):
-        profile = get_object_or_404(Profile, user=request.user)
+        profile = request.user.profile
         serializer = ProfileSerializer(profile, data=request.data)
 
         if 'image' in request.FILES:
             image_file = request.FILES['image']
             uploader = S3ImgUploader(image_file)
             image_url = uploader.upload('profile')
-            serializer.initial_data['image'] = image_url
+            profile.image = image_url
+            profile.save()
 
-        rep_playlist_id = request.data.get('rep_playlist')
-        if rep_playlist_id:
-            try:
-                rep_playlist = Playlist.objects.get(pk=rep_playlist_id)
-                serializer.initial_data['rep_playlist'] = rep_playlist.id
-            except Playlist.DoesNotExist:
-                return Response({"error": "대표 플레이리스트가 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "프로필 수정이 완료되었습니다."}, status=status.HTTP_200_OK)
