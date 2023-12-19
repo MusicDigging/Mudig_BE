@@ -621,7 +621,7 @@ class ProfileEditView(APIView):
         ],
     )
     def put(self, request):
-        profile = get_object_or_404(Profile, user=request.user)
+        profile = request.user.profile
         serializer = ProfileSerializer(profile, data=request.data)
 
         if 'image' in request.FILES:
@@ -631,13 +631,6 @@ class ProfileEditView(APIView):
             profile.image = image_url
             profile.save()
 
-        rep_playlist_id = request.data.get('rep_playlist')
-        if rep_playlist_id:
-            try:
-                rep_playlist = Playlist.objects.get(pk=rep_playlist_id)
-                serializer.initial_data['rep_playlist'] = rep_playlist.id
-            except Playlist.DoesNotExist:
-                return Response({"error": "대표 플레이리스트가 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "프로필 수정이 완료되었습니다."}, status=status.HTTP_200_OK)
