@@ -675,9 +675,13 @@ class Withdrawal(APIView):
         refresh_token = RefreshToken.for_user(user)
         refresh_token.blacklist()
         
+        profile = user.profile
+        profile.name =f'deleteuser_{profile.id}'
+        profile.save()
+        
         user.is_active = False
         user.save()
-        
+            
         return Response({"message": "회원탈퇴 되었습니다."}, status=status.HTTP_200_OK)
 
 
