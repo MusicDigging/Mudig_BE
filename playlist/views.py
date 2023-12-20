@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count, Avg, Min, Max, Sum, Q
 from django.shortcuts import get_object_or_404
 from user.models import User, Profile
-from user.serializers import ProfileSerializer, ProfileSeadrchSerializer
+from user.serializers import ProfileSerializer, ProfileSearchSerializer
 from .serializers import MusicSerializer, PlaylistSerializer, CommentSerializer
 from .youtube import YouTube
 from .karlo import t2i
@@ -458,7 +458,7 @@ class Detail(APIView):
         playlist_serializer.get_like_count(playlist_instance)
         user_like = playlist_serializer.get_like_playlist(playlist_instance)
         user = Profile.objects.get(user = playlist_serializer.data['writer'])
-        profile = ProfileSerializer(user)
+        profile = ProfileSearchSerializer(user)
         comment = Comment.objects.filter(playlist=playlist_instance)
         commentserializer = CommentSerializer(comment, many=True)
         comment = {
@@ -897,10 +897,10 @@ class Search(APIView):
             return Response({"error": "Missing 'query' parameter"}, status=status.HTTP_400_BAD_REQUEST)
 
         users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')
-        profile_serializer = ProfileSeadrchSerializer(users, many=True).data
+        profile_serializer = ProfileSearchSerializer(users, many=True).data
 
         recent_user = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')[:3]
-        recent_profile_serializer = ProfileSeadrchSerializer(recent_user, many=True).data
+        recent_profile_serializer = ProfileSearchSerializer(recent_user, many=True).data
 
         playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')
         playlist_serializer = PlaylistSerializer(playlists, many=True).data
@@ -912,7 +912,7 @@ class Search(APIView):
             except:
                 writer_info = "유저 정보 없음"
             else:
-                writer_info = ProfileSeadrchSerializer(writer).data
+                writer_info = ProfileSearchSerializer(writer).data
                 
         
             playlist_info = {
@@ -931,7 +931,7 @@ class Search(APIView):
             except:
                 recent_writer_info = "유저 정보 없음"
             else:
-                recent_writer_info = ProfileSeadrchSerializer(recent_writer).data
+                recent_writer_info = ProfileSearchSerializer(recent_writer).data
 
             recent_playlist_info = {
                 'playlist' : recent_p_s,
