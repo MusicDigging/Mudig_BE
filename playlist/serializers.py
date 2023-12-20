@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Playlist, Music, Like, Comment
-from user.serializers import ProfileSerializer
+from user.serializers import ProfileSearchSerializer
 
 class PlaylistSerializer(serializers.ModelSerializer):
     like_count = serializers.SerializerMethodField()
@@ -34,7 +34,7 @@ class MusicSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    writer_profile = ProfileSerializer(source='writer.profile', read_only=True)
+    writer_profile = ProfileSearchSerializer(source='writer.profile', read_only=True)
     class Meta:
         model = Comment
         fields = ['is_active', 'playlist', 'id', 'content', 'writer', 'parent','writer_profile', 'created_at', 'updated_at']

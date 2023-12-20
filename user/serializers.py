@@ -34,7 +34,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return False
 
 
-class ProfileSeadrchSerializer(serializers.ModelSerializer):
+class ProfileSearchSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='user.email', read_only=True)
     class Meta:
         model = Profile
