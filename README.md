@@ -51,11 +51,14 @@ GPT (Generative Pretrained Transformer) 기술을 사용하여 개인화된 음�
 | <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131655569?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> |
 |                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  |                         <a href="https://github.com/kimyeoju">🔗 kimyeoju</a>                          |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             |                           <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a>                            |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             |
 
+안녕하세요 🙇‍♂️
 저희는 Mudig의 주니어 개발자 백엔드 팀 입니다.
 Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전공자와 전공자들로 이루어져 있습니다.
-앞서 설명드린 것 처럼 요즘 핫하다는 ChatGPT(LLM, AI 모델)를 이용하여
-새로운 기술을 받아들임에 있어서 열린 마음을 가진 분들이 모였습니다!
-항상 잘부탁드립니다 :)
+새로운 기술을 받아들임에 있어서 열린 마음을 가진 분들이 모여 프로젝트를 진행하였습니다.
+기술적으로 부족할 수도 있지만 최선을 다해 준비했습니다.
+잘부탁드립니다 :)
+
+
 
 ### 협업 도구
 
