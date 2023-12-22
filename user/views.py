@@ -24,7 +24,7 @@ import requests
 
 dotenv.load_dotenv()
 
-CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
+CALLBACK_URI = 'https://www.mudig.co.kr/login'
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
 KAKAO_REST_API_KEY = os.environ['KAKAO_REST_API_KEY']
@@ -827,7 +827,7 @@ class KakaoLogin(APIView):
     )
     def get(self, request):
         data = {
-            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={KAKAO_REST_API_KEY}&redirect_uri=http://127.0.0.1:5500/index.html"
+            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={KAKAO_REST_API_KEY}&redirect_uri={CALLBACK_URI}"
         }
         return Response(data,status=status.HTTP_200_OK)
 
@@ -905,7 +905,7 @@ class KakaoCallback(APIView):
         request_data = {
             'grant_type': 'authorization_code',
             'client_id': KAKAO_REST_API_KEY,
-            'redirect_uri': "http://127.0.0.1:5500/index.html",
+            'redirect_uri': CALLBACK_URI,
             'code': code,
         }
         # header에 content-type을 지정해주는 부분입니다.
