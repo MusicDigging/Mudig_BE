@@ -24,7 +24,7 @@ class Playlist(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     music = models.ManyToManyField(Music, through='PlaylistMusic', related_name='playlists')
     # music = models.ManyToManyField(Music, through='PlaylistMusicOrder')
-    is_public = models.BooleanField(default=False)
+    is_public = models.BooleanField(default=True)
 
 
 class PlaylistMusic(models.Model):
