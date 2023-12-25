@@ -8,19 +8,19 @@
 해당 서비스를 이용해보실 수 있는 테스트 계정입니다.
 
  ID : mudig01@email.com
- PW : example
+ PW : Mudig011
 
  ID : mudig02@email.com
- PW : example
+ PW : Mudig012
 
  ID : mudig03@email.com
- PW : example
+ PW : Mudig013
 
  ID : mudig04@email.com
- PW : example
+ PW : Mudig014
 
  ID : mudig05@email.com
- PW : example
+ PW : Mudig015
 ```
 
 ## 계기 및 목표
@@ -36,7 +36,7 @@
 그래서 우리의 서비스를 통해 좀더 친해질 수 있는 기회를 제공하고 싶었습니다.
 ```
 
-## 인삿말
+## 인사말
 
 
 안녕하세요. 🙇‍♂️
@@ -47,9 +47,9 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 
 뮤딕은
 
-1️⃣ 자체 회원가입 뿐만 아니라 구글, 카카오를 이용한 소셜 로그인을 지원하고 있습니다. <br>
-2️⃣ 인공지능을 통해 새로운 음악을 찾는 즐거움을 드릴 수 있습니다.<br>
-3️⃣ 자신만의 플레이리스트를 공유하고, 소통하며 무료한 일상에 소소함 즐거움을 느낄 수 있도록 장소를 제공해드립니다.
+1.  자체 회원가입 뿐만 아니라 구글, 카카오를 이용한 소셜 로그인을 지원하고 있습니다.
+2. 인공지능을 통해 새로운 음악을 찾는 즐거움을 드릴 수 있습니다.
+3. 자신만의 플레이리스트를 공유하고, 소통하며 무료한 일상에 소소함 즐거움을 느낄 수 있도록 장소를 제공해드립니다.
 
 ### 디깅이란?
 
