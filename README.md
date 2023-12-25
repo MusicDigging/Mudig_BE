@@ -1,13 +1,25 @@
 # Mudig
 
-이미지 추가 예정
+![mudig 캐릭터](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/9aedcb7c-c93e-4eac-b9a8-9d1cd7de7789)
 
 [뮤딕 바로가기](https://www.mudig.co.kr/)
 
 ```
 해당 서비스를 이용해보실 수 있는 테스트 계정입니다.
 
- ID : example@email.com
+ ID : mudig01@email.com
+ PW : example
+
+ ID : mudig02@email.com
+ PW : example
+
+ ID : mudig03@email.com
+ PW : example
+
+ ID : mudig04@email.com
+ PW : example
+
+ ID : mudig05@email.com
  PW : example
 ```
 
@@ -15,32 +27,34 @@
 
 ### 1️⃣ AI는 아직 사람들과 친해지지 않았다.
 
-```
-현재 AI 기술은 많은 관심을 받고 있습니다. 하지만 아직도 AI 기술은 사람들과 친해지지 않았습니다.
-그래서 친해질 수 있는 서비스를 제공하고 싶었습니다.
-```
-
 ### 2️⃣ AI에 대한 부정적인 시선을 낮추고, 사람들과 친해지는 계기를 제공하자!
 
-## 개요
-
 ```
+현재 AI 기술은 사람들에게 많은 관심을 받고 있지만 
+아직도 많은 사람들과는 친해지지 않았습니다.
+
+그래서 우리의 서비스를 통해 좀더 친해질 수 있는 기회를 제공하고 싶었습니다.
+```
+
+## 인삿말
+
+
 안녕하세요. 🙇‍♂️
 
-뮤딕은 사용자들이 새로운 음악을 발견하고, 추천받으며, 공유할 수 있는 플랫폼을 말합니다.
-GPT (Generative Pretrained Transformer) 기술을 사용하여 개인화된 음악 추천과 인터렉티브한 경험을 제공하는 서비스입니다.
+뮤딕(Mudig, Music Digging 이하 뮤딕)은 사용자들이 새로운 음악을 발견하고, 추천받으며, 공유할 수 있는 플랫폼을 말합니다.
 
-1️⃣ 뮤딕은 자체 회원가입 뿐만 아니라 구글, 카카오를 이용한 소셜 로그인을 지원하고 있습니다.
-2️⃣ 뮤딕은 새로운 음악을 찾는 즐거움을 드릴 수 있습니다.
-3️⃣ 뮤딕은 자신만의 플레이리스트를 공유하고, 소통하며 즐거운 일상 생활을 즐길 수 있도록 장소를 제공해드립니다.
-```
+GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 사용하여 개인화된 음악 추천과 인터렉티브한 경험을 제공하는 서비스입니다.
+
+뮤딕은
+
+1️⃣ 자체 회원가입 뿐만 아니라 구글, 카카오를 이용한 소셜 로그인을 지원하고 있습니다. <br>
+2️⃣ 인공지능을 통해 새로운 음악을 찾는 즐거움을 드릴 수 있습니다.<br>
+3️⃣ 자신만의 플레이리스트를 공유하고, 소통하며 무료한 일상에 소소함 즐거움을 느낄 수 있도록 장소를 제공해드립니다.
 
 ### 디깅이란?
 
-```
 ‘디깅’이란 원래 디제이가 자신의 공연 리스트를 채우기 위해서 음악을 찾는 행위를 의미하나,
-현재는 자신의 특색있는 플레이리스트를 짜는 것으로 그 의미가 확대 되어 일반인들도 사용하는 언어이다.
-```
+현재는 자신의 특색있는 플레이리스트를 짜는 것으로 그 의미가 확대 되어 일반인들도 사용하는 언어가 되었습니다.
 
 ## 팀원 소개
 
@@ -51,14 +65,13 @@ GPT (Generative Pretrained Transformer) 기술을 사용하여 개인화된 음�
 | <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131655569?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> |
 |                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  |                         <a href="https://github.com/kimyeoju">🔗 kimyeoju</a>                          |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             |                           <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a>                            |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             |
 
-안녕하세요 🙇‍♂️
-저희는 Mudig의 주니어 개발자 백엔드 팀 입니다.
-Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전공자와 전공자들로 이루어져 있습니다.
-새로운 기술을 받아들임에 있어서 열린 마음을 가진 분들이 모여 프로젝트를 진행하였습니다.
-기술적으로 부족할 수도 있지만 최선을 다해 준비했습니다.
+
+안녕하세요 🙇‍♂️<br>
+저희는 Mudig의 주니어 개발자 백엔드 팀 입니다.<br>
+Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전공자와 전공자들로 이루어져 있습니다.<br>
+새로운 기술을 받아들임에 있어서 열린 마음을 가진 분들이 모여 프로젝트를 진행하였습니다.<br>
+기술적으로 부족할 수도 있지만 최선을 다해 준비했습니다.<br>
 잘부탁드립니다 :)
-
-
 
 ### 협업 도구
 
