@@ -569,7 +569,7 @@ class ProfileView(APIView):
         profile_data = pf_serializer.data
         profile_data['image'] = profile.image
         
-        playlists = Playlist.objects.filter(writer=user)
+        playlists = Playlist.objects.filter(writer=user,is_active=True)
         py_serializer = PlaylistSerializer(playlists, many=True)
         liked_playlists = Like.objects.filter(user=user).select_related('playlist')
         liked_playlists_serializer = PlaylistSerializer([like.playlist for like in liked_playlists], many=True)
@@ -821,7 +821,7 @@ class KakaoLogin(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "data": f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=KAKAO_REST_API_KEY&redirect_uri=http://127.0.0.1:5500/index.html"
+                        "data": f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=KAKAO_REST_API_KEY&redirect_uri=CALLBACK_URI"
                     },
                 }
             ),
