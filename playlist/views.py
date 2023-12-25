@@ -65,6 +65,20 @@ class RandomMovieView(APIView):
                             "singer": "Sara Bareilles",
                             "thumbnail": "https://i.ytimg.com/vi/budTp-4BGM0/mqdefault.jpg",
                             "information": "https://www.youtube.com/embed/yuFI5KSPAt4",
+                            "created_at": "2023-08-24T10:01:38",},
+                        {
+                            "id": 16,
+                            "song": "하루살이",
+                            "singer": "장범준",
+                            "thumbnail": "https://i.ytimg.com/vi/QV8D6P-NR4c/mqdefault.jpg",
+                            "information": "https://www.youtube.com/embed/QV8D6P-NR4c",
+                            "created_at": "2023-08-24T10:01:38",},
+                        {
+                            "id": 23,
+                            "song": "Lemon",
+                            "singer": "요네즈 켄시",
+                            "thumbnail": "https://i.ytimg.com/vi/p0ku3_rK6dE/mqdefault.jpg",
+                            "information": "https://www.youtube.com/embed/p0ku3_rK6dE",
                             "created_at": "2023-08-24T10:01:38",}
                         ]},
             ),
@@ -116,7 +130,30 @@ class EventPlaylistGenerate(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"message": "음악 생성 성공하였습니다"},
+                    "res_data": {
+                        "message": "음악 생성 성공하였습니다.",
+                        "playlist": {
+                            "id": 49,
+                            "like_count": 0,
+                            "like_playlist": False,
+                            "title": "따뜻한 크리스마스 분위기를 전해주는 인디 캐롤 플레이리스트",
+                            "content": "위의 인디 캐롤 플레이리스트는 크리스마스 분위기에 어울리며 따뜻한 감성을 전달합니다. 슬로우한 멜로디와 소울풀한 가사로 따스한 휴일 분위기를 만끽하세요!",
+                            "thumbnail": "karlo/d5f3464aa2ea11eeae840700a75bb434",
+                            "genre": "인디",
+                            "is_active": True,
+                            "created_at": "2023-12-25T14:59:59.371921+09:00",
+                            "updated_at": "2023-12-25T14:59:59.371941+09:00",
+                            "is_public": True,
+                            "writer": 27,
+                            "music": [
+                                172,
+                                173,
+                                174,
+                                175,
+                                176
+                            ]
+                        }
+                    },
                 },
             ),
         ],
@@ -130,9 +167,6 @@ class EventPlaylistGenerate(APIView):
         situations = request.data['situations'] # 현재 기분이나 상황
         genre = random.sample(genres_list,1) # 유저의 프로필에서 장르 랜덤으로 가져오기 
         response_data = event_music_recommendation(situations, genre[0])
-        
-        # is_public은 현우님이 정하시면 됩니다! 추가할지 안할지
-        # is_public = request.data['public']
         
         playlists = response_data['playlist']
         title = response_data['title']
@@ -178,9 +212,7 @@ class EventPlaylistGenerate(APIView):
                 music=music_instance,
                 order=order
             )
-        # if created:
-        #     # playlist_instance.music.add(*music_list)
-        #     # playlist_instance.playlistmusic_set.add(*PlaylistMusic.objects.filter(playlist=playlist_instance))
+
         data = {
             "message" : "음악 생성 성공하였습니다.",
             "playlist" : playlistserializer.data
@@ -201,7 +233,355 @@ class List(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"playlist_all":['objects'],"my_playlist":['objects'],"recommend_pli":['objects'],"liked_playlist":['objects']},
+                    "res_data": {
+                        "playlist_all": [
+                            {
+                                "id": 49,
+                                "like_count": 0,
+                                "like_playlist": False,
+                                "title": "따뜻한 크리스마스 분위기를 전해주는 인디 캐롤 플레이리스트",
+                                "content": "위의 인디 캐롤 플레이리스트는 크리스마스 분위기에 어울리며 따뜻한 감성을 전달합니다. 슬로우한 멜로디와 소울풀한 가사로 따스한 휴일 분위기를 만끽하세요!",
+                                "thumbnail": "karlo/d5f3464aa2ea11eeae840700a75bb434",
+                                "genre": "인디",
+                                "is_active": True,
+                                "created_at": "2023-12-25T14:59:59.371921+09:00",
+                                "updated_at": "2023-12-25T14:59:59.371941+09:00",
+                                "is_public": True,
+                                "writer": 27,
+                                "music": [
+                                    172,
+                                    173,
+                                    174,
+                                    175,
+                                    176
+                                ]
+                            },
+                            {
+                                "id": 48,
+                                "like_count": 0,
+                                "like_playlist": False,
+                                "title": "겨울의 따뜻한 국물을 감성적으로 느낄 수 있는 플레이리스트",
+                                "content": "추운 날씨에 꼭 필요한 따뜻한 국물처럼 마음을 감싸주는 음악들입니다. K-POP 장르로 2010년대에 발매된 곡들이며, 조용하고 감성적인 분위기를 즐길 수 있습니다.",
+                                "thumbnail": "karlo/560c9168a2de11eeae840700a75bb434",
+                                "genre": "POP",
+                                "is_active": True,
+                                "created_at": "2023-12-25T13:30:30.814652+09:00",
+                                "updated_at": "2023-12-25T13:30:30.814672+09:00",
+                                "is_public": True,
+                                "writer": 5,
+                                "music": [
+                                    18,
+                                    168,
+                                    169,
+                                    170,
+                                    171
+                                ]
+                            },
+                            {
+                                "id": 47,
+                                "like_count": 1,
+                                "like_playlist": False,
+                                "title": "따뜻한 국물과 함께 즐기는 추억의 K-POP 플레이리스트",
+                                "content": "이 플레이리스트는 추울 때 뜨끈한 국물과 어울리는 2010년대 K-POP 음악으로 구성되어 있습니다. 이 음악들은 따뜻한 감성과 추억을 자아내며, 함께 즐길 때 더욱 풍성한 시간이 되리라 생각합니다. 즐거운 듣기 시간 되세요!",
+                                "thumbnail": "karlo/2dbb8d0aa16b11eeae840700a75bb434",
+                                "genre": "K-POP",
+                                "is_active": True,
+                                "created_at": "2023-12-23T17:13:39.906007+09:00",
+                                "updated_at": "2023-12-23T17:13:39.906026+09:00",
+                                "is_public": True,
+                                "writer": 7,
+                                "music": [
+                                    18,
+                                    164,
+                                    165,
+                                    166,
+                                    167
+                                ]
+                            },
+                            {
+                                "id": 30,
+                                "like_count": 0,
+                                "like_playlist": False,
+                                "title": "디즈니 매직을 느낄 수 있는 플레이리스트!",
+                                "content": "디즈니 애니메이션의 고전 OST들로 구성된 이 플레이리스트는 디즈니의 매력과 감동을 느낄 수 있게 해줄 거예요. 마음 속으로 여정을 떠나보세요!",
+                                "thumbnail": "karlo/2a4aefb0a08c11eeae840700a75bb434",
+                                "genre": "POP,OST",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:37:16.346946+09:00",
+                                "updated_at": "2023-12-22T14:37:34.317543+09:00",
+                                "is_public": True,
+                                "writer": 6,
+                                "music": [
+                                    107,
+                                    108,
+                                    109,
+                                    110,
+                                    111
+                                ]
+                            },
+                            {
+                                "id": 29,
+                                "like_count": 1,
+                                "like_playlist": False,
+                                "title": "태연의 감성을 담은 플레이리스트",
+                                "content": "태연의 감성적인 목소리로 장난기 넘치는 곡부터 감미로운 발라드까지, 다양한 면을 담은 플레이리스트입니다. 태연의 노래를 통해 여러분의 감성을 풀어보세요!",
+                                "thumbnail": "karlo/1838f754a08c11eeae840700a75bb434",
+                                "genre": "K-POP",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:36:46.034374+09:00",
+                                "updated_at": "2023-12-22T14:37:19.160935+09:00",
+                                "is_public": True,
+                                "writer": 7,
+                                "music": [
+                                    102,
+                                    103,
+                                    104,
+                                    105,
+                                    106,
+                                    113,
+                                    114
+                                ]
+                            }
+                        ],
+                        "my_playlist": [
+                            {
+                                "id": 49,
+                                "like_count": 0,
+                                "like_playlist": False,
+                                "title": "따뜻한 크리스마스 분위기를 전해주는 인디 캐롤 플레이리스트",
+                                "content": "위의 인디 캐롤 플레이리스트는 크리스마스 분위기에 어울리며 따뜻한 감성을 전달합니다. 슬로우한 멜로디와 소울풀한 가사로 따스한 휴일 분위기를 만끽하세요!",
+                                "thumbnail": "karlo/d5f3464aa2ea11eeae840700a75bb434",
+                                "genre": "인디",
+                                "is_active": True,
+                                "created_at": "2023-12-25T14:59:59.371921+09:00",
+                                "updated_at": "2023-12-25T14:59:59.371941+09:00",
+                                "is_public": True,
+                                "writer": 27,
+                                "music": [
+                                    172,
+                                    173,
+                                    174,
+                                    175,
+                                    176
+                                ]
+                            }
+                        ],
+                        "recommend_pli": [
+                            {
+                                "id": 17,
+                                "like_count": 0,
+                                "like_playlist": False,
+                                "title": "활기찬 스노보드 여행을 위한 추천 플레이리스트입니다!",
+                                "content": "이 플레이리스트는 활기찬 스노보드 여행에 딱 어울리는 댄스 음악들로 구성되어 있습니다. 신나고 흥겨운 느낌의 곡들로 스노보드 타는 동안에 즐거운 시간을 보내실 수 있을 거에요! 즐거운 여행되세요!",
+                                "thumbnail": "karlo/49073064a08a11eeae840700a75bb434",
+                                "genre": "댄스",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:23:48.894979+09:00",
+                                "updated_at": "2023-12-22T14:24:15.907581+09:00",
+                                "is_public": True,
+                                "writer": 7,
+                                "music": [
+                                    25,
+                                    28,
+                                    40,
+                                    41,
+                                    69
+                                ]
+                            },
+                            {
+                                "id": 22,
+                                "like_count": 0,
+                                "like_playlist": False,
+                                "title": "아이유의 아름다운 음악들",
+                                "content": "아이유의 감성적이고 따뜻한 음악들을 소개합니다. 이 플레이리스트를 들으면 마음이 편안해지고 기분 좋아질 것입니다. 아이유의 다양한 매력을 느껴보세요!",
+                                "thumbnail": "karlo/27825f76a08b11eeae840700a75bb434",
+                                "genre": "K-POP",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:30:02.194034+09:00",
+                                "updated_at": "2023-12-22T14:30:28.193796+09:00",
+                                "is_public": True,
+                                "writer": 7,
+                                "music": [
+                                    37,
+                                    51,
+                                    80,
+                                    81,
+                                    82,
+                                    83
+                                ]
+                            },
+                            {
+                                "id": 19,
+                                "like_count": 1,
+                                "like_playlist": False,
+                                "title": "Dua Lipa",
+                                "content": "이 플레이리스트는 Dua Lipa의 인기곡들로 구성되어 있습니다. 신나고 흥겨운 노래들로 에너지를 얻을 수 있을 것입니다. 행복한 시간을 보내세요!",
+                                "thumbnail": "karlo/706a3228a08a11eeae840700a75bb434",
+                                "genre": "K-POP",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:24:54.978621+09:00",
+                                "updated_at": "2023-12-22T14:31:41.997870+09:00",
+                                "is_public": True,
+                                "writer": 7,
+                                "music": [
+                                    28,
+                                    75,
+                                    76,
+                                    77,
+                                    78
+                                ]
+                            },
+                            {
+                                "id": 16,
+                                "like_count": 2,
+                                "like_playlist": False,
+                                "title": "아이묭의 아름다운 음악 여정",
+                                "content": "이 플레이리스트는 2017년부터 현재까지의 아이묭의 감성적인 음악을 담고 있습니다. 아이묭의 일렉트로닉 사운드와 인디 감성이 어우러져 여러분의 마음을 흔들 것입니다. 편안하게 즐기세요!",
+                                "thumbnail": "karlo/41e76376a08a11eeae840700a75bb434",
+                                "genre": "J-POP,인디,POP",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:23:36.961757+09:00",
+                                "updated_at": "2023-12-22T14:30:35.522247+09:00",
+                                "is_public": True,
+                                "writer": 6,
+                                "music": [
+                                    64,
+                                    65,
+                                    66,
+                                    67,
+                                    68
+                                ]
+                            },
+                            {
+                                "id": 9,
+                                "like_count": 0,
+                                "like_playlist": False,
+                                "title": "창의적인 디자인을 위한 활력 넘치는 플레이리스트",
+                                "content": "위 플레이리스트에는 디자인 회의에 참여하는 동안 에너지를 높여줄 댄스 음악들이 포함되어 있습니다. 이 음악들은 활발하면서도 긍정적인 분위기를 조성하며, 창의적인 아이디어 발굴을 도와줄 것입니다.",
+                                "thumbnail": "karlo/ab9ba360a08811eeae840700a75bb434",
+                                "genre": "댄스",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:12:15.360070+09:00",
+                                "updated_at": "2023-12-22T14:20:34.330343+09:00",
+                                "is_public": True,
+                                "writer": 7,
+                                "music": [
+                                    25,
+                                    39,
+                                    40,
+                                    41,
+                                    42,
+                                    121
+                                ]
+                            }
+                        ],
+                        "liked_playlist": [
+                            {
+                                "id": 21,
+                                "like_count": 2,
+                                "like_playlist": False,
+                                "title": "요네즈 켄시 노래 모음",
+                                "content": "요네즈 켄시 노래 모음집입니다~",
+                                "thumbnail": "karlo/9c48a79ea08a11eeae840700a75bb434",
+                                "genre": "J-POP,인디",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:26:08.593904+09:00",
+                                "updated_at": "2023-12-22T14:28:43.740870+09:00",
+                                "is_public": True,
+                                "writer": 6,
+                                "music": [
+                                    70,
+                                    71,
+                                    72,
+                                    73
+                                ]
+                            },
+                            {
+                                "id": 16,
+                                "like_count": 2,
+                                "like_playlist": False,
+                                "title": "아이묭의 아름다운 음악 여정",
+                                "content": "이 플레이리스트는 2017년부터 현재까지의 아이묭의 감성적인 음악을 담고 있습니다. 아이묭의 일렉트로닉 사운드와 인디 감성이 어우러져 여러분의 마음을 흔들 것입니다. 편안하게 즐기세요!",
+                                "thumbnail": "karlo/41e76376a08a11eeae840700a75bb434",
+                                "genre": "J-POP,인디,POP",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:23:36.961757+09:00",
+                                "updated_at": "2023-12-22T14:30:35.522247+09:00",
+                                "is_public": True,
+                                "writer": 6,
+                                "music": [
+                                    64,
+                                    65,
+                                    66,
+                                    67,
+                                    68
+                                ]
+                            },
+                            {
+                                "id": 19,
+                                "like_count": 1,
+                                "like_playlist": False,
+                                "title": "Dua Lipa",
+                                "content": "이 플레이리스트는 Dua Lipa의 인기곡들로 구성되어 있습니다. 신나고 흥겨운 노래들로 에너지를 얻을 수 있을 것입니다. 행복한 시간을 보내세요!",
+                                "thumbnail": "karlo/706a3228a08a11eeae840700a75bb434",
+                                "genre": "K-POP",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:24:54.978621+09:00",
+                                "updated_at": "2023-12-22T14:31:41.997870+09:00",
+                                "is_public": True,
+                                "writer": 7,
+                                "music": [
+                                    28,
+                                    75,
+                                    76,
+                                    77,
+                                    78
+                                ]
+                            },
+                            {
+                                "id": 47,
+                                "like_count": 1,
+                                "like_playlist": False,
+                                "title": "따뜻한 국물과 함께 즐기는 추억의 K-POP 플레이리스트",
+                                "content": "이 플레이리스트는 추울 때 뜨끈한 국물과 어울리는 2010년대 K-POP 음악으로 구성되어 있습니다. 이 음악들은 따뜻한 감성과 추억을 자아내며, 함께 즐길 때 더욱 풍성한 시간이 되리라 생각합니다. 즐거운 듣기 시간 되세요!",
+                                "thumbnail": "karlo/2dbb8d0aa16b11eeae840700a75bb434",
+                                "genre": "K-POP",
+                                "is_active": True,
+                                "created_at": "2023-12-23T17:13:39.906007+09:00",
+                                "updated_at": "2023-12-23T17:13:39.906026+09:00",
+                                "is_public": True,
+                                "writer": 7,
+                                "music": [
+                                    18,
+                                    164,
+                                    165,
+                                    166,
+                                    167
+                                ]
+                            },
+                            {
+                                "id": 23,
+                                "like_count": 1,
+                                "like_playlist": False,
+                                "title": "KPOP 여자 아이돌의 활력 넘치는 노래모음",
+                                "content": "이 플레이리스트는 2020년부터 현재까지의 인기 K-POP 여자 아이돌의 활력 넘치는 노래들로 구성되어 있습니다. 업텐션과 흥미를 주는 리듬과 강렬한 보컬로 여러분의 기분을 업그레이드해줄 것입니다. 즐겁게 감상하세요!",
+                                "thumbnail": "karlo/6c74aaf8a08b11eeae840700a75bb434",
+                                "genre": "K-POP",
+                                "is_active": True,
+                                "created_at": "2023-12-22T14:31:57.895432+09:00",
+                                "updated_at": "2023-12-22T14:35:53.256432+09:00",
+                                "is_public": True,
+                                "writer": 6,
+                                "music": [
+                                    15,
+                                    84,
+                                    85,
+                                    86,
+                                    87
+                                ]
+                            }
+                        ]
+                        },
                 },
             ),
         ],
@@ -309,7 +689,6 @@ class Create(APIView):
         situations = request.data['situations']
         genre = request.data['genre']
         year = request.data['year']
-        # is_public = request.data['public']
         
         response_data = get_music_recommendation(situations, genre, year)
         
@@ -322,7 +701,6 @@ class Create(APIView):
         karlo = t2i(prompt)
         youtube_api = []
         
-        # playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, is_public = is_public, content=explanation)
         playlist_instance, created = Playlist.objects.get_or_create(writer=user, title=title, thumbnail=karlo, genre=genre, content=explanation)
         playlistserializer = PlaylistSerializer(playlist_instance)
         music_list = []
@@ -392,47 +770,73 @@ class Detail(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"playlist":['objects'],
-                                "music":['objects'],
-                                'user' : {
-                                    "id": 2,
-                                    "name": "닉네임",
-                                    "image": "null",
-                                    "about": "자신을 소개해주세요 :)",
-                                    "genre": "null",
-                                    "rep_playlist": "null"
-                                },
-                                "comments" : [{
-                                "id": 1,
-                                "content": "qwewqe",
-                                "writer": 2,
-                                "writer_profile": {
-                                    "id": 2,
-                                    "name": "닉네임",
-                                    "image": "null",
-                                    "about": "자신을 소개해주세요 :)",
-                                    "genre": "null",
-                                    "rep_playlist": "null"
-                                },
-                                "created_at": "2023-12-05T16:41:54.092731+09:00",
-                                "updated_at": "2023-12-05T16:41:54.092731+09:00"
+                    "res_data": {
+                        "user": {
+                            "id": 6,
+                            "name": "FE_다얀",
+                            "image": "profile/39bba74aa08d11eeae840700a75bb434",
+                            "about": "Hi there",
+                            "genre": "K-POP,J-POP,인디",
+                            "email": "dayoun202@gmail.com",
+                            "rep_playlist": 8
+                        },
+                        "comments": [],
+                        "playlist": {
+                            "id": 42,
+                            "like_count": 0,
+                            "like_playlist": False,
+                            "title": "지브리 애니메이션 OST",
+                            "content": "지브리 애니메이션 OST",
+                            "thumbnail": "karlo/89d531e6a09d11eeae840700a75bb434",
+                            "genre": "J-POP,OST",
+                            "is_active": True,
+                            "created_at": "2023-12-22T16:41:38.109400+09:00",
+                            "updated_at": "2023-12-22T16:42:30.919304+09:00",
+                            "is_public": False,
+                            "writer": 6,
+                            "music": [
+                                148,
+                                149,
+                                150,
+                                151
+                            ]
+                        },
+                        "music": [
+                            {
+                                "id": 148,
+                                "information": "https://www.youtube.com/embed/TK1Ij_-mank",
+                                "singer": "Joe Hisaishi",
+                                "song": "One Summer\"s Day",
+                                "thumbnail": "https://i.ytimg.com/vi/TK1Ij_-mank/mqdefault.jpg",
+                                "created_at": "2023-12-22T16:41:40.125103+09:00"
                             },
-                                {
-                                    "id": 2,
-                                    "content": "qwewqe",
-                                    "writer": 2,
-                                    "writer_profile": {
-                                        "id": 2,
-                                        "name": "닉네임",
-                                        "image": "null",
-                                        "about": "자신을 소개해주세요 :)",
-                                        "genre": "null",
-                                        "rep_playlist": "null"
-                                    },
-                                    "created_at": "2023-12-05T16:43:10.716962+09:00",
-                                    "updated_at": "2023-12-05T16:43:10.716962+09:00"
-                                }],},
+                            {
+                                "id": 149,
+                                "information": "https://www.youtube.com/embed/ze0-fv8QKA4",
+                                "singer": "Joe Hisaishi",
+                                "song": "Nausicaä of the Valley of the Wind",
+                                "thumbnail": "https://i.ytimg.com/vi/ze0-fv8QKA4/mqdefault.jpg",
+                                "created_at": "2023-12-22T16:41:41.344939+09:00"
                             },
+                            {
+                                "id": 150,
+                                "information": "https://www.youtube.com/embed/ArR9jochJgU",
+                                "singer": "Yae",
+                                "song": "The Tatara Women Work Song",
+                                "thumbnail": "https://i.ytimg.com/vi/ArR9jochJgU/mqdefault.jpg",
+                                "created_at": "2023-12-22T16:41:42.239240+09:00"
+                            },
+                            {
+                                "id": 151,
+                                "information": "https://www.youtube.com/embed/evO35dDsSvA",
+                                "singer": "Nozomi Ohashi",
+                                "song": "Ponyo on the Cliff by the Sea",
+                                "thumbnail": "https://i.ytimg.com/vi/evO35dDsSvA/mqdefault.jpg",
+                                "created_at": "2023-12-22T16:41:43.185357+09:00"
+                            }
+                        ]    
+                    },
+                    },
             ),
             OpenApiExample(
                 response_only=True,
@@ -616,31 +1020,14 @@ class Add(APIView):
         ],
     )
     def put(self, request):
-        # pass
+
         user = request.user
         playlist = Playlist.objects.get(id=request.data['playlist_id'], writer = user)
-        # music_list = request.data['music']
+
         music_list = list(map(int, request.data['music'].split(',')))
         music_add = PlaylistAdder()
         music_add.add_music(playlist, music_list)
-        # max_order = (
-        #     PlaylistMusic.objects.filter(playlist=playlist)
-        #     .aggregate(models.Max('order'))['order__max'] or 0
-        # )
         
-        # # 테스트1
-        # for order, music_id in enumerate(music_list, start=max_order):
-        #     music = Music.objects.get(id=music_id)
-        #     exist_music = PlaylistMusic.objects.filter(playlist=playlist, music_id=music)
-        #     if exist_music:
-        #         return Response({"message":"이미 플리안에 들어있는 노래입니다."}, status = status.HTTP_400_BAD_REQUEST)
-        #     else:
-        #         PlaylistMusic.objects.create(playlist=playlist, music=music, order= order + 1)
-
-        # # add_music = playlist.music.add(*music_list)
-        
-        # music_objects = playlist.music.all()
-        # print(music_objects)
         return Response({"message":"음악 이동 성공하였습니다"}, status=status.HTTP_200_OK)
 
 
@@ -658,7 +1045,13 @@ class MyPlaylist(APIView):
                 name="200_OK",
                 value={
                     "status": 200,
-                    "res_data": {"myplaylist": ['objects']},
+                    "res_data": {"myplaylist": [
+                                    {
+                                        "id": 49,
+                                        "thumbnail": "karlo/d5f3464aa2ea11eeae840700a75bb434",
+                                        "title": "따뜻한 크리스마스 분위기를 전해주는 인디 캐롤 플레이리스트"
+                                    }
+                                ]},
                 },
             ),
         ],
@@ -748,130 +1141,87 @@ class Search(APIView):
                     "res_data": {
                         "recent_users": [
                             {
-                                "id": 8,
-                                "name": "test4",
-                                "image": None,
-                                "about": "안녕",
-                                "genre": "K-pop,댄스,발라드",
-                                "rep_playlist": None
-                            },
-                            {
-                                "id": 7,
-                                "name": "test3",
-                                "image": None,
-                                "about": "안녕",
-                                "genre": "K-pop,J-pop,힙합",
+                                "id": 30,
+                                "name": "mudig05",
+                                "image": "profile/basic.png",
+                                "about": "음악을 좋아합니다",
+                                "genre": "K-POP,J-POP",
+                                "email": "mudig015@gmail.com",
                                 "rep_playlist": None
                             },
                         ],
                         "recent_playlists": [
                             {
                                 "playlist": {
-                                    "id": 6,
-                                    "title": "test ply6",
-                                    "content": "test ply6",
-                                    "thumbnail": None,
-                                    "genre": "발라드,댄스,힙합",
+                                    "id": 49,
+                                    "like_count": 0,
+                                    "like_playlist": False,
+                                    "title": "따뜻한 크리스마스 분위기를 전해주는 인디 캐롤 플레이리스트",
+                                    "content": "위의 인디 캐롤 플레이리스트는 크리스마스 분위기에 어울리며 따뜻한 감성을 전달합니다. 슬로우한 멜로디와 소울풀한 가사로 따스한 휴일 분위기를 만끽하세요!",
+                                    "thumbnail": "karlo/d5f3464aa2ea11eeae840700a75bb434",
+                                    "genre": "인디",
                                     "is_active": True,
-                                    "created_at": "2023-12-06T16:21:35.535827+09:00",
-                                    "updated_at": "2023-12-06T16:29:17.516812+09:00",
-                                    "is_public": False,
-                                    "writer": 8,
-                                    "music": []
+                                    "created_at": "2023-12-25T14:59:59.371921+09:00",
+                                    "updated_at": "2023-12-25T14:59:59.371941+09:00",
+                                    "is_public": True,
+                                    "writer": 27,
+                                    "music": [
+                                        172,
+                                        173,
+                                        174,
+                                        175,
+                                        176
+                                    ]
                                 },
                                 "writer": {
-                                    "id": 8,
-                                    "name": "test4",
-                                    "image": None,
+                                    "id": 27,
+                                    "name": "mudig02",
+                                    "image": "profile/basic.png",
                                     "about": "안녕",
-                                    "genre": "K-pop,댄스,발라드",
-                                    "rep_playlist": None
-                                }
-                            },
-                            {
-                                "playlist": {
-                                    "id": 5,
-                                    "title": "test ply5",
-                                    "content": "test ply5",
-                                    "thumbnail": None,
-                                    "genre": "댄스, Pop",
-                                    "is_active": True,
-                                    "created_at": "2023-12-06T14:52:19.764839+09:00",
-                                    "updated_at": "2023-12-06T16:29:32.466029+09:00",
-                                    "is_public": False,
-                                    "writer": 1,
-                                    "music": []
-                                },
-                                "writer": {
-                                    "id": 1,
-                                    "name": "닉네임",
-                                    "image": None,
-                                    "about": "자신을 소개해주세요 :)",
-                                    "genre": None,
+                                    "genre": "힙합,인디,OST",
+                                    "email": "mudig012@email.com",
                                     "rep_playlist": None
                                 }
                             },],
                         "users": [
-                            {
-                                "id": 8,
-                                "name": "test4",
-                                "image": None,
-                                "about": "안녕",
-                                "genre": "K-pop,댄스,발라드",
-                                "rep_playlist": None
-                            },
-                            {
-                                "id": 7,
-                                "name": "test3",
-                                "image": None,
-                                "about": "안녕",
-                                "genre": "K-pop,J-pop,힙합",
-                                "rep_playlist": None
-                            },],
+                            {"id": 29,
+                            "name": "mudig04",
+                            "image": "profile/basic.png",
+                            "about": "소개글을 작성해주세요.",
+                            "genre": "힙합",
+                            "email": "mudig014@gmail.com",
+                            "rep_playlist": None,}
+                            ],
                         "playlists": [
                             {
                                 "playlist": {
-                                    "id": 6,
-                                    "title": "test ply6",
-                                    "content": "test ply6",
-                                    "thumbnail": None,
-                                    "genre": "발라드,댄스,힙합",
+                                    "id": 49,
+                                    "like_count": 0,
+                                    "like_playlist": False,
+                                    "title": "따뜻한 크리스마스 분위기를 전해주는 인디 캐롤 플레이리스트",
+                                    "content": "위의 인디 캐롤 플레이리스트는 크리스마스 분위기에 어울리며 따뜻한 감성을 전달합니다. 슬로우한 멜로디와 소울풀한 가사로 따스한 휴일 분위기를 만끽하세요!",
+                                    "thumbnail": "karlo/d5f3464aa2ea11eeae840700a75bb434",
+                                    "genre": "인디",
                                     "is_active": True,
-                                    "created_at": "2023-12-06T16:21:35.535827+09:00",
-                                    "updated_at": "2023-12-06T16:29:17.516812+09:00",
-                                    "is_public": False,
-                                    "writer": 8,
-                                    "music": []
+                                    "created_at": "2023-12-25T14:59:59.371921+09:00",
+                                    "updated_at": "2023-12-25T14:59:59.371941+09:00",
+                                    "is_public": True,
+                                    "writer": 27,
+                                    "music": [
+                                        172,
+                                        173,
+                                        174,
+                                        175,
+                                        176
+                                    ]
                                 },
                                 "writer": {
-                                    "id": 8,
-                                    "name": "test4",
-                                    "image": None,
+                                    "id": 27,
+                                    "name": "mudig02",
+                                    "image": "profile/basic.png",
                                     "about": "안녕",
-                                    "genre": "K-pop,댄스,발라드",
-                                    "rep_playlist": None
-                                }
-                            },
-                            {
-                                "playlist": {
-                                    "id": 5,
-                                    "title": "test ply5",
-                                    "content": "test ply5",
-                                    "thumbnail": None,
-                                    "genre": "댄스, Pop",
-                                    "is_active": True,
-                                    "created_at": "2023-12-06T14:52:19.764839+09:00",
-                                    "updated_at": "2023-12-06T16:29:32.466029+09:00",
-                                    "is_public": False,
-                                    "writer": 1,
-                                    "music": []
-                                },
-                                "writer": {
-                                    "id": 1,
-                                    "name": "닉네임",
-                                    "image": None,
-                                    "about": "자신을 소개해주세요 :)",
-                                    "genre": None,
+                                    "genre": "힙합,인디,OST",
+                                    "email": "mudig012@email.com",
                                     "rep_playlist": None
                                 }
                             },]
