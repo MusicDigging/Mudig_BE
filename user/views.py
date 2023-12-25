@@ -571,7 +571,7 @@ class ProfileView(APIView):
         
         playlists = Playlist.objects.filter(writer=user,is_active=True)
         py_serializer = PlaylistSerializer(playlists, many=True)
-        liked_playlists = Like.objects.filter(user=user).select_related('playlist')
+        liked_playlists = Like.objects.filter(user=user,playlist__is_active=True,playlist__is_public=True).select_related('playlist')
         liked_playlists_serializer = PlaylistSerializer([like.playlist for like in liked_playlists], many=True)
         data = {
             "profile": profile_data,
