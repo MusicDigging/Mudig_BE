@@ -59,15 +59,11 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 ## 팀원 소개
 
 ### 안녕하세요. Team Mudig 입니다!
-<!-- 
+
 |                                                                         강현우                                                                         |                                                 김여주                                                 |                                                                                  사수봉                                                                                  |                                                 심민정                                                 |                                                                  황봉수                                                                   |
 | :----------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
-| <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131655569?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> |
-|                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  |                         <a href="https://github.com/kimyeoju">🔗 kimyeoju</a>                          |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             |                           <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a>                            |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             | -->
-
-
-![그림4-1](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/8997fbce-1e8c-4edf-830b-e94be17b514c)
-![그림4-2](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/5f1b3ffe-20bd-4103-8745-e4bffb41e9ca)
+<!-- | <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131655569?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> | -->
+|                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  |                         <a href="https://github.com/kimyeoju">🔗 kimyeoju</a>                          |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             |                           <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a>                            |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             |
 
 안녕하세요 🙇‍♂️<br>
 저희는 Mudig의 주니어 개발자 백엔드 팀 입니다.<br>
@@ -76,11 +72,14 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 기술적으로 부족할 수도 있지만 최선을 다해 준비했습니다.<br>
 잘부탁드립니다 :)
 
+### 역할
+
+![그림4-1](https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/69f911c2-f7c4-4b3a-8c1b-f94693e86388)
+![그림4-2](https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/37badc38-5e26-4e82-a39d-70818f45b0c3)
+
 ### 협업 도구
 
 📜 Notion , 📱 Discord
-
-### 각자의 역할
 
 ## **[목차]**
 
