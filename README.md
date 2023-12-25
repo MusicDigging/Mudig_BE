@@ -58,7 +58,7 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 
 ## 팀원 소개
 
-### 안녕하세요. Team OrGo 입니다!
+### 안녕하세요. Team Mudig 입니다!
 
 |                                                                         강현우                                                                         |                                                 김여주                                                 |                                                                                  사수봉                                                                                  |                                                 심민정                                                 |                                                                  황봉수                                                                   |
 | :----------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
@@ -134,17 +134,17 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
   <!-- [# 댓글 시연 영상](#55-댓글-기능) -->
 
 - 기능 제목
+
   ```
   기능 설명
   ```
-  <!-- [# 댓글 시연 영상](#55-댓글-기능) -->
 
 ## 2. 개발 환경 및 배포 URL
 
 ### 2.1. 개발 환경
 
-- Python == 3.11.3
-- Django == 4.2.4
+Python == 3.11.3
+Django == 4.2.7
 
 AWS S3
 
@@ -153,16 +153,35 @@ AWS S3
 DRF
 
 - djangorestframework == 3.14.0
+- django-cors-headers == 4.3.1
+- djangorestframework == 3.14.0
+- djangorestframework-simplejwt == 5.3.0
+
+PostgreSQL
+
+- psycopg2-binary == 2.9.9
+
+Open Api Specification
+
+- drf-spectacular == 0.26.5
+
+KARLO (이미지 생성 AI)
+- Karlo 2.0.4.0
+
+ChatGPT (LLM, 문장 생성 AI)
+- GPT Turbo 3.5
 
 ### 2.2. 배포 환경
 
 #### 2.2.1. Back-End
 
-- Aws Ec2
-- Nginx
-  - wsgi : gunicorn
-- AWS S3
-- AWS RDS
+Aws Ec2
+- t2.micro
+
+AWS S3
+
+AWS RDS
+- PostgreSQL 15.4-R3
 
 ### 2.3. 배포 URL
 
@@ -240,7 +259,55 @@ DRF
 
 #### 3.4.5. 폴더 트리
 
-추가예정
+```
+📦Mudig_BE
+ ┣ 📂.github
+ ┃ ┗ 📂workflows
+ ┃ ┃ ┗ 📜main.yml
+ ┣ 📂mudig
+ ┃ ┣ 📂__pycache__
+ ┃ ┣ 📜asgi.py
+ ┃ ┣ 📜settings.py
+ ┃ ┣ 📜urls.py
+ ┃ ┣ 📜wsgi.py
+ ┃ ┗ 📜__init__.py
+ ┣ 📂playlist
+ ┃ ┣ 📂migrations
+ ┃ ┣ 📂__pycache__
+ ┃ ┣ 📜admin.py
+ ┃ ┣ 📜apps.py
+ ┃ ┣ 📜gpt.py
+ ┃ ┣ 📜karlo.py
+ ┃ ┣ 📜models.py
+ ┃ ┣ 📜playlist_utill.py
+ ┃ ┣ 📜prompt.py
+ ┃ ┣ 📜serializers.py
+ ┃ ┣ 📜tests.py
+ ┃ ┣ 📜uploads.py
+ ┃ ┣ 📜urls.py
+ ┃ ┣ 📜views.py
+ ┃ ┣ 📜youtube.py
+ ┃ ┗ 📜__init__.py
+ ┣ 📂user
+ ┃ ┣ 📂migrations
+ ┃ ┣ 📂templates
+ ┃ ┃ ┗ 📂user
+ ┃ ┃ ┃ ┗ 📜email_template.html
+ ┃ ┣ 📂__pycache__
+ ┃ ┣ 📜admin.py
+ ┃ ┣ 📜apps.py
+ ┃ ┣ 📜models.py
+ ┃ ┣ 📜serializers.py
+ ┃ ┣ 📜tests.py
+ ┃ ┣ 📜urls.py
+ ┃ ┣ 📜utils.py
+ ┃ ┣ 📜views.py
+ ┃ ┗ 📜__init__.py
+ ┣ 📜.gitignore
+ ┣ 📜manage.py
+ ┣ 📜README.md
+ ┗ 📜requirements.txt
+```
 
 ### 3.5. 개발 일정
 
@@ -258,27 +325,10 @@ DRF
 
 ##### 일정 관리
 
-- 일정 관리: https://withorgo.notion.site/d52779f12ac547dabc1240320ef4aeb2?v=fb0701095b3840218a980c13305cda34&pvs=4
+- 일정 관리: https://github.com/orgs/MusicDigging/projects/2/views/1
 
-![스크린샷 2023-09-04 175059](https://github.com/Hyunwooz/DjangoGptProject_BE/assets/107661525/cbe30798-aef7-4d7d-ac6a-5eda5d91b0c1)
-![스크린샷 2023-09-01 141622](https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/f9bae29d-0fbe-4e28-b771-2ef2dfe5c803)
-
-프로젝트 고도화 일정
-
-```
-프로젝트 고도화는 Github Project를 이용하여 진행하였습니다.
-```
-
-- 프로젝트 고도화: https://github.com/orgs/ESTsoft-OrGo/projects/1
-
-![스크린샷 2023-10-17 152908](https://github.com/ESTsoft-OrGo/OrGoChat/assets/107661525/782cb96c-c46d-4a4e-8346-4066cd735c26)
-
-#### 3.5.2. 기술 스택
-
-- Python
-- Django
-- KARLO (이미지 생성 AI)
-- ChatGPT (LLM, 문장 생성 AI)
+![스크린샷 2023-12-25 143942](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/645997da-5bb7-4473-b7f7-fa4a59fcbf43)
+![스크린샷 2023-12-25 143950](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/d60e3ae0-339c-4627-9574-6820283aae01)
 
 ## 4. 전체 페이지
 
@@ -298,11 +348,11 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
 
 ### 6.1. 배운 점
 
-#### 6.1.1 배운 것 1
+#### 6.1.1 Open Api Specification
 
-#### 6.1.2 배운 것 2
+#### 6.1.2 CI/CD
 
-#### 6.1.3 배운 것 3
+#### 6.1.3 RESTfull API
 
 ### 6.2. 개발중 만난 장애물과 극복 방법
 
