@@ -66,7 +66,8 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 |                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  |                         <a href="https://github.com/kimyeoju">🔗 kimyeoju</a>                          |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             |                           <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a>                            |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             | -->
 
 
-![팀원 소개 및 역할](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/35ff87c9-81c6-4b84-983a-b966b21a4aad)
+![그림4-1](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/8e179d47-6178-4cc1-a7d9-e4a06b20db8c)
+![그림4-2](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/a9f6715c-7ada-466f-a3e1-633f25ab98cc)
 
 안녕하세요 🙇‍♂️<br>
 저희는 Mudig의 주니어 개발자 백엔드 팀 입니다.<br>
