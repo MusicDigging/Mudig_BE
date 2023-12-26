@@ -396,8 +396,13 @@ class Login(APIView):
                     "status": 200,
                     "res_data": {
                         "user": {
+                            "id": 2,
+                            "name": "테스트",
+                            "about": "테스트 데이터입니다.",
+                            "genre": "J-POP,힙합,K-POP",
                             "email": "test@gmail.com",
-                            "id": "1"
+                            "rep_playlist": None,
+                            "is_following": False
                         },
                         "message": "Login success",
                         "token": {
@@ -542,8 +547,56 @@ class ProfileView(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "profile": "profile",
-                        "playlist": "Playlist"
+                        "profile": {
+                            "id": 2,
+                            "name": "테스트",
+                            "about": "안녕하세요!",
+                            "genre": "J-POP,힙합,K-POP",
+                            "email": "test@gmail.com",
+                            "rep_playlist": None,
+                            "is_following": None,
+                            "image": "profile/basic.png"
+                            },
+                        "playlist": [{"id": 53,
+                                    "like_count": 0,
+                                    "like_playlist": False,
+                                    "title": "행복한 마무리를 위한 추천 플레이리스트입니다!",
+                                    "content": "이 위의 목록은 K-POP 장르에 속하는 행복한 노래들로 당신의 하루를 마무리하는 데 도움이 될 것입니다. 멜로디와 가사 모두 경쾌하고 에너지 넘치며, 행복한 기분을 더욱 향상시킬 것입니다. 편안한 마음으로 즐겨보세요!",
+                                    "thumbnail": "karlo/b4346658a3e711eeae840700a75bb434",
+                                    "genre": "K-POP",
+                                    "is_active": True,
+                                    "created_at": "2023-12-26T21:10:05.460483+09:00",
+                                    "updated_at": "2023-12-26T21:10:05.460504+09:00",
+                                    "is_public": True,
+                                    "writer": 2,
+                                    "music": [
+                                        15,
+                                        18,
+                                        116,
+                                        189,
+                                        190
+                                    ]}],
+                        "liked_playlists": [{
+                                        "id": 50,
+                                        "like_count": 1,
+                                        "like_playlist": False,
+                                        "title": "따뜻한 연말을 위한 추천 플레이리스트입니다!",
+                                        "content": "위의 목록은 2020년에 발매된 K-POP 곡들로, 연말에 듣기 좋은 따뜻한 노래들입니다. 이 음악들을 감상하며 편안하고 따뜻한 분위기를 느껴보세요!",
+                                        "thumbnail": "karlo/99076708a30211eeae840700a75bb434",
+                                        "genre": "K-POP",
+                                        "is_active": True,
+                                        "created_at": "2023-12-25T17:50:05.077444+09:00",
+                                        "updated_at": "2023-12-25T17:50:05.077464+09:00",
+                                        "is_public": True,
+                                        "writer": 5,
+                                        "music": [
+                                            177,
+                                            178,
+                                            179,
+                                            180,
+                                            181
+                                        ]
+                                    }],
                     },
                 }
             ),
@@ -728,8 +781,13 @@ class GoogleCallback(APIView):
                     "status": 200,
                     "res_data": {
                         "user": {
+                            "id": 2,
+                            "name": "테스트",
+                            "about": "테스트 데이터입니다.",
+                            "genre": "J-POP,힙합,K-POP",
                             "email": "test@gmail.com",
-                            "id": "1"
+                            "rep_playlist": None,
+                            "is_following": False
                         },
                         "message": "Login success",
                         "token": {
@@ -855,8 +913,13 @@ class KakaoCallback(APIView):
                     "status": 200,
                     "res_data": {
                         "user": {
+                            "id": 2,
+                            "name": "테스트",
+                            "about": "테스트 데이터입니다.",
+                            "genre": "J-POP,힙합,K-POP",
                             "email": "test@gmail.com",
-                            "id": "1"
+                            "rep_playlist": None,
+                            "is_following": False
                         },
                         "message": "Login success",
                         "token": {
