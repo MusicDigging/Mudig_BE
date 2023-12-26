@@ -1058,7 +1058,7 @@ class MyPlaylist(APIView):
     )
     def get(self, request):
         user = request.user
-        my_playlist = Playlist.objects.filter(writer = user.id)
+        my_playlist = Playlist.objects.filter(writer=user.id,is_public=True,is_active=True)
         serializer = PlaylistSerializer()
         my_playlist_serializer = serializer.get_playlist_info(my_playlist)
         data = {
