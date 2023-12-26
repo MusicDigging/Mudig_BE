@@ -912,6 +912,16 @@ class Delete(APIView):
         
         delete_img = S3ImgUploader(playlist.thumbnail)
         delete_img.delete()
+        
+        pli_id = playlist.id
+        profile = user.profile
+        rep_pli = profile.rep_playlist
+        
+        if rep_pli:
+            if pli_id == rep_pli.id:
+                profile.rep_playlist = None
+                profile.save()
+
         playlist.delete()
         data = {
             "message" : "플레이리스트 삭제 완료",
@@ -930,9 +940,12 @@ class Update(APIView):
         request=inline_serializer(
             name="Playlist_Update",
             fields={
-                "del_music_list": serializers.ListField(),
-                "add_music_list": serializers.ListField(),
-                "move_music": serializers.ListField(),
+                "del_music_list": serializers.CharField(),
+                "add_music_list": serializers.CharField(),
+                "move_music": serializers.CharField(),
+                "title": serializers.CharField(),
+                "content": serializers.CharField(),
+                "is_public": serializers.BooleanField(),
             },
         ),
         examples=[
@@ -983,6 +996,18 @@ class Update(APIView):
         
         serializer = PlaylistSerializer(choice_playlist, data=request.data, partial=True)
         if serializer.is_valid():
+            
+            public = serializer.validated_data.get('is_public')
+            pli_id = serializer.instance.id
+            profile = user.profile
+            rep_pli = profile.rep_playlist
+            
+            if rep_pli:
+                if not public:
+                    if pli_id == rep_pli.id:
+                        profile.rep_playlist = None
+                        profile.save()
+            
             serializer.save()
         ## order music
             data = {
