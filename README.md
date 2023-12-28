@@ -211,7 +211,7 @@ AWS RDS
 
 ### 3.2. API 명세서
 
-#### 3.2.1. API 명세서: https://api.mudig.co.kr/api/swaggers
+#### 3.2.1. API 명세서: https://api.mudig.co.kr/api/swagger/
 
 ![스크린샷 2023-12-17 215443](https://github.com/MusicDigging/Mudig_BE/assets/107661525/c1e41600-d0c4-476d-8615-b71b72fc6df5)
 ![스크린샷 2023-12-25 195931](https://github.com/Hyunwooz/Django_Channels_Practice/assets/107661525/8c02ae00-7087-4c91-a23a-0ce12a184f3e)
