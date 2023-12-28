@@ -14,7 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 from json.decoder import JSONDecodeError
 from playlist.uploads import S3ImgUploader
 from playlist.models import Playlist, Like
-from playlist.serializers import PlaylistSerializer
+from playlist.serializers import PlaylistSerializer , ProfileSearchSerializer
 from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
 from .utils import generate_otp, send_otp_via_email
 from .models import Profile, User, Follower
@@ -644,8 +644,8 @@ class ProfileEditView(APIView):
         description="프로필 수정 API에 대한 설명 입니다.",
         parameters=[],
         tags=["Profile"],
-        responses=ProfileSerializer,
-        request=ProfileSerializer,
+        responses=ProfileSearchSerializer,
+        request=ProfileSearchSerializer,
         examples=[
             OpenApiExample(
                 response_only=True,
