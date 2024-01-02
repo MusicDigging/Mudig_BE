@@ -61,7 +61,6 @@ class UserFollowSerializer(serializers.ModelSerializer):
 
     def get_is_following(self, obj):
         # 팔로잉 목록 
-        # test_user_id = 2  # Test User id
         request_user = self.context['request'].user
         return Follower.objects.filter(follower_id=request_user, target_id=obj).exists()
 

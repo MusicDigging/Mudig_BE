@@ -26,9 +26,7 @@ prompt = [
     {
         "role": "user",
         "content":
-            "무조건 위와 같은 형식으로 답변해줘, 위의 형식을 벗어나면 안돼, prompt는 추천하는 화가, 그림의 스타일, 표현 수단, 추천 컬러들을 포함해서 문장이 아닌 단어들로 작성해주고 무조건 영어로 대답해줘야 돼 그리고 prompt하고 답변에만 작은따음표 붙혀야돼! 음악, 가수 에서 sia feat. sam smith 이렇게 json에러 안나게 작은따음표 큰따음표, : 이런거 붙히지 말아줘 , 내용은 ''이걸로 사용해야돼 don't use double quotation marks "
-            # "내용 중간에 무조건 큰따음표, 작은따음표 쓰면 안돼"
-            # "그리고 'song': \"Don't Start Now\" 이렇게 말고 'song' : 'Don't Start Now' 이렇게 답변해줘 "
+            "무조건 위와 같은 형식으로 답변해줘, 위의 형식을 벗어나면 안돼, title과 explanation은 무조건 한글로 작성해주고, prompt는 추천하는 화가, 그림의 스타일, 표현 수단, 추천 컬러들을 포함해서 문장이 아닌 단어들로 작성해주고 무조건 영어로 대답해줘야 돼 그리고 prompt하고 답변에만 작은따음표 붙혀야돼! 음악, 가수 에서 sia feat. sam smith 이렇게 json에러 안나게 작은따음표 큰따음표, : 이런거 붙히지 말아줘 , 내용은 ''이걸로 사용해야돼 don't use double quotation marks "
     },
     {
         "role": "user",
@@ -88,8 +86,6 @@ event_prompt = [
         "role": "user",
         "content":
             "무조건 위와 같은 형식으로 답변해줘, 위의 형식을 벗어나면 안돼, title과 explanation은 무조건 한글로 작성해주고, prompt는 추천하는 화가, 그림의 스타일, 표현 수단, 추천 컬러들을 포함해서 문장이 아닌 단어들로 작성해주고 무조건 영어로 대답해줘야 돼 그리고 prompt하고 답변에만 작은따음표 붙혀야돼! 음악, 가수 에서 sia feat. sam smith 이렇게 json에러 안나게 작은따음표 큰따음표, : 이런거 붙히지 말아줘 , 내용은 ''이걸로 사용해야돼 don't use double quotation marks "
-            # "내용 중간에 무조건 큰따음표, 작은따음표 쓰면 안돼"
-            # "그리고 'song': \"Don't Start Now\" 이렇게 말고 'song' : 'Don't Start Now' 이렇게 답변해줘 "
     },
     {
         "role": "user",
