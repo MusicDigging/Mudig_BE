@@ -1,4 +1,4 @@
-from drf_spectacular.utils import OpenApiExample, extend_schema, OpenApiParameter, inline_serializer
+from drf_spectacular.utils import OpenApiExample, extend_schema, inline_serializer
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout
@@ -615,7 +615,6 @@ class ProfileView(APIView):
             user = request.user
         else:
             user = get_object_or_404(User, pk=user_id)
-        #user = get_object_or_404(User,pk=user_id)
         profile = get_object_or_404(Profile, user=user)
         pf_serializer = ProfileSerializer(profile, context={'request':request})
         

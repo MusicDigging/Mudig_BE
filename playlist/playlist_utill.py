@@ -22,7 +22,6 @@ class PlaylistAdder:
             .aggregate(models.Max('order'))['order__max'] or 0
         )
         
-        # 테스트1
         for order, music_id in enumerate(music_id, start=max_order):
             music = Music.objects.get(id=music_id)
             exist_music = PlaylistMusic.objects.filter(playlist=playlist, music_id=music)

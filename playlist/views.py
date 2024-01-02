@@ -6,10 +6,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
-from django.db.models import Count, Avg, Min, Max, Sum, Q
+from django.db.models import Count, Max, Q
 from django.shortcuts import get_object_or_404
 from user.models import User, Profile
-from user.serializers import ProfileSerializer, ProfileSearchSerializer
+from user.serializers import ProfileSearchSerializer
 from .serializers import MusicSerializer, PlaylistSerializer, CommentSerializer
 from .youtube import YouTube
 from .karlo import t2i
@@ -17,7 +17,6 @@ from .gpt import get_music_recommendation, event_music_recommendation
 from .playlist_utill import PlaylistAdder, PlaylistOrderUpdater, PlaylistRemover
 from .uploads import S3ImgUploader
 from .models import Playlist, Music, PlaylistMusic, Comment, Like
-import json
 import random
 
 User = get_user_model()
@@ -605,10 +604,8 @@ class List(APIView):
             try:
                 while not most_common_genre:
                     selected_genre = random.choice(profile_genre)
-                    print(selected_genre)
                     profile_genre.remove(selected_genre)
                     most_common_genre = Playlist.objects.filter(genre=selected_genre, is_public=True).exclude(writer=user).order_by('?')[:5]
-                    print(most_common_genre)
                     selected_genre = []
             except IndexError:
                 most_common_genre = Playlist.objects.filter(is_public=True).exclude(writer=user).order_by('?')[:5]
@@ -1124,7 +1121,6 @@ class Allmusiclist(APIView):
 class SearchMusic(APIView):
     def get(self, request):
         query = request.data.get('query', None)
-        print(query)
         if query == '':
             return Response({"message":"검색 창이 입력되지 않았습니다."}, status=status.HTTP_400_BAD_REQUEST)
         else:

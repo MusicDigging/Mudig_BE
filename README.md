@@ -7,19 +7,19 @@
 ```
 해당 서비스를 이용해보실 수 있는 테스트 계정입니다.
 
- ID : mudig01@email.com
+ ID : mudig011@email.com
  PW : Mudig011
 
- ID : mudig02@email.com
+ ID : mudig012@email.com
  PW : Mudig012
 
- ID : mudig03@email.com
+ ID : mudig013@email.com
  PW : Mudig013
 
- ID : mudig04@email.com
+ ID : mudig014@gmail.com
  PW : Mudig014
 
- ID : mudig05@email.com
+ ID : mudig015@gmail.com
  PW : Mudig015
 ```
 
@@ -30,14 +30,13 @@
 ### 2️⃣ AI에 대한 부정적인 시선을 낮추고, 사람들과 친해지는 계기를 제공하자!
 
 ```
-현재 AI 기술은 사람들에게 많은 관심을 받고 있지만 
+현재 AI 기술은 사람들에게 많은 관심을 받고 있지만
 아직도 많은 사람들과는 친해지지 않았습니다.
 
 그래서 우리의 서비스를 통해 좀더 친해질 수 있는 기회를 제공하고 싶었습니다.
 ```
 
 ## 인사말
-
 
 안녕하세요. 🙇‍♂️
 
@@ -48,8 +47,8 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 뮤딕은
 
 1.  자체 회원가입 뿐만 아니라 구글, 카카오를 이용한 소셜 로그인을 지원하고 있습니다.
-2. 인공지능을 통해 새로운 음악을 찾는 즐거움을 드릴 수 있습니다.
-3. 자신만의 플레이리스트를 공유하고, 소통하며 무료한 일상에 소소함 즐거움을 느낄 수 있도록 장소를 제공해드립니다.
+2.  인공지능을 통해 새로운 음악을 찾는 즐거움을 드릴 수 있습니다.
+3.  자신만의 플레이리스트를 공유하고, 소통하며 무료한 일상에 소소함 즐거움을 느낄 수 있도록 장소를 제공해드립니다.
 
 ### 디깅이란?
 
@@ -65,8 +64,8 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 <!-- | <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131655569?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> | -->
 <!-- |                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  |                         <a href="https://github.com/kimyeoju">🔗 kimyeoju</a>                          |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             |                           <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a>                            |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             | -->
 
-| 강현우 | 김여주 | 사수봉 | 심민정 | 황봉수 |
-| --- | --- | --- | --- | --- |
+| 강현우                                                | 김여주                                                | 사수봉                                            | 심민정                                            | 황봉수                                            |
+| ----------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
 | <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a> | <a href="https://github.com/kimyeoju">🔗 kimyeoju</a> | <a href="https://github.com/su0797">🔗 su0797</a> | <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a> | <a href="https://github.com/bnbbbb">🔗 bnbbbb</a> |
 
 안녕하세요 🙇‍♂️<br>
@@ -78,8 +77,7 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 
 ### 역할
 
-![그림4-1](https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/69f911c2-f7c4-4b3a-8c1b-f94693e86388)
-![그림4-2](https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/37badc38-5e26-4e82-a39d-70818f45b0c3)
+![백엔드 역할](https://github.com/MusicDigging/Mudig_BE/assets/107661525/a929aedb-2092-4eb6-9e56-8cd2ea4c6598)
 
 ### 협업 도구
 
@@ -139,6 +137,35 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 
   <!-- [# 댓글 시연 영상](#55-댓글-기능) -->
 
+- 랜덤 뮤비
+
+  ```
+  우리 서비스에서 보유 중인 Music 목록에서 랜덤으로 5개의 음악을 추천해드리는 기능을 제공하고 있습니다.
+  해당 기능을 통해 장르, 연도에 상관없이 다양한 음악을 랜덤으로 만나보실 수 있습니다.
+  ```
+
+- 플레이리스트 CRUD 기능
+
+  ```
+  사용자들이 원하는 내용을 토대로 플레이리스트 생성하는 기능을 제공하고 있습니다. 
+  수정에는 곡 순서 이동, 곡 삭제 기능이 있습니다. 
+  해당 기능은 GPT API, YouTube Data API, Karlo 와 연관되어 있습니다. 
+  ```
+
+- GPT API, YouTube Data API, Karlo
+
+  ```
+  사용자가 입력한 내용을 토대로 GPT API가 생성한 결과물을 YouTube Data API V3로
+  전송하여 플레이리스트의 제목, 노래들, Karlo 이미지 값 등을 생성합니다.
+  ```
+
+- 이벤트 플레이리스트 생성
+
+  ```
+  사용자들의 현재 상황,기분에 대한 플레이리스트를 생성할 수 있는 기능입니다.
+  이 기능은 이벤트성으로 발생됩니다.
+  ```
+
 - 기능 제목
 
   ```
@@ -172,9 +199,11 @@ Open Api Specification
 - drf-spectacular == 0.26.5
 
 KARLO (이미지 생성 AI)
+
 - Karlo 2.0.4.0
 
 ChatGPT (LLM, 문장 생성 AI)
+
 - GPT Turbo 3.5
 
 ### 2.2. 배포 환경
@@ -182,11 +211,13 @@ ChatGPT (LLM, 문장 생성 AI)
 #### 2.2.1. Back-End
 
 Aws Ec2
+
 - t2.micro
 
 AWS S3
 
 AWS RDS
+
 - PostgreSQL 15.4-R3
 
 ### 2.3. 배포 URL
@@ -205,7 +236,7 @@ AWS RDS
 
 ### 3.1. Entity Relationship Diagram
 
-![스크린샷 2023-10-17 145645](https://github.com/ESTsoft-OrGo/OrGo/assets/107661525/8d039f1e-aff5-42ed-9662-05201803bc1b)
+![스크린샷 2024-01-02 203149](https://github.com/MusicDigging/Mudig_BE/assets/107661525/3162f5bb-6ca2-447a-978a-903dd4619c0a)
 
 [DB-Diagram 바로가기](https://dbdiagram.io/d/AIP-6548a0187d8bbd64658ecdfe)
 
@@ -215,7 +246,6 @@ AWS RDS
 
 ![스크린샷 2023-12-17 215443](https://github.com/MusicDigging/Mudig_BE/assets/107661525/c1e41600-d0c4-476d-8615-b71b72fc6df5)
 ![스크린샷 2023-12-25 195931](https://github.com/Hyunwooz/Django_Channels_Practice/assets/107661525/8c02ae00-7087-4c91-a23a-0ce12a184f3e)
-
 
 ### 3.3. URL 설계
 
@@ -343,6 +373,7 @@ AWS RDS
 Stable - Main (release) - Develop - 작업자별 Branch
 
 #### 3.6.1. 각 브랜치별 설명
+
 ```
 1. Stable : 서버 배포 단계에서 안정화된 버전
 2. Main : 서버 배포 단계
@@ -388,7 +419,16 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
 
 #### 강현우
 
-내용
+이번 프로젝트를 통해 기획의 중요성에 대해서 크게 깨닫게 된 것 같습니다.
+기획의 완성도가 개발 진행 속도에 많은 관여를 한다는 걸 느낀 프로젝트 였습니다.
+프론트엔드, 디자이너 분들과 협업할 수 있었던 좋은 기회였습니다. 
+매주 회의를 통해 서로 필요한 부분에 대해서 대화를 나누고 오류를 같이 해결해 나가는 즐거운 경험을 할 수 있었습니다. 
+추후에 다른 개발자분, 디자이너분들과 의사소통을 하더라도 이번 프로젝트를 경험삼아 의사소통을 잘 이어나갈 수 있을 것 같습니다. 
+이번 프로젝트는 처음으로 도입하는 기술들이 여러개 있었습니다.
+Open Api Specification를 통해 API 문서 자동화를 도입한다던가 Github Action을 통한 CI/CD 구현 등등 처음 다루는 기술들이라 조금 많이 서툴었지만,
+Open Api Specification을 프론트엔드 분들이 너무 잘사용해주셔서 엄청난 뿌듯함을 느낄 수 있었습니다. 이번 프로젝트를 바탕으로 더욱 더 성장하는 개발자가 되도록 하겠습니다.
+마지막으로 백엔드 총괄이라는 역할로 이번 프로젝트를 이끌었지만 많이 부족한 저를 잘 너무나도 잘 따라주셔서 감사했습니다. 
+저와 함께 이번 프로젝트를 진행해주신 우리 뮤딕팀 분들!! 프론트, 백엔드, 디자이너분들 너무나도 고생많으셨습니다. 감사합니다.   
 
 #### 김여주
 
@@ -404,6 +444,6 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
 
 #### 황봉수
 
-내용
+항상 팀 프로젝트를 함으로써 느끼는 거는 의사소통의 중요성인 거 같다. 처음으로 프론트엔드 분들과 디자이너분들과 협업하여 진행하였는데 의사소통이 충분하다고 생각하였지만 생각보다 더 많은 의사소통이 필요했고, 기획자의 역할 또한 중요하다고 생각하였습니다. 모두가 기획자가 되어 필요 순서에 따라 진행한 점은 만족하고 있다. 진행하면서 매주 회의 또한 만족스러웠다. 회의와 소통을 함으로써 프론트엔드 분들과 기술적으로 필요한 부분을 전달해주는 과정에서 즐거움을 얻었다. 그리고 백엔드와 프론트엔드 업무를 나누면서 각 파트가 직면하는 어려움과 즐거움을 이해할 수 있었습니다. API와 연동하며 백엔드의 역할과 프론트엔드의 동작 원리를 더 자세히 이해할 수 있었습니다. 마지막으로 우리 백엔드 팀, 프론트엔드팀, 디자인팀 다들 너무 고생하셨습니다. 
 
 ## 7. 유저 피드백 후 반영
