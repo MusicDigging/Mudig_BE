@@ -228,7 +228,7 @@ AWS RDS
 
 ### 3.1. Entity Relationship Diagram
 
-![스크린샷 2023-10-17 145645](https://github.com/ESTsoft-OrGo/OrGo/assets/107661525/8d039f1e-aff5-42ed-9662-05201803bc1b)
+![스크린샷 2024-01-02 203149](https://github.com/MusicDigging/Mudig_BE/assets/107661525/3162f5bb-6ca2-447a-978a-903dd4619c0a)
 
 [DB-Diagram 바로가기](https://dbdiagram.io/d/AIP-6548a0187d8bbd64658ecdfe)
 
