@@ -7,19 +7,10 @@
 ```
 해당 서비스를 이용해보실 수 있는 테스트 계정입니다.
 
- ID : mudig01@email.com
- PW : Mudig011
-
- ID : mudig02@email.com
- PW : Mudig012
-
- ID : mudig03@email.com
- PW : Mudig013
-
- ID : mudig04@email.com
+ ID : mudig04@gmail.com
  PW : Mudig014
 
- ID : mudig05@email.com
+ ID : mudig05@gmail.com
  PW : Mudig015
 ```
 
@@ -30,14 +21,13 @@
 ### 2️⃣ AI에 대한 부정적인 시선을 낮추고, 사람들과 친해지는 계기를 제공하자!
 
 ```
-현재 AI 기술은 사람들에게 많은 관심을 받고 있지만 
+현재 AI 기술은 사람들에게 많은 관심을 받고 있지만
 아직도 많은 사람들과는 친해지지 않았습니다.
 
 그래서 우리의 서비스를 통해 좀더 친해질 수 있는 기회를 제공하고 싶었습니다.
 ```
 
 ## 인사말
-
 
 안녕하세요. 🙇‍♂️
 
@@ -48,8 +38,8 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 뮤딕은
 
 1.  자체 회원가입 뿐만 아니라 구글, 카카오를 이용한 소셜 로그인을 지원하고 있습니다.
-2. 인공지능을 통해 새로운 음악을 찾는 즐거움을 드릴 수 있습니다.
-3. 자신만의 플레이리스트를 공유하고, 소통하며 무료한 일상에 소소함 즐거움을 느낄 수 있도록 장소를 제공해드립니다.
+2.  인공지능을 통해 새로운 음악을 찾는 즐거움을 드릴 수 있습니다.
+3.  자신만의 플레이리스트를 공유하고, 소통하며 무료한 일상에 소소함 즐거움을 느낄 수 있도록 장소를 제공해드립니다.
 
 ### 디깅이란?
 
@@ -65,8 +55,8 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 <!-- | <img src="https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/722d5102-81f7-46a2-8afe-505595e57983" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131739526?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147091272142692352/KakaoTalk_Photo_2023-09-01-17-46-40.jpeg" width="400" style="max-width: 100%;"> | <img src="https://avatars.githubusercontent.com/u/131655569?v=4" width="400" style="max-width: 100%;"> | <img src="https://cdn.discordapp.com/attachments/1141230189498617867/1147090595614031942/image.png" width="400" style="max-width: 100%;"> | -->
 <!-- |                                                 <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a>                                                  |                         <a href="https://github.com/kimyeoju">🔗 kimyeoju</a>                          |                                                            <a href="https://github.com/su0797">🔗 su0797</a>                                                             |                           <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a>                            |                                             <a href="https://github.com/bnbbbb">🔗 bnbbbb</a>                                             | -->
 
-| 강현우 | 김여주 | 사수봉 | 심민정 | 황봉수 |
-| --- | --- | --- | --- | --- |
+| 강현우                                                | 김여주                                                | 사수봉                                            | 심민정                                            | 황봉수                                            |
+| ----------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
 | <a href="https://github.com/Hyunwooz">🔗 Hyunwooz</a> | <a href="https://github.com/kimyeoju">🔗 kimyeoju</a> | <a href="https://github.com/su0797">🔗 su0797</a> | <a href="https://github.com/MJ-SIM">🔗 MJ-SIM</a> | <a href="https://github.com/bnbbbb">🔗 bnbbbb</a> |
 
 안녕하세요 🙇‍♂️<br>
@@ -179,9 +169,11 @@ Open Api Specification
 - drf-spectacular == 0.26.5
 
 KARLO (이미지 생성 AI)
+
 - Karlo 2.0.4.0
 
 ChatGPT (LLM, 문장 생성 AI)
+
 - GPT Turbo 3.5
 
 ### 2.2. 배포 환경
@@ -189,11 +181,13 @@ ChatGPT (LLM, 문장 생성 AI)
 #### 2.2.1. Back-End
 
 Aws Ec2
+
 - t2.micro
 
 AWS S3
 
 AWS RDS
+
 - PostgreSQL 15.4-R3
 
 ### 2.3. 배포 URL
@@ -222,7 +216,6 @@ AWS RDS
 
 ![스크린샷 2023-12-17 215443](https://github.com/MusicDigging/Mudig_BE/assets/107661525/c1e41600-d0c4-476d-8615-b71b72fc6df5)
 ![스크린샷 2023-12-25 195931](https://github.com/Hyunwooz/Django_Channels_Practice/assets/107661525/8c02ae00-7087-4c91-a23a-0ce12a184f3e)
-
 
 ### 3.3. URL 설계
 
@@ -350,6 +343,7 @@ AWS RDS
 Stable - Main (release) - Develop - 작업자별 Branch
 
 #### 3.6.1. 각 브랜치별 설명
+
 ```
 1. Stable : 서버 배포 단계에서 안정화된 버전
 2. Main : 서버 배포 단계
