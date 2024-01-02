@@ -68,8 +68,7 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 
 ### 역할
 
-![그림4-1](https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/69f911c2-f7c4-4b3a-8c1b-f94693e86388)
-![그림4-2](https://github.com/Hyunwooz/DjangoGptProject_FE/assets/107661525/37badc38-5e26-4e82-a39d-70818f45b0c3)
+![백엔드 역할](https://github.com/MusicDigging/Mudig_BE/assets/107661525/a929aedb-2092-4eb6-9e56-8cd2ea4c6598)
 
 ### 협업 도구
 
