@@ -7,10 +7,19 @@
 ```
 해당 서비스를 이용해보실 수 있는 테스트 계정입니다.
 
- ID : mudig04@gmail.com
+ ID : mudig011@email.com
+ PW : Mudig011
+
+ ID : mudig012@email.com
+ PW : Mudig012
+
+ ID : mudig013@email.com
+ PW : Mudig013
+
+ ID : mudig014@gmail.com
  PW : Mudig014
 
- ID : mudig05@gmail.com
+ ID : mudig015@gmail.com
  PW : Mudig015
 ```
 
