@@ -1,6 +1,8 @@
 # Mudig
 
-![mudig 캐릭터](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/9aedcb7c-c93e-4eac-b9a8-9d1cd7de7789)
+![phone34-min](https://github.com/MusicDigging/Mudig_BE/assets/107661525/6fc4b1ca-6ca0-4f59-8acb-e3c15ff79127)
+![-2__1_6](https://github.com/MusicDigging/Mudig_BE/assets/107661525/2e99de8b-744c-4d44-8123-6e151f422698)
+![-2__1](https://github.com/MusicDigging/Mudig_BE/assets/107661525/27c4a96e-313e-4f10-9956-294f9cf556e5)
 
 [뮤딕 바로가기](https://www.mudig.co.kr/)
 
