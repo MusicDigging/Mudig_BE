@@ -426,7 +426,7 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
 
 ## 5. 기능
 
-### 플레이리스트 생성 및 삭제 수정에 관한 기능 시연
+### 5.1. 플레이리스트 생성 및 삭제 수정에 관한 기능 시연
 
 <table>
   <thead>
@@ -439,13 +439,13 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
   <tbody>
     <tr>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/00e69961-5d5a-40e7-996d-a420a2031e70" height="462" style="max-width: 100%; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/00e69961-5d5a-40e7-996d-a420a2031e70" height="462" style="max-width: 206px; display: inline-block;">
       </td>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/89c34fdf-f8a7-4732-ab86-7db9fb3aa116" height="462" style="max-width: 100%; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/89c34fdf-f8a7-4732-ab86-7db9fb3aa116" height="462" style="max-width: 206px; display: inline-block;">
       </td>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/805cd361-35bb-4b3b-b3f3-276704ef69ad" height="462" style="max-width: 100%; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/805cd361-35bb-4b3b-b3f3-276704ef69ad" height="462" style="max-width: 206px; display: inline-block;">
       </td>
     </tr>
   </tbody>
@@ -462,19 +462,132 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
   <tbody>
     <tr>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/0e4ad205-5bb7-4b23-9123-bf2796aeeffb" height="462" style="max-width: 100%; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/0e4ad205-5bb7-4b23-9123-bf2796aeeffb" height="462" style="max-width: 206px; display: inline-block;">
       </td>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/d2e0548c-0db9-4fc8-bf39-15cdd03de11c" height="462" style="max-width: 100%; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/d2e0548c-0db9-4fc8-bf39-15cdd03de11c" height="462" style="max-width: 206px; display: inline-block;">
       </td>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/da8f6e1a-d0f7-4965-b8de-3dc6d86c64d6" height="462" style="max-width: 100%; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/da8f6e1a-d0f7-4965-b8de-3dc6d86c64d6" height="462" style="max-width: 206px; display: inline-block;">
       </td>
     </tr>
   </tbody>
 </table>
 
-###
+### 5.2. 프로필 수정 및 대표 플리 지정, 팔로우에 관한 기능 시연
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">프로필 조회</th>
+      <th align="center">프로필 수정(소개글)</th>
+      <th align="center">프로필 수정(이미지)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/b3a30155-13ca-4659-99b1-cc31f6554769" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/5fa6e9ec-d99f-4db3-86db-bba09dde72a9" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/8449ef64-09f4-4738-8550-97a13c594fa9" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">팔로우</th>
+      <th align="center">좋아요한 플리 조회</th>
+      <th align="center">대표 플리 수정</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/ba786afb-861f-44f2-a195-fc25d43be1d4" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/d9879cee-077f-4a45-939e-3b7ba660b0bf" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/ade1f583-5ab4-4ad4-b474-7bfadbc3ee79" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### 5.3. 랜덤 뮤비 및 이벤트 플리 생성
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">랜덤 뮤비</th>
+      <th align="center">이벤트 플리 생성</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/7af72fd3-9d4d-428f-9452-2ea8ce88a54f" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/91625a11-e2bc-4fab-b3f8-a564e9d98cbc" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">1</th>
+      <th align="center">2</th>
+      <th align="center">3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">1</th>
+      <th align="center">2</th>
+      <th align="center">3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## 6. 개발하며 느낀점
 
