@@ -316,7 +316,7 @@ AWS RDS
 
 #### 3.4.1. Architecture
 
-![스크린샷 2023-12-25 171731](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/773e5cca-9413-4429-aa37-c5b6e8d5005a)
+![스크린샷 2023-12-25 171731](https://github.com/MusicDigging/Mudig_BE/assets/107661525/77308022-693e-409a-a76d-ff640530228b)
 
 #### 3.4.2. 폴더 트리
 
