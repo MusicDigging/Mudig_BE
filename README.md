@@ -426,8 +426,6 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
 
 ## 5. 기능
 
-### 5.1. 플레이리스트 생성 및 삭제 수정에 관한 기능 시연
-
 <table>
   <thead>
     <tr>
@@ -474,7 +472,74 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
   </tbody>
 </table>
 
-### 5.2. 프로필 수정 및 대표 플리 지정, 팔로우에 관한 기능 시연
+<table>
+  <thead>
+    <tr>
+      <th align="center">자체로그인</th>
+      <th align="center">카카오로그인</th>
+      <th align="center">로그아웃</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/43a66c38-f18c-47fb-a317-083df6a48794" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/5d9d45d9-43f0-482e-a676-5ab166ac5837" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/85fbb02e-2243-4827-bc0f-a20987d25d4a" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">회원가입</th>
+      <th align="center">이메일인증</th>
+      <th align="center">회원가입 후 프로필 생성</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/57975a0e-744b-4dc5-bebf-97470fb57e16" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/a7b68395-1388-4627-b3e8-b89dcdc336d2" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/106c9347-0c7e-45ea-9d88-4ac63bcaa26e" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">회원 탈퇴</th>
+      <th align="center">랜덤 뮤비</th>
+      <th align="center">이벤트 플리 생성</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/21ab6c71-6ebe-4cf1-a4ec-4a29f2d65773" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/7af72fd3-9d4d-428f-9452-2ea8ce88a54f" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/91625a11-e2bc-4fab-b3f8-a564e9d98cbc" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <table>
   <thead>
@@ -517,50 +582,6 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
       </td>
       <td align="center">
         <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/ade1f583-5ab4-4ad4-b474-7bfadbc3ee79" height="462" style="max-width: 206px; display: inline-block;">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### 5.3. 랜덤 뮤비 및 이벤트 플리 생성
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">랜덤 뮤비</th>
-      <th align="center">이벤트 플리 생성</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/7af72fd3-9d4d-428f-9452-2ea8ce88a54f" height="462" style="max-width: 206px; display: inline-block;">
-      </td>
-      <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/91625a11-e2bc-4fab-b3f8-a564e9d98cbc" height="462" style="max-width: 206px; display: inline-block;">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">1</th>
-      <th align="center">2</th>
-      <th align="center">3</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">
-        <img src="" height="462" style="max-width: 100%; display: inline-block;">
-      </td>
-      <td align="center">
-        <img src="" height="462" style="max-width: 100%; display: inline-block;">
-      </td>
-      <td align="center">
-        <img src="" height="462" style="max-width: 100%; display: inline-block;">
       </td>
     </tr>
   </tbody>
