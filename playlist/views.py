@@ -943,6 +943,7 @@ class Update(APIView):
                 "move_music": serializers.CharField(),
                 "title": serializers.CharField(),
                 "content": serializers.CharField(),
+                "image": serializers.FileField(),
                 "is_public": serializers.BooleanField(),
             },
         ),
@@ -1002,6 +1003,7 @@ class Update(APIView):
                 exist_image = False
             else:
                 exist_image = True
+                
             if exist_image:
                 delete_thumbnail = S3ImgUploader(delete_thumbnail)
                 delete_thumbnail.delete()
