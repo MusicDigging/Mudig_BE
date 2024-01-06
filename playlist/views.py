@@ -968,6 +968,8 @@ class Update(APIView):
     def put(self, request, playlist_id):
         user = request.user
         choice_playlist = Playlist.objects.get(id=playlist_id, writer=user)
+        delete_thumbnail = choice_playlist.thumbnail
+        
         ## del music
         del_music_list_str = request.data.get('del_music_list', '')
         ## 언제든지 수정가능
@@ -994,7 +996,20 @@ class Update(APIView):
         
         serializer = PlaylistSerializer(choice_playlist, data=request.data, partial=True)
         if serializer.is_valid():
-            
+            try:
+                plithumbnail = request.FILES['image']
+            except:
+                exist_image = False
+            else:
+                exist_image = True
+            if exist_image:
+                delete_thumbnail = S3ImgUploader(delete_thumbnail)
+                delete_thumbnail.delete()
+                thumbnail_img = S3ImgUploader(plithumbnail)
+                thumbnail_url = thumbnail_img.upload('karlo')
+                choice_playlist.thumbnail = thumbnail_url
+                choice_playlist.save()
+                
             public = serializer.validated_data.get('is_public')
             pli_id = serializer.instance.id
             profile = user.profile
