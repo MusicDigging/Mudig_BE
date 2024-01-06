@@ -1,6 +1,8 @@
 # Mudig
 
-![mudig 캐릭터](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/9aedcb7c-c93e-4eac-b9a8-9d1cd7de7789)
+![phone34-min](https://github.com/MusicDigging/Mudig_BE/assets/107661525/6fc4b1ca-6ca0-4f59-8acb-e3c15ff79127)
+![-2__1_6](https://github.com/MusicDigging/Mudig_BE/assets/107661525/2e99de8b-744c-4d44-8123-6e151f422698)
+![-2__1](https://github.com/MusicDigging/Mudig_BE/assets/107661525/27c4a96e-313e-4f10-9956-294f9cf556e5)
 
 [뮤딕 바로가기](https://www.mudig.co.kr/)
 
@@ -97,10 +99,12 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 ### 1.1. 주요 기능
 
 - 회원가입 및 로그인 , 소셜 로그인 (Kakao, Google)
+
   ```
   이메일을 통한 회원가입 뿐만 아니라 카카오, 구글을 이용한 소셜로그인 기능을 제공하고 있습니다.
   회원탈퇴와 비밀번호 변경 기능도 제공하고 있습니다.
   ```
+
 - 이메일로 통한 회원가입시 메일 인증
 
   ```
@@ -111,15 +115,20 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
   ```
 
 - JSON Web Token 인증 방식
+
   ```
   로그인시 발급된 Access Token을 통해서 유저 인증을 진행하는 기능을 제공하고 있습니다.
   ```
+
 - 프로필 CRU
+
   ```
   회원가입 후 자신을 대표하는 프로필을 꾸밀 수 있는 기능을 제공하고 있습니다.
   프로필 이미지와 한줄 소개를 작성 뿐만아니라 관심 장르, 대표 플레이리스트 등을 설정 가능합니다.
   ```
+
   <!-- [# 유저 기능 시연 연상](#51-유저-기능) -->
+
 - Follow / Unfollow 기능
 
   ```
@@ -127,14 +136,6 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
   ```
 
   <!-- [# 팔로우 시연 영상](#57-팔로우-기능) -->
-
-- 댓글과 대댓글 CRUD
-
-  ```
-  댓글을 이용하여 게시글에 대한 의견을 남길 수도 있으며 댓글의 대댓글 기능 까지 지원하고 있습니다.
-  댓글을 수정, 삭제하는 기능까지 제공 되고 있습니다.
-  ```
-
   <!-- [# 댓글 시연 영상](#55-댓글-기능) -->
 
 - 랜덤 뮤비
@@ -147,16 +148,9 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 - 플레이리스트 CRUD 기능
 
   ```
-  사용자들이 원하는 내용을 토대로 플레이리스트 생성하는 기능을 제공하고 있습니다. 
-  수정에는 곡 순서 이동, 곡 삭제 기능이 있습니다. 
-  해당 기능은 GPT API, YouTube Data API, Karlo 와 연관되어 있습니다. 
-  ```
-
-- GPT API, YouTube Data API, Karlo
-
-  ```
-  사용자가 입력한 내용을 토대로 GPT API가 생성한 결과물을 YouTube Data API V3로
-  전송하여 플레이리스트의 제목, 노래들, Karlo 이미지 값 등을 생성합니다.
+  사용자들이 원하는 내용을 토대로 플레이리스트 생성하는 기능을 제공하고 있습니다.
+  수정에는 곡 순서 이동, 곡 삭제 기능이 있습니다.
+  해당 기능은 GPT API, YouTube Data API, Karlo 와 연관되어 있습니다.
   ```
 
 - 이벤트 플레이리스트 생성
@@ -166,8 +160,37 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
   이 기능은 이벤트성으로 발생됩니다.
   ```
 
-- 기능 제목
+- 플레이리스트 좋아요
 
+  ```
+  뮤딕 이용 중 발견한 취향저격 플레이리스트에 좋아요를 눌러
+  ‘마이페이지 - 좋아요 표시한 플레이리스트’에 저장할 수 있습니다.
+  저장된 리스트는 내 프로필에 방문한 다른 유저들도 볼 수 있어
+  서로 다양한 플레이리스트를 공유할 수 있습니다.
+  ```
+
+- 플레이리스트, 유저 검색 기능
+
+  ```
+  원하는 키워드를 입력 후 검색하면 플레이리스트의 제목, 유저의 닉네임
+  또는 소개글에 해당 키워드가 포함된 플레이리스트와 유저를 찾아볼 수 있습니다.
+  ```
+
+- 댓글과 대댓글 CRUD
+
+  ```
+  댓글을 이용하여 게시글에 대한 의견을 남길 수도 있으며 댓글의 대댓글 기능 까지 지원하고 있습니다.
+  댓글을 수정, 삭제하는 기능까지 제공 되고 있습니다.
+  ```
+
+- GPT API, YouTube Data API, Karlo
+
+  ```
+  사용자가 입력한 내용을 토대로 GPT API가 생성한 결과물을 YouTube Data API V3로
+  전송하여 플레이리스트의 제목, 노래들, Karlo 이미지 값 등을 생성합니다.
+  ```
+
+- 기능 제목
   ```
   기능 설명
   ```
@@ -177,6 +200,7 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 ### 2.1. 개발 환경
 
 Python == 3.11.3
+
 Django == 4.2.7
 
 AWS S3
@@ -187,7 +211,6 @@ DRF
 
 - djangorestframework == 3.14.0
 - django-cors-headers == 4.3.1
-- djangorestframework == 3.14.0
 - djangorestframework-simplejwt == 5.3.0
 
 PostgreSQL
@@ -293,7 +316,7 @@ AWS RDS
 
 #### 3.4.1. Architecture
 
-![스크린샷 2023-12-25 171731](https://github.com/Hyunwooz/kokoaTalkClone/assets/107661525/773e5cca-9413-4429-aa37-c5b6e8d5005a)
+![스크린샷 2023-12-25 171731](https://github.com/MusicDigging/Mudig_BE/assets/107661525/77308022-693e-409a-a76d-ff640530228b)
 
 #### 3.4.2. 폴더 트리
 
@@ -403,6 +426,190 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
 
 ## 5. 기능
 
+<table>
+  <thead>
+    <tr>
+      <th align="center">플레이리스트 생성</th>
+      <th align="center">플레이리스트 삭제</th>
+      <th align="center">플레이리스트 상세보기</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/00e69961-5d5a-40e7-996d-a420a2031e70" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/89c34fdf-f8a7-4732-ab86-7db9fb3aa116" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/805cd361-35bb-4b3b-b3f3-276704ef69ad" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">플레이리스트 제목 수정</th>
+      <th align="center">플레이리스트 곡 이동</th>
+      <th align="center">플레이리스트 곡 삭제</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/0e4ad205-5bb7-4b23-9123-bf2796aeeffb" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/d2e0548c-0db9-4fc8-bf39-15cdd03de11c" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/da8f6e1a-d0f7-4965-b8de-3dc6d86c64d6" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">자체로그인</th>
+      <th align="center">카카오로그인</th>
+      <th align="center">로그아웃</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/43a66c38-f18c-47fb-a317-083df6a48794" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/5d9d45d9-43f0-482e-a676-5ab166ac5837" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/85fbb02e-2243-4827-bc0f-a20987d25d4a" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">회원가입</th>
+      <th align="center">이메일인증</th>
+      <th align="center">회원가입 후 프로필 생성</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/57975a0e-744b-4dc5-bebf-97470fb57e16" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/a7b68395-1388-4627-b3e8-b89dcdc336d2" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/106c9347-0c7e-45ea-9d88-4ac63bcaa26e" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">회원 탈퇴</th>
+      <th align="center">랜덤 뮤비</th>
+      <th align="center">이벤트 플리 생성</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/21ab6c71-6ebe-4cf1-a4ec-4a29f2d65773" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/7af72fd3-9d4d-428f-9452-2ea8ce88a54f" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/91625a11-e2bc-4fab-b3f8-a564e9d98cbc" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">프로필 조회</th>
+      <th align="center">프로필 수정(소개글)</th>
+      <th align="center">프로필 수정(이미지)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/b3a30155-13ca-4659-99b1-cc31f6554769" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/5fa6e9ec-d99f-4db3-86db-bba09dde72a9" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/8449ef64-09f4-4738-8550-97a13c594fa9" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">팔로우</th>
+      <th align="center">좋아요한 플리 조회</th>
+      <th align="center">대표 플리 수정</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/ba786afb-861f-44f2-a195-fc25d43be1d4" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/d9879cee-077f-4a45-939e-3b7ba660b0bf" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/ade1f583-5ab4-4ad4-b474-7bfadbc3ee79" height="462" style="max-width: 206px; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">1</th>
+      <th align="center">2</th>
+      <th align="center">3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+      <td align="center">
+        <img src="" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ## 6. 개발하며 느낀점
 
 ### 6.1. 배운 점
@@ -421,29 +628,43 @@ Figma : https://www.figma.com/file/8jeAIfOdZcYZ8ehctmA8yn/Untitled?type=design&n
 
 이번 프로젝트를 통해 기획의 중요성에 대해서 크게 깨닫게 된 것 같습니다.
 기획의 완성도가 개발 진행 속도에 많은 관여를 한다는 걸 느낀 프로젝트 였습니다.
-프론트엔드, 디자이너 분들과 협업할 수 있었던 좋은 기회였습니다. 
-매주 회의를 통해 서로 필요한 부분에 대해서 대화를 나누고 오류를 같이 해결해 나가는 즐거운 경험을 할 수 있었습니다. 
-추후에 다른 개발자분, 디자이너분들과 의사소통을 하더라도 이번 프로젝트를 경험삼아 의사소통을 잘 이어나갈 수 있을 것 같습니다. 
+프론트엔드, 디자이너 분들과 협업할 수 있었던 좋은 기회였습니다.
+매주 회의를 통해 서로 필요한 부분에 대해서 대화를 나누고 오류를 같이 해결해 나가는 즐거운 경험을 할 수 있었습니다.
+추후에 다른 개발자분, 디자이너분들과 의사소통을 하더라도 이번 프로젝트를 경험삼아 의사소통을 잘 이어나갈 수 있을 것 같습니다.
 이번 프로젝트는 처음으로 도입하는 기술들이 여러개 있었습니다.
 Open Api Specification를 통해 API 문서 자동화를 도입한다던가 Github Action을 통한 CI/CD 구현 등등 처음 다루는 기술들이라 조금 많이 서툴었지만,
 Open Api Specification을 프론트엔드 분들이 너무 잘사용해주셔서 엄청난 뿌듯함을 느낄 수 있었습니다. 이번 프로젝트를 바탕으로 더욱 더 성장하는 개발자가 되도록 하겠습니다.
-마지막으로 백엔드 총괄이라는 역할로 이번 프로젝트를 이끌었지만 많이 부족한 저를 잘 너무나도 잘 따라주셔서 감사했습니다. 
-저와 함께 이번 프로젝트를 진행해주신 우리 뮤딕팀 분들!! 프론트, 백엔드, 디자이너분들 너무나도 고생많으셨습니다. 감사합니다.   
+마지막으로 백엔드 총괄이라는 역할로 이번 프로젝트를 이끌었지만 많이 부족한 저를 너무나도 잘 따라주셔서 감사했습니다.
+저와 함께 이번 프로젝트를 진행해주신 우리 뮤딕팀 분들!! 프론트, 백엔드, 디자이너분들 너무나도 고생많으셨습니다. 감사합니다.
 
 #### 김여주
 
-내용
+이번 Mudig 프로젝트를 통해 원활한 의사소통의 중요성과 팀워크의 힘을 다시 한번 느낄 수 있었습니다.
+매주 회의를 통한 소통은 프로젝트를 진행하는데 변수가 발생할 때마다 신속한 해결을 가능케 하였고, 이는 기획의 완성도를 높이는 중요한 과정이었습니다. 프로젝트 진행 상황, 작업 일정, 오류 등을 소통함으로써 기획을 보다 세밀하게 계획하고 진행할 수 있었습니다.
+이번 프로젝트에서 맡은 기능은 이전에 시도해보지 않았던 사용자 기능이었습니다. 회원가입, 로그인, 소셜로그인(카카오, 구글), 이메일 인증번호, 비밀번호 변경, 회원탈퇴 기능을 담당하게 되었고, 이를 통해 사용자 기능에 대한 로직의 흐름을 정확히 이해하게 되었습니다.
+사용자의 기능에서 디테일하게 처리해야 하는 부분이 생각보다 많았습니다. 사용자가 입력한 프로필 이미지, 닉네임, 소개, 장르 등을 데이터베이스에 저장할 때 이미지의 존재 여부와 잘못된 정보에 대한 처리 등 디테일한 부분을 고려하여 구현하였습니다. 또한 프론트엔드 팀과의 의사소통을 통해 프론트엔드에서 보여질 응답 메시지와 디테일한 부분도 고려하여 코드를 작성하게 되었습니다. 프론트엔드 팀과의 협업을 통해 코드 수정 사항을 빠르게 확인하고 반영할 수 있었으며, 이러한 빠른 피드백과 협업은 개발 속도를 향상시키고 완성도를 높일 수 있었습니다.
+처음에는 새로운 기능을 맡는 것에 대한 걱정이 있었지만, 어려웠던 부분에서 자신의 파트가 아님에도 같이 문제를 해결할 수 있도록 도와주는 팀원들이 있었기에 자신감을 가지고 끝까지 프로젝트를 마무리 할 수 있었습니다. 우리 백엔드 팀원들 감사합니다 !!
+마지막으로 디자이너 팀, 프론트엔드 팀, 백엔드 팀 Mudig 구성원 모두 수고하셨고 프로젝트 하는 동안 행복했습니다 !!
 
 #### 사수봉
 
-내용
+이번 뮤딕 프로젝트를 디자이너, 프론트엔드 분들과 함께 진행하면서 협업은 소통이 중요하다는 것을 다시 한번 배웠습니다. 매주 다 같이 모여서 회의를 같이 진행해도 기능 하나하나를 만들어가는 과정에서는 빠른 소통과 피드백이 필요했는데 처음에는 이 부분이 쉽지 않았지만 프로젝트가 진행될수록 서로의 파트에 이해도가 생기면서 유연하게 작업을 진행할 수 있었습니다. 또한 자세한 기획의 중요성을 알게 되었습니다. 처음에는 완벽해 보였던 기획이 프로젝트를 진행하면서 여러 번 수정되는 걸 경험하면서 처음부터 완벽하진 않아도 디테일한 요소들을 자세하게 기획하는 것이 초반에는 시간이 소요되더라도 길게 보면 효율적인 진행 방법이라는 것을 배웠습니다.이번 프로젝트에서 검색과 댓글과 대댓글 CRUD, 플레이리스트 좋아요 기능을 담당하게 되었는데 처음에는 지난 프로젝트 개발 코드들과 별다를 게 없을 거라고 생각했지만 막상 작업을 진행할수록 같은 메소드를 비슷한 기능에 사용하더라도 디테일이 매우 다르다는 것을 새삼 느꼈습니다.디자이너, 프론트엔드 분들과 협업한 프로젝트는 이번이 처음인데 너무나도 뛰어나신 팀원분들을 만나서 제 능력 이상의 결과물을 만날 수 있었습니다. 부족한 제 실력에도 멋진 프로젝트의 마지막까지 완주할 수 있게 도와주신 모두 감사합니다!
 
 #### 심민정
 
-내용
+처음으로 프론트엔드, 디자이너 분들과 협업으로 진행하는 프로젝트였고, 부트캠프가 아닌 자율적으로 참여하는 프로젝트 였습니다.
+그래서 실력에 대해 자신감이 많이 부족해서 "내가 실수하거나 못하면 어떡하지" 라는 걱정이 앞섰는데 팀원들의 격려로 프로젝트에 참여하게 되었고, 결론적으로 한층 더 성장할 수 있는 경험을 얻었다고 생각합니다.
+
+제가 맡은 포지션은 프로필 CRUD, 팔로우 기능, 조회 기능 등이 있습니다.
+처음 포지션을 분배할 때 전에 해봤던 로그인, 회원가입을 하려고 했으나, 팀원들의 권유와 새로운 것에 도전하는 것이 좀 더 흥미롭고 성장하는데 도움이 될 것 같아 위와 같은 포지션을 맡았습니다.
+
+어려웠던 점은 프로필 수정부분에서 이미지 처리 방식을 장고 s3에 저장하도록 했는데 이 부분은 팀원분의 도움이 없었으면 사용하지 못했을 것 같습니다. 또한 데이터를 보내줄때도 프론트엔드 분들의 요구에 부합하도록 끊임없는 수정작업이 필요했습니다.
+그러나 이러한 어려운 점은 매 주 회의를 통한 의견소통과 합의점을 찾아가면서 점차 맞춰나가는 과정이 있었기 때문에 힘 들기보다는 오히려 수정 후 원하는 방향대로 코드가 동작하거나 결과물이 모양을 갖춰나가는 부분에서 큰 희열감과 즐거움을 느낄 수 있었습니다.
+
+마지막으로 막힐 때마다 함께 해결해주려던 우리 백엔드 팀원분들과 적극적으로 소통 해주신 프론트엔드, 디자이너분들 정말 수고많으셨습니다!
 
 #### 황봉수
 
-항상 팀 프로젝트를 함으로써 느끼는 거는 의사소통의 중요성인 거 같다. 처음으로 프론트엔드 분들과 디자이너분들과 협업하여 진행하였는데 의사소통이 충분하다고 생각하였지만 생각보다 더 많은 의사소통이 필요했고, 기획자의 역할 또한 중요하다고 생각하였습니다. 모두가 기획자가 되어 필요 순서에 따라 진행한 점은 만족하고 있다. 진행하면서 매주 회의 또한 만족스러웠다. 회의와 소통을 함으로써 프론트엔드 분들과 기술적으로 필요한 부분을 전달해주는 과정에서 즐거움을 얻었다. 그리고 백엔드와 프론트엔드 업무를 나누면서 각 파트가 직면하는 어려움과 즐거움을 이해할 수 있었습니다. API와 연동하며 백엔드의 역할과 프론트엔드의 동작 원리를 더 자세히 이해할 수 있었습니다. 마지막으로 우리 백엔드 팀, 프론트엔드팀, 디자인팀 다들 너무 고생하셨습니다. 
+항상 팀 프로젝트를 함으로써 느끼는 거는 의사소통의 중요성인 거 같다. 처음으로 프론트엔드 분들과 디자이너분들과 협업하여 진행하였는데 의사소통이 충분하다고 생각하였지만 생각보다 더 많은 의사소통이 필요했고, 기획자의 역할 또한 중요하다고 생각하였습니다. 모두가 기획자가 되어 필요 순서에 따라 진행한 점은 만족하고 있다. 진행하면서 매주 회의 또한 만족스러웠다. 회의와 소통을 함으로써 프론트엔드 분들과 기술적으로 필요한 부분을 전달해주는 과정에서 즐거움을 얻었다. 그리고 백엔드와 프론트엔드 업무를 나누면서 각 파트가 직면하는 어려움과 즐거움을 이해할 수 있었습니다. API와 연동하며 백엔드의 역할과 프론트엔드의 동작 원리를 더 자세히 이해할 수 있었습니다. 마지막으로 우리 백엔드 팀, 프론트엔드팀, 디자인팀 다들 너무 고생하셨습니다.
 
 ## 7. 유저 피드백 후 반영
