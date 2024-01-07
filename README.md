@@ -558,20 +558,20 @@ Stable - Main (release) - Develop - 작업자별 Branch
   <thead>
     <tr>
       <th align="center">프로필 조회</th>
-      <th align="center">프로필 수정(소개글)</th>
-      <th align="center">프로필 수정(이미지)</th>
+      <th align="center">프로필 수정</th>
+      <th align="center">팔로우 목록 조회</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/b3a30155-13ca-4659-99b1-cc31f6554769" height="462" style="max-width: 206px; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/1038fcf0-2af5-4c9d-bf03-55bcfd7e0e76" height="462" style="max-width: 206px; display: inline-block;">
       </td>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/5fa6e9ec-d99f-4db3-86db-bba09dde72a9" height="462" style="max-width: 206px; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/17a92c43-36ca-4e9c-9190-c5f002b9a897" height="462" style="max-width: 206px; display: inline-block;">
       </td>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/8449ef64-09f4-4738-8550-97a13c594fa9" height="462" style="max-width: 206px; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/cc4b8e50-e129-4d62-9bea-8df31e1283ca" height="462" style="max-width: 206px; display: inline-block;">
       </td>
     </tr>
   </tbody>
@@ -581,20 +581,20 @@ Stable - Main (release) - Develop - 작업자별 Branch
   <thead>
     <tr>
       <th align="center">팔로우</th>
-      <th align="center">좋아요한 플리 조회</th>
-      <th align="center">대표 플리 수정</th>
+      <th align="center">언팔로우</th>
+      <th align="center">유저 검색</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/ba786afb-861f-44f2-a195-fc25d43be1d4" height="462" style="max-width: 206px; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/20312da2-9662-4463-831f-9cfe3ea413bc" height="462" style="max-width: 206px; display: inline-block;">
       </td>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/d9879cee-077f-4a45-939e-3b7ba660b0bf" height="462" style="max-width: 206px; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/196bf2af-d8a4-4437-89ee-6aedeb8934bc" height="462" style="max-width: 206px; display: inline-block;">
       </td>
       <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/ade1f583-5ab4-4ad4-b474-7bfadbc3ee79" height="462" style="max-width: 206px; display: inline-block;">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/81991b06-21a7-456f-80e5-9777a5e5d063" height="462" style="max-width: 206px; display: inline-block;">
       </td>
     </tr>
   </tbody>
@@ -603,22 +603,22 @@ Stable - Main (release) - Develop - 작업자별 Branch
 <table>
   <thead>
     <tr>
-      <th align="center">유저 검색</th>
       <th align="center">플리 검색 및 좋아요</th>
       <th align="center">댓글 조회</th>
+      <th align="center">댓글 생성</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/81991b06-21a7-456f-80e5-9777a5e5d063" height="462" style="max-width: 100%; display: inline-block;">
-      </td>
       <td align="center">
         <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/48f9e06f-3afc-4d1f-81ee-150405003da2" height="462" style="max-width: 100%; display: inline-block;">
       </td>
       <td align="center">
         <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/84dd064d-8041-4b1e-b0ae-98c2781088f7" height="462" style="max-width: 100%; display: inline-block;">
       </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/a88dac6f-3867-425d-a05e-4875a9607976" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -626,22 +626,22 @@ Stable - Main (release) - Develop - 작업자별 Branch
 <table>
   <thead>
     <tr>
-      <th align="center">댓글 생성</th>
       <th align="center">댓글 수정</th>
       <th align="center">댓글 삭제</th>
+      <th align="center">답글(대댓글) 조회</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/a88dac6f-3867-425d-a05e-4875a9607976" height="462" style="max-width: 100%; display: inline-block;">
-      </td>
       <td align="center">
         <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/2671fb91-2e90-45b8-81ed-9ebb9c4b37fc" height="462" style="max-width: 100%; display: inline-block;">
       </td>
       <td align="center">
         <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/f9584a46-8ed9-4de5-a142-ea932fde41bd" height="462" style="max-width: 100%; display: inline-block;">
       </td>
+      <td align="center">
+        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/18871040-688e-495b-a600-a3523dec6de9" height="462" style="max-width: 100%; display: inline-block;">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -649,34 +649,19 @@ Stable - Main (release) - Develop - 작업자별 Branch
 <table>
   <thead>
     <tr>
-      <th align="center">답글(대댓글) 조회</th>
       <th align="center">답글(대댓글) 생성</th>
       <th align="center">답글(대댓글) 수정</th>
+      <th align="center">답글(대댓글) 삭제</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td align="center">
-        <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/18871040-688e-495b-a600-a3523dec6de9" height="462" style="max-width: 100%; display: inline-block;">
-      </td>
       <td align="center">
         <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/b2cc2386-4669-4bc8-b8d6-5becca342af2" height="462" style="max-width: 100%; display: inline-block;">
       </td>
       <td align="center">
         <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/1e3a9c38-6aaa-4a60-8274-66e143c97ed0" height="462" style="max-width: 100%; display: inline-block;">
       </td>
-    </tr>
-  </tbody>
-</table>
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">답글(대댓글) 삭제</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
       <td align="center">
         <img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/23b9b50c-f1d8-4106-8207-eb080ed75eb3" height="462" style="max-width: 100%; display: inline-block;">
       </td>
