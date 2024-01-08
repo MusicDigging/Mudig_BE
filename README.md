@@ -105,7 +105,7 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 3. [프로젝트 구조와 개발 일정](#3-프로젝트-구조와-개발-일정)
 4. [구현 기능 시연](#4-기능)
 5. [개발하며 느낀점](#5-개발하며-느낀점)
-6. [외부 어플리케이션](#5-개발하며-느낀점)
+6. [외부 어플리케이션](#6-외부-어플리케이션)
 
 ## 1. 기능
 
@@ -291,7 +291,9 @@ AWS RDS
 
 해당 문서는 **뮤딕**의 웹 페이지의 개발과 관련된 주요 정보를 다룹니다. 여기에는 주로 개발자를 위한 기능적 요구사항과 기술적 용어로 작성된 서비스의 세부 기능에 관한 내용이 포함됩니다.
 
-![스크린샷 2024-01-07 154023](https://github.com/MusicDigging/Mudig_BE/assets/107661525/15c6d0e7-358a-4838-884c-d47dc6228103)
+<a href="https://docs.google.com/spreadsheets/d/1k1bcUxAqGr-WbKBvex_J7M51-aIQd9EQxcZN1uKBqaY/edit?pli=1#gid=0"><img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/15c6d0e7-358a-4838-884c-d47dc6228103"/></a>
+
+<!-- ![스크린샷 2024-01-07 154023](https://github.com/MusicDigging/Mudig_BE/assets/107661525/15c6d0e7-358a-4838-884c-d47dc6228103) -->
 
 ### 3.3. API 명세서
 
