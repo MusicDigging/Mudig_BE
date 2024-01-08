@@ -80,7 +80,7 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 
 📜 Notion , 📱 Discord
 
-#### Discord Webhook을 Gitgub 연동
+#### Discord Webhook을 통한 Gitgub 연동
 
 해당 프로젝트를 Github으로 관리를 하면서 Commit Log를 협업 메신저로 사용하고 있는 Discord에서 알림을 받을 수 있도록 연동 하였습니다.
 
