@@ -437,7 +437,7 @@ Stable - Main (release) - Develop - 작업자별 Branch
 4. Develop에서 메인 브랜치에 Push
 5. 서버 배포 진행
 
-## 4. 기능
+## 4. 기능 ( 유저 피드백 반영 후 리뉴얼 예정 )
 
 <table>
   <thead>
