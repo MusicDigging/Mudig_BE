@@ -33,7 +33,7 @@
   a. [개발 환경](#21-개발-환경)<br>
   b. [배포 환경](#22-배포-환경)
 4. [프로젝트 구조와 개발 일정](#3-프로젝트-구조와-개발-일정)<br>
-  a. [개발 환경](#31-entity-relationship-diagram)<br>
+  a. [ERD](#31-entity-relationship-diagram)<br>
   b. [요구사항 정의서](#32-요구사항-정의서)<br>
   c. [API 명세서](#33-api-명세서)<br>
   d. [URL 설계](#34-url-설계)<br>
