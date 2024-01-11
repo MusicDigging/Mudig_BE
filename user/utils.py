@@ -2,7 +2,6 @@ import random
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import User
 
 def generate_otp():
     otp = str(random.randint(100000, 999999))

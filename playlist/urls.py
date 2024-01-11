@@ -6,7 +6,6 @@ app_name = 'playlist'
 
 urlpatterns = [
     # home
-    # path('', PlaylistView.as_view() , name='list'),
     path('', List.as_view() , name='list'),
     # playlist CRUD
     path('detail/<int:playlist_id>/', Detail.as_view() , name='detail'),

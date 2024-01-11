@@ -57,7 +57,7 @@ from playlist.models import Playlist
 class Profile(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE)
     name = models.CharField(default='닉네임', max_length=50, null=True, blank=True)
-    image = models.CharField(max_length=200, null=True, blank=True)
+    image = models.CharField(default='profile/basic.png', max_length=200, null=True, blank=True)
     about = models.TextField(default='자신을 소개해주세요 :)', null=True, blank=True)
     genre = models.CharField(max_length=50, null=True, blank=True)
     rep_playlist = models.ForeignKey(Playlist,null=True,blank=True,on_delete=models.CASCADE)

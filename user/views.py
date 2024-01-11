@@ -1,4 +1,4 @@
-from drf_spectacular.utils import OpenApiExample, extend_schema, OpenApiParameter, inline_serializer
+from drf_spectacular.utils import OpenApiExample, extend_schema, inline_serializer
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout
@@ -14,7 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 from json.decoder import JSONDecodeError
 from playlist.uploads import S3ImgUploader
 from playlist.models import Playlist, Like
-from playlist.serializers import PlaylistSerializer
+from playlist.serializers import PlaylistSerializer , ProfileSearchSerializer
 from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
 from .utils import generate_otp, send_otp_via_email
 from .models import Profile, User, Follower
@@ -24,7 +24,7 @@ import requests
 
 dotenv.load_dotenv()
 
-CALLBACK_URI = 'http://127.0.0.1:5500/index.html'
+CALLBACK_URI = 'https://www.mudig.co.kr/login'
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
 KAKAO_REST_API_KEY = os.environ['KAKAO_REST_API_KEY']
@@ -172,6 +172,8 @@ class Join(APIView):
                 img_uploader = S3ImgUploader(image)
                 uploaded_url = img_uploader.upload('profile')
                 profile_data['image'] = uploaded_url
+                profile.image = uploaded_url
+                profile.save()
             
             pf_serializer = ProfileSerializer(profile, profile_data)
             
@@ -394,8 +396,13 @@ class Login(APIView):
                     "status": 200,
                     "res_data": {
                         "user": {
+                            "id": 2,
+                            "name": "테스트",
+                            "about": "테스트 데이터입니다.",
+                            "genre": "J-POP,힙합,K-POP",
                             "email": "test@gmail.com",
-                            "id": "1"
+                            "rep_playlist": None,
+                            "is_following": False
                         },
                         "message": "Login success",
                         "token": {
@@ -540,8 +547,56 @@ class ProfileView(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "profile": "profile",
-                        "playlist": "Playlist"
+                        "profile": {
+                            "id": 2,
+                            "name": "테스트",
+                            "about": "안녕하세요!",
+                            "genre": "J-POP,힙합,K-POP",
+                            "email": "test@gmail.com",
+                            "rep_playlist": None,
+                            "is_following": None,
+                            "image": "profile/basic.png"
+                            },
+                        "playlist": [{"id": 53,
+                                    "like_count": 0,
+                                    "like_playlist": False,
+                                    "title": "행복한 마무리를 위한 추천 플레이리스트입니다!",
+                                    "content": "이 위의 목록은 K-POP 장르에 속하는 행복한 노래들로 당신의 하루를 마무리하는 데 도움이 될 것입니다. 멜로디와 가사 모두 경쾌하고 에너지 넘치며, 행복한 기분을 더욱 향상시킬 것입니다. 편안한 마음으로 즐겨보세요!",
+                                    "thumbnail": "karlo/b4346658a3e711eeae840700a75bb434",
+                                    "genre": "K-POP",
+                                    "is_active": True,
+                                    "created_at": "2023-12-26T21:10:05.460483+09:00",
+                                    "updated_at": "2023-12-26T21:10:05.460504+09:00",
+                                    "is_public": True,
+                                    "writer": 2,
+                                    "music": [
+                                        15,
+                                        18,
+                                        116,
+                                        189,
+                                        190
+                                    ]}],
+                        "liked_playlists": [{
+                                        "id": 50,
+                                        "like_count": 1,
+                                        "like_playlist": False,
+                                        "title": "따뜻한 연말을 위한 추천 플레이리스트입니다!",
+                                        "content": "위의 목록은 2020년에 발매된 K-POP 곡들로, 연말에 듣기 좋은 따뜻한 노래들입니다. 이 음악들을 감상하며 편안하고 따뜻한 분위기를 느껴보세요!",
+                                        "thumbnail": "karlo/99076708a30211eeae840700a75bb434",
+                                        "genre": "K-POP",
+                                        "is_active": True,
+                                        "created_at": "2023-12-25T17:50:05.077444+09:00",
+                                        "updated_at": "2023-12-25T17:50:05.077464+09:00",
+                                        "is_public": True,
+                                        "writer": 5,
+                                        "music": [
+                                            177,
+                                            178,
+                                            179,
+                                            180,
+                                            181
+                                        ]
+                                    }],
                     },
                 }
             ),
@@ -560,16 +615,15 @@ class ProfileView(APIView):
             user = request.user
         else:
             user = get_object_or_404(User, pk=user_id)
-        #user = get_object_or_404(User,pk=user_id)
         profile = get_object_or_404(Profile, user=user)
         pf_serializer = ProfileSerializer(profile, context={'request':request})
         
         profile_data = pf_serializer.data
         profile_data['image'] = profile.image
         
-        playlists = Playlist.objects.filter(writer=user)
+        playlists = Playlist.objects.filter(writer=user,is_active=True)
         py_serializer = PlaylistSerializer(playlists, many=True)
-        liked_playlists = Like.objects.filter(user=user).select_related('playlist')
+        liked_playlists = Like.objects.filter(user=user,playlist__is_active=True,playlist__is_public=True).exclude(playlist__in=playlists).select_related('playlist')
         liked_playlists_serializer = PlaylistSerializer([like.playlist for like in liked_playlists], many=True)
         data = {
             "profile": profile_data,
@@ -589,8 +643,8 @@ class ProfileEditView(APIView):
         description="프로필 수정 API에 대한 설명 입니다.",
         parameters=[],
         tags=["Profile"],
-        responses=ProfileSerializer,
-        request=ProfileSerializer,
+        responses=ProfileSearchSerializer,
+        request=ProfileSearchSerializer,
         examples=[
             OpenApiExample(
                 response_only=True,
@@ -726,8 +780,13 @@ class GoogleCallback(APIView):
                     "status": 200,
                     "res_data": {
                         "user": {
+                            "id": 2,
+                            "name": "테스트",
+                            "about": "테스트 데이터입니다.",
+                            "genre": "J-POP,힙합,K-POP",
                             "email": "test@gmail.com",
-                            "id": "1"
+                            "rep_playlist": None,
+                            "is_following": False
                         },
                         "message": "Login success",
                         "token": {
@@ -819,7 +878,7 @@ class KakaoLogin(APIView):
                 value={
                     "status": 200,
                     "res_data": {
-                        "data": f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=KAKAO_REST_API_KEY&redirect_uri=http://127.0.0.1:5500/index.html"
+                        "data": f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=KAKAO_REST_API_KEY&redirect_uri=CALLBACK_URI"
                     },
                 }
             ),
@@ -827,7 +886,7 @@ class KakaoLogin(APIView):
     )
     def get(self, request):
         data = {
-            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={KAKAO_REST_API_KEY}&redirect_uri=http://127.0.0.1:5500/index.html"
+            'url': f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={KAKAO_REST_API_KEY}&redirect_uri={CALLBACK_URI}"
         }
         return Response(data,status=status.HTTP_200_OK)
 
@@ -853,8 +912,13 @@ class KakaoCallback(APIView):
                     "status": 200,
                     "res_data": {
                         "user": {
+                            "id": 2,
+                            "name": "테스트",
+                            "about": "테스트 데이터입니다.",
+                            "genre": "J-POP,힙합,K-POP",
                             "email": "test@gmail.com",
-                            "id": "1"
+                            "rep_playlist": None,
+                            "is_following": False
                         },
                         "message": "Login success",
                         "token": {
@@ -905,7 +969,7 @@ class KakaoCallback(APIView):
         request_data = {
             'grant_type': 'authorization_code',
             'client_id': KAKAO_REST_API_KEY,
-            'redirect_uri': "http://127.0.0.1:5500/index.html",
+            'redirect_uri': CALLBACK_URI,
             'code': code,
         }
         # header에 content-type을 지정해주는 부분입니다.

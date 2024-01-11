@@ -11,7 +11,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 # [내 애플리케이션] > [앱 키] 에서 확인한 REST API 키 값 입력
 REST_API_KEY =  os.environ['KARLO_API_KEY']
 # 이미지 생성하기 요청
-negative_prompt = "nsfw, low res, text, fullbody, extra digit, fewer digits, cropped face, worst quality, low quality, normal quality, watermark, blurry, hands, face distortion, distorted face, poorly drawn face, framework, tacky, hole, ugly, realistic" # 얘는 일단 고정
+negative_prompt = "nsfw, low res, text, fullbody, extra digit, fewer digits, cropped face, worst quality, low quality, normal quality, watermark, blurry, hands, face distortion, distorted face, poorly drawn face, framework, tacky, hole, ugly, realistic"
 
 def t2i(prompt):
     r = requests.post(
@@ -41,13 +41,3 @@ def t2i(prompt):
     uploaded_url = uploader.upload('karlo')
     
     return uploaded_url
-
-# 프롬프트에 사용할 제시어
-# prompt = "A cat with white fur"
-
-# prompt = "'Vincent van Gogh, Impressionism with soft, blended brushstrokes, Serene and peaceful landscapes, Cool and calming color palette - shades of blues, greens, and grays." # GPT로 생성한 프롬포트로 요청
-
-# 이미지 생성하기 REST API 호출
-# response = t2i(prompt, negative_prompt)
-
-# 응답의 첫 번째 이미지 생성 결과 출력하기
