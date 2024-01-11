@@ -127,6 +127,101 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 ![스크린샷 2024-01-08 111528](https://github.com/MusicDigging/Mudig_BE/assets/107661525/25407f46-39e6-405a-8490-bfa9eefe757c)
 ![스크린샷 2024-01-08 111544](https://github.com/MusicDigging/Mudig_BE/assets/107661525/1533b97a-5975-4223-b150-213687914f62)
 
+##### Github Action을 통해 CI/CD 결과 알림 설정
+
+구현 코드
+
+```yml
+# CI 성공 메세지 발송
+  build-CI-Success:
+    needs: CI
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: "
+            ## CI 진행\n
+
+            ### 📌 Status\n 
+            > **Success** ✅\n
+
+            ### ✍️ Commit message\n 
+            > ${{ github.event.commits[0].message }}\n"
+
+  # 배포 성공 메세지 발송
+  build-Deploy-Success:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: "
+          ## Deploy 진행\n
+
+          ### 📌 Status\n
+          > **Success** ✅\n
+
+          ### ✍️ Commit message\n
+          > ${{ github.event.commits[0].message }}\n
+
+          ### 🫡 See changes\n
+          > https://github.com/${{ github.repository }}/commit/${{github.sha}}\n"
+
+  # CI 실패 메세지 발송
+  build-CI-failure:
+    needs: CI
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: "
+          ## CI 진행\n
+
+          ### 📌 Status\n
+          > **Failure** ⛔\n
+          
+          ### ✍️ Commit message\n
+          > ${{ github.event.commits[0].message }}\n
+          
+          ### 👀 See Error Message\n
+          > https://github.com/MusicDigging/Mudig_BE/actions\n"  
+
+  #배포 실패 메세지 발송
+  build-Deploy-failure:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: ${{ needs.deploy.outputs['result'] == 'failure' }}
+    steps:
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: "
+          ## Deploy 진행\n
+
+          ### 📌 Status\n
+          > **Failure** ⛔\n
+
+          ### ✍️ Commit message\n
+          > ${{ github.event.commits[0].message }}\n
+
+          ### 👀 See Error Message\n
+          > https://github.com/MusicDigging/Mudig_BE/actions\n"
+```
+
 ## 1. 기능
 
 ### 1.1. 주요 기능
