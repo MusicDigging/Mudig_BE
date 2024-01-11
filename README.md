@@ -704,7 +704,89 @@ Stable - Main (release) - Develop - 작업자별 Branch
 
 #### 5.1.2 CI/CD
 
-Discord 웹 훅을 이용한 배포 메시지
+##### **지속적인 통합과 지속적인 배포 (CI/CD, Continuous Integration/Continuous Deployment)란**
+
+CI/CD (Continuous Integration/Continuous Delivery)란 애플리케이션 개발 과정을 자동화하여 빠른 주기로 고객에게 서비스를 제공하는 방법을 말합니다.
+CI/CD의 기본 개념은 지속적인 통합, 지속적인 서비스 제공, 지속적인 배포입니다.
+특히, CI/CD는 애플리케이션의 통합 및 테스트 단계에서부터 제공 및 배포에 이르는 애플리케이션의 라이프사이클 전체에 걸쳐 지속적인 자동화와 지속적인 모니터링을 제공합니다.
+
+##### **지속적인 통합 (Continuous Integration, CI)**
+
+CI를 간단하게 말하자면, 빌드/테스트를 자동화 하는 과정을 말하며 개발자를 위한 지속적인 통합을 의미합니다.
+
+개발자가 단위별로 구현한 부분을 병합할 때마다 자동화된 빌드와 테스트 실행되며, 그 결과를 통해 어떤 부분에서 문제가 발생하는지 배포 전에 확인할 수 있습니다.
+
+**CI 순서**
+
+1. 개발자가 구현한 코드를 기존 코드와 병합 ( 우리의 Mudig의 경우 개발자별 Branch에서 Develop Branch에서 병합 진행, 로컬 테스팅 후 Main에 병합을 진행합니다.)
+2. 병합된 코드가 올바르게 동작하고 빌드되는지 검증
+3. 테스트 결과 문제가 있다면 다시 1번 과정 진행 , 문제가 없다면 배포
+
+**Github Action을 활용한 CI 구현**
+
+구현 코드
+
+```yml
+CI:
+    runs-on: ubuntu-latest
+    env:
+      DJAGNO_SECRET: ${{ secrets.DJAGNO_SECRET }}
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ['3.10']
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests
+      run: |
+        python manage.py test
+```
+
+##### **지속적인 배포 (Continuous Deployment, CD)**
+
+CD를 간단하게 말하자면, 배포 자동화 과정을 말하며 지속적인 배포를 의미하며,
+CI를 통해서 새로운 소스코드의 빌드와 테스트 병합까지 성공적으로 진행됬을 경우 사용자가 사용할 수 있는 배포환경까지 릴리즈 하는 것을 말하고 있습니다.
+
+**CD 순서**
+
+1. CI를 통해 새로운 소스코드의 빌드와 테스트 병합까지 성공
+2. 사용자가 사용할 수 있는 배포환경에 릴리즈
+
+
+**Github Action을 활용한 CD 구현**
+
+구현 코드
+
+```yml
+deploy:
+    needs: CI
+    name: Deploy
+    runs-on: ubuntu-latest
+    
+    if: success()
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master # appleboy를 통해 외부 서버에서 ssh 접속 후 커맨드 실행
+        with:
+          host: ${{ secrets.AWS_HOST }} # AWS 호스트
+          username: ${{ secrets.AWS_USERNAME }} # AWS USERNAME
+          key: ${{ secrets.AWS_PEM_KEY }} # AWS PEM KEY
+          port: ${{ secrets.AWS_PORT }} # AWS SSH PORT 
+          script_stop: true
+          script: |
+            whoami # 현재 내가 로그인한 사용자의 정보를 출력 합니다.
+            ls -al # 현재의 디렉토리안의 파일 목록을 출력하여 보여주는 명령어 입니다.
+            cd Mudig_BE/ # 뮤딕이 설치된 폴더로 들어갑니다.
+            /home/ubuntu/publish/pull_repository.sh # 사전에 정의된 쉘을 실행합니다.
+```
 
 #### 5.1.3 RESTfull API
 
