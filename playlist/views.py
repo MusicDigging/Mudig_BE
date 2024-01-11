@@ -1328,14 +1328,14 @@ class Search(APIView):
             }
             recent_search_playlist.append(recent_playlist_info)
     
-        music = Music.objects.filter(Q(song__contains=query)| Q(singer__contains=query))
-        musicserializer = MusicSerializer(music, many=True)
+        music = Music.objects.filter(Q(song__icontains=query)| Q(singer__icontains=query))
+        musicserializer = MusicSerializer(music, many=True).data
 
         search_music = []
-        if musicserializer.data != []:
+        if musicserializer != []:
             search_music_list = {
-                "music_count" : len(musicserializer.data),
-                "music" : musicserializer.data
+                "music_count" : len(musicserializer),
+                "music" : musicserializer
             }
             search_music.append(search_music_list)
         else:
