@@ -1283,7 +1283,7 @@ class Search(APIView):
         query = request.GET.get('query')
 
         if not query:
-            return Response({"error": "Missing 'query' parameter"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message":"검색 창이 입력되지 않았습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         users = Profile.objects.filter(Q(name__icontains=query) | Q(about__icontains=query),user__is_active=True).order_by('-id')
         profile_serializer = ProfileSearchSerializer(users, many=True).data
@@ -1293,7 +1293,7 @@ class Search(APIView):
 
         playlists = Playlist.objects.filter(Q(title__icontains=query)).order_by('-created_at')
         playlist_serializer = PlaylistSerializer(playlists, many=True).data
-
+        
         search_playlist = []
         for p_s in playlist_serializer:
             try:
@@ -1327,12 +1327,26 @@ class Search(APIView):
                 'writer' : recent_writer_info
             }
             recent_search_playlist.append(recent_playlist_info)
+    
+        music = Music.objects.filter(Q(song__contains=query)| Q(singer__contains=query))
+        musicserializer = MusicSerializer(music, many=True)
 
+        search_music = []
+        if musicserializer.data != []:
+            search_music_list = {
+                "music_count" : len(musicserializer.data),
+                "music" : musicserializer.data
+            }
+            search_music.append(search_music_list)
+        else:
+            search_music
+        
         response_data = {
             "recent_users" : recent_profile_serializer,
             "recent_playlists" : recent_search_playlist,
             "users" : profile_serializer,
-            "playlists" : search_playlist
+            "playlists" : search_playlist,
+            "search_music" : search_music
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
