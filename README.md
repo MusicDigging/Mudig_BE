@@ -316,62 +316,66 @@ build-Deploy-failure:
 
   [# 외부 어플리케이션](#6-외부-어플리케이션)
 
-## 2. 개발 환경 및 배포 URL
+## 2. 기술 스택 및 배포 URL
 
-### 2.1. 개발 환경
+### 2.2. 기술 스택
 
-Python == 3.11.3
+<table>
+<tr>
+ <td align="center" width="100px">사용 기술</td>
+ <td width="800px">
+  <img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">&nbsp  
+  <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white"/>&nbsp
+  <img src="https://img.shields.io/badge/drf-B40404?style=for-the-badge&logo=django&logoColor=white"/>&nbsp 
+    </td>
+</tr>
+<tr>
+ <td align="center" width="100px">데이터베이스</td>
+ <td width="800px">
+  <img src="https://img.shields.io/badge/postgresql-3776AB?style=for-the-badge&logo=postgresql&logoColor=white">&nbsp  
+    </td>
+</tr>
+<tr>
+ <td align="center" width="100px">저장소</td>
+ <td width="800px">
+  <img src="https://img.shields.io/badge/amazon%20s3-CA4245?style=for-the-badge&logo=amazons3&logoColor=white"/>&nbsp   
+    </td>
+</tr>
+<tr>
+  <td align="center">배포</td>
+  <td><img src="https://img.shields.io/badge/amazon%20ec2-232F3E?style=for-the-badge&logo=amazonec2&logoColor=white">&nbsp
+  <img src="https://img.shields.io/badge/amazonaws%20rds-231F3E?style=for-the-badge&logo=amazonrds&logoColor=white">&nbsp
+  <img src="https://img.shields.io/badge/NGINX-245432?style=for-the-badge&logo=NGINX&logoColor=white"></td>
+</tr>
+<tr>
+ <td align="center" width="100px">API 문서</td>
+ <td width="800px">
+  <img src="https://img.shields.io/badge/Swagger-5FB404?style=for-the-badge&logo=swagger&logoColor=white">&nbsp  
+    </td>
+</tr>
+<tr>
+ <td align="center">협업</td>
+ <td>
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"/>&nbsp
+    <img src="https://img.shields.io/badge/Discord-4263f5?style=for-the-badge&logo=Discord&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/Figma-d90f42?style=for-the-badge&logo=Figma&logoColor=white"/>&nbsp
+ </td>
+<tr>
+ <td align="center">IDE</td>
+ <td>
+    <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=Visual%20Studio%20Code&logoColor=white"/>&nbsp
+</tr>
+</table>
 
-Django == 4.2.7
-
-AWS S3
-
-- boto3 == 1.28.38
-
-DRF
-
-- djangorestframework == 3.14.0
-- django-cors-headers == 4.3.1
-- djangorestframework-simplejwt == 5.3.0
-
-PostgreSQL
-
-- psycopg2-binary == 2.9.9
-
-Open Api Specification
-
-- drf-spectacular == 0.26.5
-
-KARLO (이미지 생성 AI)
-
-- Karlo 2.0.4.0
-
-ChatGPT (LLM, 문장 생성 AI)
-
-- GPT Turbo 3.5
-
-### 2.2. 배포 환경
+### 2.2. 배포 URL
 
 #### 2.2.1. Back-End
-
-Aws Ec2
-
-- t2.micro
-
-AWS S3
-
-AWS RDS
-
-- PostgreSQL 15.4-R3
-
-### 2.3. 배포 URL
-
-#### 2.3.1. Back-End
 
 - https://api.mudig.co.kr/
 - Back-End Repo : https://github.com/MusicDigging/Mudig_BE
 
-#### 2.3.2. Front-End
+#### 2.2.2. Front-End
 
 - https://www.mudig.co.kr/
 - Front-End Repo : https://github.com/MusicDigging/Mudig_FE
