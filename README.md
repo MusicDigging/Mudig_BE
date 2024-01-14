@@ -30,9 +30,7 @@
 1. [개요](#계기-및-목표)
 2. [기능](#1-목표와-기능)<br>
    a. [주요 기능](#11-주요-기능)
-3. [개발 환경 및 배포 URL](#2-개발-환경-및-배포-URL)<br>
-   a. [개발 환경](#21-개발-환경)<br>
-   b. [배포 환경](#22-배포-환경)
+3. [기술 스택 및 배포 URL](#2-기술-스택-및-배포-url)
 4. [프로젝트 구조와 개발 일정](#3-프로젝트-구조와-개발-일정)<br>
    a. [ERD](#31-entity-relationship-diagram)<br>
    b. [요구사항 정의서](#32-요구사항-정의서)<br>
@@ -43,7 +41,7 @@
    g. [git 전략](#37-git-branch-전략)
 5. [구현 기능 시연](#4-기능)
 6. [개발하며 느낀점](#5-개발하며-느낀점)<br>
-   a. [Open API Specification](#511-open-api-specification)<br>
+   a. [OpenAPI Specification](#511-openapi-specification)<br>
    b. [CI/CD](#512-cicd)<br>
    c. [Restful API](#513-restfull-api)<br>
    d. [Oauth](#514-oauth)
@@ -51,7 +49,7 @@
    a. [ChatGPT](#chatgpt)<br>
    b. [Karlo](#karlo)<br>
    c. [Youtube Data API](#youtube-data-api)<br>
-8. [유저 피드백 후 반영](#7-유저-피드백-후-반영)
+8. [사용자 피드백 후 반영](#7-사용자-피드백)
 
 ## 계기 및 목표
 
