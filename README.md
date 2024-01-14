@@ -26,30 +26,31 @@
 ```
 
 ## **[목차]**
+
 1. [개요](#계기-및-목표)
 2. [기능](#1-목표와-기능)<br>
-  a. [주요 기능](#11-주요-기능)
+   a. [주요 기능](#11-주요-기능)
 3. [개발 환경 및 배포 URL](#2-개발-환경-및-배포-URL)<br>
-  a. [개발 환경](#21-개발-환경)<br>
-  b. [배포 환경](#22-배포-환경)
+   a. [개발 환경](#21-개발-환경)<br>
+   b. [배포 환경](#22-배포-환경)
 4. [프로젝트 구조와 개발 일정](#3-프로젝트-구조와-개발-일정)<br>
-  a. [ERD](#31-entity-relationship-diagram)<br>
-  b. [요구사항 정의서](#32-요구사항-정의서)<br>
-  c. [API 명세서](#33-api-명세서)<br>
-  d. [URL 설계](#34-url-설계)<br>
-  e. [Architecture](#35-프로젝트-설계-및-프로세스)<br>
-  f. [개발 일정](#36-개발-일정)<br>
-  g. [git 전략](#37-git-branch-전략)
+   a. [ERD](#31-entity-relationship-diagram)<br>
+   b. [요구사항 정의서](#32-요구사항-정의서)<br>
+   c. [API 명세서](#33-api-명세서)<br>
+   d. [URL 설계](#34-url-설계)<br>
+   e. [Architecture](#35-프로젝트-설계-및-프로세스)<br>
+   f. [개발 일정](#36-개발-일정)<br>
+   g. [git 전략](#37-git-branch-전략)
 5. [구현 기능 시연](#4-기능)
 6. [개발하며 느낀점](#5-개발하며-느낀점)<br>
-  a. [Open API Specification](#511-open-api-specification)<br>
-  b. [CI/CD](#512-cicd)<br>
-  c. [Restful API](#513-restfull-api)<br>
-  d. [Oauth](#514-oauth)
+   a. [Open API Specification](#511-open-api-specification)<br>
+   b. [CI/CD](#512-cicd)<br>
+   c. [Restful API](#513-restfull-api)<br>
+   d. [Oauth](#514-oauth)
 7. [외부 어플리케이션](#6-외부-어플리케이션)<br>
-  a. [ChatGPT](#chatgpt)<br>
-  b. [Karlo](#karlo)<br>
-  c. [Youtube Data API](#youtube-data-api)<br>
+   a. [ChatGPT](#chatgpt)<br>
+   b. [Karlo](#karlo)<br>
+   c. [Youtube Data API](#youtube-data-api)<br>
 8. [유저 피드백 후 반영](#7-유저-피드백-후-반영)
 
 ## 계기 및 목표
@@ -82,8 +83,8 @@ GPT (Generative Pretrained Transformer) 기술과 Karlo(T2I, Text to Image)를 �
 ### 디깅이란?
 
 ```
-‘디깅’이란 원래 디제이가 자신의 공연 리스트를 채우기 위해서 
-음악을 찾는 행위를 의미하나, 현재는 자신의 특색있는 플레이리스트를 짜는 것으로 
+‘디깅’이란 원래 디제이가 자신의 공연 리스트를 채우기 위해서
+음악을 찾는 행위를 의미하나, 현재는 자신의 특색있는 플레이리스트를 짜는 것으로
 그 의미가 확대 되어 일반인들도 사용하는 언어가 되었습니다.
 ```
 
@@ -133,31 +134,31 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 
 ```yml
 # CI 성공 메세지 발송
-  build-CI-Success:
-    needs: CI
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
+build-CI-Success:
+  needs: CI
+  runs-on: ubuntu-latest
+  if: success()
+  steps:
     - name: Discord notification
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
         args: "
-            ## CI 진행\n
+          ## CI 진행\n
 
-            ### 📌 Status\n 
-            > **Success** ✅\n
+          ### 📌 Status\n
+          > **Success** ✅\n
 
-            ### ✍️ Commit message\n 
-            > ${{ github.event.commits[0].message }}\n"
+          ### ✍️ Commit message\n
+          > ${{ github.event.commits[0].message }}\n"
 
-  # 배포 성공 메세지 발송
-  build-Deploy-Success:
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
+# 배포 성공 메세지 발송
+build-Deploy-Success:
+  needs: deploy
+  runs-on: ubuntu-latest
+  if: success()
+  steps:
     - name: Discord notification
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -175,12 +176,12 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
           ### 🫡 See changes\n
           > https://github.com/${{ github.repository }}/commit/${{github.sha}}\n"
 
-  # CI 실패 메세지 발송
-  build-CI-failure:
-    needs: CI
-    runs-on: ubuntu-latest
-    if: failure()
-    steps:
+# CI 실패 메세지 발송
+build-CI-failure:
+  needs: CI
+  runs-on: ubuntu-latest
+  if: failure()
+  steps:
     - name: Discord notification
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -191,19 +192,19 @@ Estsoft에서 주관하는 백엔드 오르미 교육과정에서 만난 비전�
 
           ### 📌 Status\n
           > **Failure** ⛔\n
-          
+
           ### ✍️ Commit message\n
           > ${{ github.event.commits[0].message }}\n
-          
-          ### 👀 See Error Message\n
-          > https://github.com/MusicDigging/Mudig_BE/actions\n"  
 
-  #배포 실패 메세지 발송
-  build-Deploy-failure:
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: ${{ needs.deploy.outputs['result'] == 'failure' }}
-    steps:
+          ### 👀 See Error Message\n
+          > https://github.com/MusicDigging/Mudig_BE/actions\n"
+
+#배포 실패 메세지 발송
+build-Deploy-failure:
+  needs: deploy
+  runs-on: ubuntu-latest
+  if: ${{ needs.deploy.outputs['result'] == 'failure' }}
+  steps:
     - name: Discord notification
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -823,14 +824,14 @@ CI를 간단하게 말하자면, 빌드/테스트를 자동화 하는 과정을 
 
 ```yml
 CI:
-    runs-on: ubuntu-latest
-    env:
-      DJAGNO_SECRET: ${{ secrets.DJAGNO_SECRET }}
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: ['3.10']
-    steps:
+  runs-on: ubuntu-latest
+  env:
+    DJAGNO_SECRET: ${{ secrets.DJAGNO_SECRET }}
+  strategy:
+    max-parallel: 4
+    matrix:
+      python-version: ["3.10"]
+  steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
@@ -855,32 +856,31 @@ CI를 통해서 새로운 소스코드의 빌드와 테스트 병합까지 성�
 1. CI를 통해 새로운 소스코드의 빌드와 테스트 병합까지 성공
 2. 사용자가 사용할 수 있는 배포환경에 릴리즈
 
-
 **Github Action을 활용한 CD 구현**
 
 구현 코드
 
 ```yml
 deploy:
-    needs: CI
-    name: Deploy
-    runs-on: ubuntu-latest
-    
-    if: success()
-    steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master # appleboy를 통해 외부 서버에서 ssh 접속 후 커맨드 실행
-        with:
-          host: ${{ secrets.AWS_HOST }} # AWS 호스트
-          username: ${{ secrets.AWS_USERNAME }} # AWS USERNAME
-          key: ${{ secrets.AWS_PEM_KEY }} # AWS PEM KEY
-          port: ${{ secrets.AWS_PORT }} # AWS SSH PORT 
-          script_stop: true
-          script: |
-            whoami # 현재 내가 로그인한 사용자의 정보를 출력 합니다.
-            ls -al # 현재의 디렉토리안의 파일 목록을 출력하여 보여주는 명령어 입니다.
-            cd Mudig_BE/ # 뮤딕이 설치된 폴더로 들어갑니다.
-            /home/ubuntu/publish/pull_repository.sh # 사전에 정의된 쉘을 실행합니다.
+  needs: CI
+  name: Deploy
+  runs-on: ubuntu-latest
+
+  if: success()
+  steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master # appleboy를 통해 외부 서버에서 ssh 접속 후 커맨드 실행
+      with:
+        host: ${{ secrets.AWS_HOST }} # AWS 호스트
+        username: ${{ secrets.AWS_USERNAME }} # AWS USERNAME
+        key: ${{ secrets.AWS_PEM_KEY }} # AWS PEM KEY
+        port: ${{ secrets.AWS_PORT }} # AWS SSH PORT
+        script_stop: true
+        script: |
+          whoami # 현재 내가 로그인한 사용자의 정보를 출력 합니다.
+          ls -al # 현재의 디렉토리안의 파일 목록을 출력하여 보여주는 명령어 입니다.
+          cd Mudig_BE/ # 뮤딕이 설치된 폴더로 들어갑니다.
+          /home/ubuntu/publish/pull_repository.sh # 사전에 정의된 쉘을 실행합니다.
 ```
 
 #### 5.1.3 RESTfull API
@@ -1150,7 +1150,70 @@ YouTube Data API를 사용하면 YouTube 웹사이트에서 일반적으로 실�
 
 3. API는 OAuth 2.0 인증 프로토콜을 지원합니다. OAuth 2.0 토큰은 다음 방법 중 하나로 제공할 수 있습니다.
 
-## 7. 유저 피드백 후 반영
+## 7. 사용자 피드백
+
+2023년 12월 31일부터 2024년 1월 4일까지 총 5일 간 약 40명의 유저분들로 부터 뮤딕이 보안해야할 점과 개선해야할 점 등에 대해서 의견을 받아보았습니다.
+적극적으로 테스트에 임해주시고 저희 프로젝트가 발전할 수 있도록 좋은 피드백을 주신 모든분들에게 감사인사를 드립니다!
+
+![스크린샷 2024-01-14 130852](https://github.com/Hyunwooz/programmers/assets/107661525/e9b040b3-3e6c-4bb8-87a4-6bcb68741327)
+
+저희가 사용자 피드백을 받기로 한 목적은 피드백을 수집한다면 우리가 진행중인 프로젝트에서 어떤 부분이 성공적인지, 개선이 필요한 부분은 어디인지 파악하는데 도움이 되기 때문이였습니다. 프로젝트를 다양한 시각에서 바라볼 수 있게 해줄뿐만아니라 사용자 경험적인 부분을 개선하는 데 있어 좋은 효과를 불러올 수 있었습니다.
+
+### 유저 피드백 수집을 위한 프로세스
+
+#### 1. 사용자 피드백 채널 만들기
+
+저희는 유저분들의 의견을 쉽게 수집할 수 있도록 Google Forms을 이용하였습니다.
+
+![스크린샷 2024-01-14 130539](https://github.com/Hyunwooz/programmers/assets/107661525/953445ab-8606-491f-ae05-f139cceabf5a)
+
+#### 2. 피드백 분류하기
+
+저희는 아래 이유를 근거로, 표준화된 분류 프로세스를 사용하였습니다.
+
+```json
+1. 사용자 문제에 대한 응답 시간 단축
+2. 문제에 대해 표준화된 우선순위 적용
+3. 한정된 자원을 가장 필요하고 영향이 큰 변경 작업에 투입
+4. 요청된 작업이 미처리 상태로 계속 남아 있는 것을 방지
+```
+
+피드백으로 받은 문제를 아래 3가지 질문에 답하기 위해 구체적인 요구사항을 정의하였습니다.
+
+```json
+1. 이 문제가 유효한가?
+2. 이 문제를 해결할 수 있는가?
+3. 이 문제가 얼마나 중요한가?
+```
+
+이러한 질문을 통해 조치 가능한 사용자 피드백과 추가 정보가 필요하거나 무시할 수 있는 피드백을 구분하는데 큰 도움이 되었습니다.
+
+**1. 문제가 유효한가?**
+
+좋은 의도를 가지고 피드백을 주셨지만, 우리의 프로젝트와 관련이 없거나 사용자가 설명하는 문제가 이미 해결된 경우가 있기 때문에
+사용자 피드백으로 접수된 문제를 평가할 때 '신뢰하되 확인'하는 접근 방식을 취하는게 좋겠다 판단하였습니다.
+
+**2. 문제를 해결할 수 있는가?**
+
+피드백을 적용할 수 있다고 판단했다면 피드백이 조치 가능한지 정하는 것이 다음 순서였습니다.
+아래 세가지를 근거로 판단하였습니다.
+
+```json
+1. 중복되지 않은 지
+2. 재현이 가능한 지
+3. 범위가 정해져있는 지
+```
+
+범위가 너무 크거나 막연한 피드백일 경우 조치를 취할 수 있는 피드백이 아니라 판단하였습니다.
+
+**3. 문제가 얼마나 중요한가?**
+
+마지막으로는 피드백의 조치 우선순위를 정하였습니다. 문제가 얼마나 중요한지, 얼마나 빨리 해결해야 하는지를 근거로 판단하였습니다.
+저희의 경우 5단계로 문제를 구분하였습니다.
+
+![스크린샷 2024-01-14 130943](https://github.com/Hyunwooz/programmers/assets/107661525/1bee0e46-7e6c-4ff6-83b9-b4970cd78d0d)
+
+#### 3. 피드백 반영하기
 
 ### 검색 결과 - 음악 찾기 추가
 
@@ -1159,3 +1222,7 @@ YouTube Data API를 사용하면 YouTube 웹사이트에서 일반적으로 실�
 ### 비밀번호 찾기 기능 추가
 
 ### 플레이리스트 썸네일 이미지 변경 추가
+
+```
+
+```
