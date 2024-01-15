@@ -411,8 +411,6 @@ build-Deploy-failure:
 
 <a href="https://docs.google.com/spreadsheets/d/1k1bcUxAqGr-WbKBvex_J7M51-aIQd9EQxcZN1uKBqaY/edit?pli=1#gid=0"><img src="https://github.com/MusicDigging/Mudig_BE/assets/107661525/15c6d0e7-358a-4838-884c-d47dc6228103"/></a>
 
-<!-- ![스크린샷 2024-01-07 154023](https://github.com/MusicDigging/Mudig_BE/assets/107661525/15c6d0e7-358a-4838-884c-d47dc6228103) -->
-
 ### 3.3. API 명세서
 
 #### 3.3.1. API 명세서: https://api.mudig.co.kr/api/swagger/
@@ -562,7 +560,7 @@ Stable - Main (release) - Develop - 작업자별 Branch
 4. Develop에서 메인 브랜치에 Push
 5. 서버 배포 진행
 
-## 4. 기능 ( 유저 피드백 반영 후 리뉴얼 예정 )
+## 4. 기능
 
 <table>
   <thead>
