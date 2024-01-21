@@ -1,8 +1,6 @@
 # Mudig
 
-![phone34-min](https://github.com/MusicDigging/Mudig_BE/assets/107661525/6fc4b1ca-6ca0-4f59-8acb-e3c15ff79127)
-![-2__1_6](https://github.com/MusicDigging/Mudig_BE/assets/107661525/2e99de8b-744c-4d44-8123-6e151f422698)
-![-2__1](https://github.com/MusicDigging/Mudig_BE/assets/107661525/27c4a96e-313e-4f10-9956-294f9cf556e5)
+![296149697-a6800871-704b-4d56-b8ff-6fc6db0bcf72](https://github.com/MusicDigging/Mudig_BE/assets/107661525/64d3650a-0691-42c6-9f13-cfa1dbac1aa5)
 
 [뮤딕 바로가기](https://www.mudig.co.kr/)
 
