@@ -2,7 +2,8 @@
 
 ![296149697-a6800871-704b-4d56-b8ff-6fc6db0bcf72](https://github.com/MusicDigging/Mudig_BE/assets/107661525/64d3650a-0691-42c6-9f13-cfa1dbac1aa5)
 
-[뮤딕 바로가기](https://www.mudig.co.kr/)
+[👉 뮤딕 바로가기](https://www.mudig.co.kr/)
+[📌 뮤딕 개발 일지](https://voltaic-apricot-62e.notion.site/Mudig-4de021314fe54804a03d291908f3d508)
 
 ```
 해당 서비스를 이용해보실 수 있는 테스트 계정입니다.
