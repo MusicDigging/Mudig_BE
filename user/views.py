@@ -10,13 +10,15 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from json.decoder import JSONDecodeError
 from playlist.uploads import S3ImgUploader
 from playlist.models import Playlist, Like
 from playlist.serializers import PlaylistSerializer , ProfileSearchSerializer
-from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer
-from .utils import generate_otp, send_otp_via_email
+from .serializers import UserSerializer, ChangePasswordSerializer, ProfileSerializer, UserFollowSerializer, EmailFindSerializer, PwEmailSerializer, PwChangeSerializer
+from django.core.mail import EmailMessage
+from .utils import generate_otp, send_otp_via_email, send_resetpassword_via_email
 from .models import Profile, User, Follower
 import dotenv
 import os
@@ -29,6 +31,61 @@ GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
 KAKAO_REST_API_KEY = os.environ['KAKAO_REST_API_KEY']
 STATE = os.environ['STATE']
+
+
+class FindEmail(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self, request, *args, **kwargs):
+        serializer = EmailFindSerializer(data=request.data)
+        if serializer.is_valid():
+            if User.objects.filter(email=serializer.data['email']).exists():
+                return Response({'message': '존재하는 이메일입니다.'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'message': '존재하지 않는 이메일입니다.'}, status=status.HTTP_200_OK)
+        return Response({'error': '이메일을 다시 입력해주세요.'}, stauts=status.HTTP_200_OK)
+
+
+class PwResetEmailSendView(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self,request):
+        serializer = PwEmailSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            user_email = serializer.validated_data['email']
+            
+            try:
+                user = User.objects.get(email=user_email)
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                
+                reset_url = f'https://www.mudig.co.kr/resetpassword?token={access_token}'
+
+                send_resetpassword_via_email(user_email, reset_url)
+                
+                return Response(f'{user_email} 이메일 전송이 완료되었습니다.',status=status.HTTP_200_OK)
+            
+            except User.DoesNotExist:
+                return Response({'message': '일치하는 사용자가 없습니다.'},status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({'error': '유효하지 않은 데이터입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordChangeView(APIView):
+    permission_classes = [AllowAny]
+
+    def put(self, request):
+        serializer = PwChangeSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            new_password = serializer.validated_data['new_password']
+            request.user.set_password(new_password)
+            request.user.save()
+            
+            return Response({'message': '비밀번호가 성공적으로 변경되었습니다.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': '유효하지 않은 데이터입니다.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckName(APIView):
