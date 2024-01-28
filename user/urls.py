@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import Join,SocialJoin,Login,GenerateOtp,Logout,ChangePassWord,Withdrawal,GoogleLogin,GoogleCallback,CheckName
-from .views import KakaoLogin,KakaoCallback,ProfileView,ProfileEditView,FollowAPIView,UnfollowAPIView,FollowersListView,FollowingListView
+from .views import KakaoLogin,KakaoCallback,ProfileView,ProfileEditView,FollowAPIView,UnfollowAPIView,FollowersListView,FollowingListView, FindEmail, PwResetEmailSendView, PasswordChangeView
 from rest_framework_simplejwt.views import TokenRefreshView
+from django.contrib.auth import views as auth_views
 
 app_name = 'user'
 
@@ -26,4 +27,8 @@ urlpatterns = [
     path('<int:user_id>/followers/', FollowersListView.as_view(), name='user-followers'),
     path('<int:user_id>/following/', FollowingListView.as_view(), name='user-following'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    path("findemail/", FindEmail.as_view(), name='find-email'),
+    path('find_pw/', PwResetEmailSendView.as_view(), name='find_pw'),
+    path('pwchange/', PasswordChangeView.as_view(), name ='pwchange'),
 ]
