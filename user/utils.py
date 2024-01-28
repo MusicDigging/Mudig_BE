@@ -13,3 +13,10 @@ def send_otp_via_email(email, otp):
     context = {'otp': otp, 'email': settings.EMAIL_HOST_USER}
     message = render_to_string('user/email_template.html', context)
     send_mail(subject, '', settings.EMAIL_HOST_USER, [email], html_message=message)
+
+
+def send_resetpassword_via_email(email, url):
+    subject = '[MusicDigging] 비밀번호 재설정 링크를 보내드립니다.'
+    context = {'url': url, 'user_email': email, 'email': settings.EMAIL_HOST_USER}
+    message = render_to_string('user/password_reset.html', context)
+    send_mail(subject, '', settings.EMAIL_HOST_USER, [email], html_message=message)

@@ -3,6 +3,22 @@ from .models import User, Profile, Follower
 from playlist.models import Playlist
 
 
+class EmailFindSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=64, required=True)
+
+
+class PwEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=64)
+
+
+class PwChangeSerializer(serializers.Serializer):
+    class Meta:
+        model = User
+        fields = ['new_password']
+
+    new_password = serializers.CharField(required=True)
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
