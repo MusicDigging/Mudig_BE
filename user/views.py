@@ -36,8 +36,8 @@ STATE = os.environ['STATE']
 class FindEmail(APIView):
     permission_classes = [AllowAny]
     @extend_schema(
-        summary="비밀번호 찾기 API",
-        description="비밀번호 찾기 API에 대한 설명 입니다.",
+        summary="비밀번호 찾기 이메일 유효성 검사 API",
+        description="비밀번호 찾기 이메일 유효성 검사 API에 대한 설명 입니다.",
         parameters=[],
         tags=["User"],
         responses=EmailFindSerializer,
@@ -58,18 +58,10 @@ class FindEmail(APIView):
             ),
             OpenApiExample(
                 response_only=True,
-                name="200_OK",
-                value={
-                    "status": 200,
-                    "res_data": {"message": '존재하지 않는 이메일입니다.'},
-                }
-            ),
-            OpenApiExample(
-                response_only=True,
                 name="400_BAD_REQUEST",
                 value={
                     "status": 400,
-                    "res_data": {"error1": "","error2": "이메일을 다시 입력해주세요."},
+                    "res_data": {"error1": "존재하지 않는 이메일입니다.","error2": "이메일을 다시 입력해주세요."},
                 },
             ),
         ],
@@ -87,8 +79,8 @@ class FindEmail(APIView):
 class PwResetEmailSendView(APIView):
     permission_classes = [AllowAny]
     @extend_schema(
-        summary="비밀번호 찾기 API",
-        description="비밀번호 찾기 API에 대한 설명 입니다.",
+        summary="새 비밀번호 설정 URL을 보내주는 API",
+        description="새 비밀번호 설정 URL을 보내주는 API에 대한 설명 입니다.",
         parameters=[],
         tags=["User"],
         responses=PwEmailSerializer,
@@ -147,7 +139,7 @@ class PasswordChangeView(APIView):
         description="새 비밀번호 설정 API에 대한 설명 입니다.",
         parameters=[],
         tags=["User"],
-        responses=ChangePasswordSerializer,
+        responses=PwChangeSerializer,
         request=inline_serializer(
             name="Change_Password",
             fields={
