@@ -35,7 +35,45 @@ STATE = os.environ['STATE']
 
 class FindEmail(APIView):
     permission_classes = [AllowAny]
-    
+    @extend_schema(
+        summary="비밀번호 찾기 API",
+        description="비밀번호 찾기 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["User"],
+        responses=EmailFindSerializer,
+        request=inline_serializer(
+            name="Find_email",
+            fields={
+                "email": serializers.CharField()
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {"message": '존재하는 이메일입니다.'},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {"message": '존재하지 않는 이메일입니다.'},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error1": "","error2": "이메일을 다시 입력해주세요."},
+                },
+            ),
+        ],
+    )
     def post(self, request, *args, **kwargs):
         serializer = EmailFindSerializer(data=request.data)
         if serializer.is_valid():
@@ -48,7 +86,37 @@ class FindEmail(APIView):
 
 class PwResetEmailSendView(APIView):
     permission_classes = [AllowAny]
-    
+    @extend_schema(
+        summary="비밀번호 찾기 API",
+        description="비밀번호 찾기 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["User"],
+        responses=PwEmailSerializer,
+        request=inline_serializer(
+            name="Change_Password",
+            fields={
+                "email": serializers.CharField()
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {"message": 'example@email.com 이메일 전송이 완료되었습니다.'},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error1": "일치하는 사용자가 없습니다.","error2": "유효하지 않은 데이터입니다."},
+                },
+            ),
+        ],
+    )
     def post(self,request):
         serializer = PwEmailSerializer(data=request.data)
         
@@ -74,7 +142,37 @@ class PwResetEmailSendView(APIView):
 
 class PasswordChangeView(APIView):
     permission_classes = [AllowAny]
-
+    @extend_schema(
+        summary="새 비밀번호 설정 API",
+        description="새 비밀번호 설정 API에 대한 설명 입니다.",
+        parameters=[],
+        tags=["User"],
+        responses=ChangePasswordSerializer,
+        request=inline_serializer(
+            name="Change_Password",
+            fields={
+                "new_password": serializers.CharField()
+            },
+        ),
+        examples=[
+            OpenApiExample(
+                response_only=True,
+                name="200_OK",
+                value={
+                    "status": 200,
+                    "res_data": {"message": "비밀번호가 성공적으로 변경되었습니다."},
+                }
+            ),
+            OpenApiExample(
+                response_only=True,
+                name="400_BAD_REQUEST",
+                value={
+                    "status": 400,
+                    "res_data": {"error": "현재 비밀번호가 일치하지 않습니다."},
+                },
+            ),
+        ],
+    )
     def put(self, request):
         serializer = PwChangeSerializer(data=request.data)
         
