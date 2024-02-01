@@ -85,7 +85,7 @@ class PwResetEmailSendView(APIView):
         tags=["User"],
         responses=PwEmailSerializer,
         request=inline_serializer(
-            name="Change_Password",
+            name="send_reset_email",
             fields={
                 "email": serializers.CharField()
             },
@@ -141,7 +141,7 @@ class PasswordChangeView(APIView):
         tags=["User"],
         responses=PwChangeSerializer,
         request=inline_serializer(
-            name="Change_Password",
+            name="reset_Password",
             fields={
                 "new_password": serializers.CharField()
             },
