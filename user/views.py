@@ -104,7 +104,7 @@ class PwResetEmailSendView(APIView):
                 name="400_BAD_REQUEST",
                 value={
                     "status": 400,
-                    "res_data": {"error1": "일치하는 사용자가 없습니다.","error2": "유효하지 않은 데이터입니다."},
+                    "res_data": {"error1": "일치하는 사용자가 없습니다.","error2": "이메일 형식에 맞지 않는 이메일 주소 입니다."},
                 },
             ),
         ],
@@ -160,7 +160,7 @@ class PasswordChangeView(APIView):
                 name="400_BAD_REQUEST",
                 value={
                     "status": 400,
-                    "res_data": {"error": "현재 비밀번호가 일치하지 않습니다."},
+                    "res_data": {"error": "비밀번호 변경에 실패했습니다."},
                 },
             ),
         ],
