@@ -120,8 +120,7 @@ class PwResetEmailSendView(APIView):
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
                 
-                # reset_url = f'https://www.mudig.co.kr/resetpassword?token={access_token}'
-                reset_url = f'https://localhost:3000/password/reset?token={access_token}'
+                reset_url = f'https://www.mudig.co.kr/resetpassword?token={access_token}'
 
                 send_resetpassword_via_email(user_email, reset_url)
                 
