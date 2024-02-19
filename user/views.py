@@ -319,8 +319,7 @@ class Join(APIView):
                 img_uploader = S3ImgUploader(image)
                 uploaded_url = img_uploader.upload('profile')
                 profile_data['image'] = uploaded_url
-                profile.image = uploaded_url
-                profile.save()
+                
             
             pf_serializer = ProfileSerializer(profile, profile_data)
             
